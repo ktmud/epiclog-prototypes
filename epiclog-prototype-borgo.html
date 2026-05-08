@@ -1,0 +1,1685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<title>Epiclog — Borgo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Karla:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
+<style>
+/* ─────────────────────────────────────────────────────────────
+   Epiclog · Borgo
+   Tuscan villa, olive grove, ochre wine label.
+   Sun-bleached and stamped, set in DM Serif Display.
+   ───────────────────────────────────────────────────────────── */
+
+:root {
+  /* Italian countryside palette */
+  --terracotta:    #C56841;
+  --terracotta-2:  #A14E2D;
+  --ochre:         #C8943C;
+  --ochre-2:       #B07A24;
+  --olive:         #768456;
+  --olive-2:       #5C6940;
+  --cypress:       #3F5634;
+  --wine:          #7C2A2C;
+  --wine-2:        #5C1B1D;
+
+  /* Surfaces */
+  --canvas:        #F4EBD8;        /* page · sun-bleached canvas */
+  --canvas-2:      #ECE0C5;
+  --cream:         #FAF3E2;        /* lifted surface */
+  --bone:          #FFFCF1;        /* highest white */
+  --stone:         #B5A89A;
+  --ink:           #2F2820;        /* warm dark brown */
+  --ink-2:         #524739;
+  --ink-3:         #847866;
+  --ink-4:         #B5A89A;
+  --line:          rgba(47, 40, 32, 0.10);
+  --line-2:        rgba(47, 40, 32, 0.18);
+
+  --font-display:  'DM Serif Display', 'Times New Roman', serif;
+  --font-ui:       'Karla', system-ui, -apple-system, sans-serif;
+  --font-hand:     'Caveat', cursive;
+
+  --r-sm: 6px;
+  --r-md: 12px;
+  --r-lg: 18px;
+  --r-xl: 26px;
+
+  --soft-1: 0 1px 2px rgba(47, 40, 32, 0.05), 0 4px 12px rgba(47, 40, 32, 0.06);
+  --soft-2: 0 2px 4px rgba(47, 40, 32, 0.06), 0 16px 32px -10px rgba(47, 40, 32, 0.14);
+  --soft-3: 0 6px 12px rgba(47, 40, 32, 0.10), 0 32px 64px -12px rgba(47, 40, 32, 0.20);
+  --soft-up: 0 -16px 40px -16px rgba(47, 40, 32, 0.18);
+
+  /* Tile pattern · pavimento */
+  --tile-pattern: repeating-linear-gradient(45deg, transparent 0 8px, rgba(118, 132, 86, 0.10) 8px 9px),
+                  repeating-linear-gradient(-45deg, transparent 0 8px, rgba(118, 132, 86, 0.10) 8px 9px);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--font-ui);
+  font-size: 15px; line-height: 1.6;
+  color: var(--ink);
+  background:
+    radial-gradient(800px 500px at 12% 4%, rgba(118, 132, 86, 0.12) 0%, transparent 60%),
+    radial-gradient(700px 500px at 95% 18%, rgba(197, 104, 65, 0.14) 0%, transparent 60%),
+    radial-gradient(800px 600px at 80% 100%, rgba(200, 148, 60, 0.16) 0%, transparent 60%),
+    var(--canvas);
+  background-attachment: fixed;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='280' height='280' viewBox='0 0 280 280'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='2' seed='5'/><feColorMatrix values='0 0 0 0 0.18  0 0 0 0 0.16  0 0 0 0 0.13  0 0 0 0.07 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  opacity: 0.55;
+  mix-blend-mode: multiply;
+}
+button { font-family: inherit; font-size: inherit; color: inherit; cursor: pointer; border: 0; background: transparent; }
+input, textarea { font-family: inherit; font-size: 16px; color: inherit; border: 0; outline: 0; background: transparent; }
+ul { list-style: none; padding: 0; margin: 0; }
+a { color: inherit; text-decoration: none; }
+
+.stage {
+  display: grid; grid-template-columns: minmax(0, 1fr);
+  align-items: start; justify-items: center;
+  padding: 56px 16px 96px; gap: 40px;
+  min-height: 100vh;
+}
+@media (min-width: 1100px) {
+  .stage { grid-template-columns: 320px minmax(0, auto) 320px; gap: 56px; padding: 72px 56px; }
+}
+
+.brand-mark {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 60px; letter-spacing: -0.01em; line-height: 0.95;
+  color: var(--ink);
+}
+.brand-mark .epic { color: var(--wine); }
+.brand-mark .log  { color: var(--olive); }
+.brand-mark .dot  { color: var(--ochre); font-style: normal; }
+.tagline {
+  font-family: var(--font-display); font-style: italic;
+  font-size: 24px; letter-spacing: -0.005em; line-height: 1.25;
+  margin-top: 22px; max-width: 22ch;
+  color: var(--ink-2);
+}
+.tagline em { color: var(--terracotta); font-style: italic; }
+.signed { font-family: var(--font-hand); font-size: 22px; color: var(--terracotta-2); margin-top: 10px; line-height: 1; }
+
+.spec-card {
+  background: var(--bone);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  padding: 24px;
+  box-shadow: var(--soft-1);
+  margin-top: 24px;
+  position: relative;
+}
+.spec-card::before {
+  content: ""; position: absolute; left: 0; top: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--wine) 0%, var(--terracotta) 35%, var(--ochre) 65%, var(--olive) 100%);
+  border-top-left-radius: var(--r-lg); border-top-right-radius: var(--r-lg);
+}
+.spec-card h4 {
+  margin: 6px 0 14px;
+  font-family: var(--font-ui); font-size: 11px; font-weight: 600;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.swatch-row { display: flex; gap: 6px; flex-wrap: wrap; }
+.swatch {
+  width: 38px; height: 60px; border-radius: 4px;
+  position: relative;
+  font-family: var(--font-ui); font-size: 9px; font-weight: 600;
+  display: flex; align-items: flex-end; justify-content: center;
+  padding-bottom: 4px;
+  letter-spacing: -0.01em;
+  border: 1px solid rgba(0,0,0,0.10);
+  box-shadow: 0 1px 0 rgba(0,0,0,0.10) inset;
+}
+.swatch.dark { color: var(--cream); }
+.swatch.lite { color: var(--ink); }
+
+.type-stack { display: grid; gap: 18px; }
+.type-stack .label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.18em; color: var(--ink-3); margin-bottom: 6px; font-weight: 600; }
+.type-stack .display-demo { font-family: var(--font-display); font-style: italic; font-size: 30px; line-height: 1; letter-spacing: -0.01em; color: var(--ink); }
+.type-stack .display-demo em { color: var(--terracotta); font-style: italic; }
+.type-stack .ui-demo { font-family: var(--font-ui); font-weight: 500; font-size: 15px; }
+.type-stack .hand-demo { font-family: var(--font-hand); font-size: 22px; color: var(--wine); line-height: 1.1; }
+
+.principles { display: grid; gap: 12px; }
+.principle { display: grid; grid-template-columns: 16px 1fr; gap: 12px; align-items: flex-start; font-size: 13.5px; line-height: 1.55; color: var(--ink-2); }
+.principle .pin {
+  flex: 0 0 auto; width: 10px; height: 10px;
+  background: var(--terracotta);
+  margin-top: 6px;
+  transform: rotate(45deg);
+}
+.principle .pin.olive { background: var(--olive); }
+.principle .pin.ochre { background: var(--ochre); }
+.principle .pin.wine { background: var(--wine); }
+
+/* ─── Phone ─── */
+.phone {
+  --w: 392px; --h: 824px;
+  width: var(--w); height: var(--h);
+  border-radius: 56px;
+  background: linear-gradient(180deg, #2D2520 0%, #1A1410 100%);
+  padding: 14px;
+  box-shadow: 0 8px 16px rgba(47, 40, 32, 0.18), 0 36px 80px -24px rgba(47, 40, 32, 0.45);
+  position: relative;
+  flex: 0 0 auto;
+}
+.phone::before {
+  content: ""; position: absolute;
+  top: 22px; left: 50%; transform: translateX(-50%);
+  width: 110px; height: 28px; border-radius: 999px;
+  background: #0F0C09; z-index: 30;
+}
+.screen {
+  width: 100%; height: 100%;
+  border-radius: 44px;
+  background: var(--canvas);
+  overflow: hidden; position: relative; isolation: isolate;
+}
+
+.app { width: 100%; height: 100%; display: grid; grid-template-rows: auto 1fr auto; }
+
+/* Olive branch decoration in upper right of screen */
+.botanical {
+  position: absolute; top: 100px; right: -14px;
+  width: 96px; height: 140px; opacity: 0.16;
+  pointer-events: none; z-index: 1;
+  color: var(--olive);
+}
+
+.header {
+  padding: 56px 24px 14px;
+  display: flex; align-items: flex-start; justify-content: space-between;
+  background: transparent;
+  position: relative; z-index: 10;
+  transition: padding 200ms ease;
+}
+.header.compress { padding-top: 26px; }
+.header-brand {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 32px; letter-spacing: -0.01em; line-height: 1;
+}
+.header-brand .epic { color: var(--wine); }
+.header-brand .log  { color: var(--olive); }
+.header-brand .dot  { color: var(--ochre); font-style: normal; }
+.header-title { font-family: var(--font-display); font-style: italic; font-size: 28px; letter-spacing: -0.005em; line-height: 1; color: var(--ink); }
+.header-greet {
+  font-family: var(--font-hand); font-size: 18px;
+  color: var(--terracotta-2); margin-top: 6px; line-height: 1;
+}
+.icon-btn {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--cream);
+  display: grid; place-items: center;
+  border: 1px solid var(--line);
+  color: var(--ink-2);
+  box-shadow: var(--soft-1);
+  transition: transform 160ms ease;
+}
+.icon-btn:active { transform: scale(0.94); }
+
+.scroll {
+  overflow-y: auto; overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  position: relative; padding-bottom: 100px;
+  scroll-behavior: smooth;
+}
+.scroll::-webkit-scrollbar { display: none; }
+
+/* ─── Bottom nav ─── */
+.bnav {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  height: 80px; padding: 8px 14px 22px;
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  background: rgba(244, 235, 216, 0.94);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--line);
+  z-index: 20;
+}
+.bnav button {
+  display: grid; place-items: center; gap: 4px;
+  font-family: var(--font-display); font-style: italic;
+  font-size: 14px;
+  color: var(--ink-3);
+  position: relative;
+  transition: color 200ms ease;
+}
+.bnav button.active { color: var(--terracotta); }
+.bnav button.active::before {
+  content: ""; position: absolute; top: 0;
+  width: 8px; height: 8px; background: var(--terracotta);
+  transform: rotate(45deg);
+}
+.bnav .badge {
+  position: absolute; top: 6px; right: 22%;
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--wine);
+}
+
+/* ─── Sections ─── */
+.eyebrow {
+  font-family: var(--font-hand);
+  font-size: 19px; color: var(--terracotta-2);
+  margin: 0 24px 4px; line-height: 1;
+}
+.section-title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 32px; line-height: 1;
+  letter-spacing: -0.01em;
+  padding: 4px 24px 16px;
+  display: flex; align-items: baseline; justify-content: space-between;
+  color: var(--ink);
+}
+.section-title .meta {
+  font-family: var(--font-ui); font-style: normal;
+  font-size: 11px; font-weight: 500; color: var(--ink-3);
+  letter-spacing: 0.06em; text-transform: uppercase;
+}
+
+/* ─── Search & chips ─── */
+.toolbar { padding: 0 24px 12px; }
+.search {
+  display: flex; align-items: center; gap: 10px;
+  height: 44px;
+  background: var(--bone);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 0 14px;
+  box-shadow: var(--soft-1);
+}
+.search:focus-within { border-color: var(--terracotta); }
+.search input { flex: 1; font-weight: 500; font-family: var(--font-display); font-style: italic; font-size: 17px; color: var(--ink); }
+.search input::placeholder { color: var(--ink-3); }
+
+.chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 32px; padding: 0 14px;
+  border-radius: 999px;
+  background: var(--bone);
+  border: 1px solid var(--line);
+  font-family: var(--font-display); font-style: italic; font-size: 14px;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+.chip.solid { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+.chip-row { display: flex; gap: 6px; padding: 0 24px 18px; overflow-x: auto; scrollbar-width: none; }
+.chip-row::-webkit-scrollbar { display: none; }
+
+/* ─── Near me cards ─── */
+.nearme-row { display: flex; gap: 14px; padding: 0 24px 22px; overflow-x: auto; scrollbar-width: none; }
+.nearme-row::-webkit-scrollbar { display: none; }
+.nearme-card {
+  flex: 0 0 240px;
+  background: var(--bone);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  padding: 18px;
+  cursor: pointer;
+  position: relative; overflow: hidden;
+  box-shadow: var(--soft-1);
+}
+.nearme-card .seal {
+  position: absolute; top: -12px; right: 14px;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--wine);
+  border: 2px solid var(--bone);
+  color: var(--cream);
+  display: grid; place-items: center;
+  font-family: var(--font-display); font-style: italic;
+  font-size: 12px;
+  transform: rotate(-8deg);
+  box-shadow: var(--soft-1);
+}
+.nearme-card .body { position: relative; z-index: 1; padding-top: 14px; }
+.nearme-card .cat-row {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 11px; font-weight: 500; color: var(--ink-3);
+  letter-spacing: 0.04em;
+  margin-bottom: 10px;
+}
+.nearme-card .cat-row .stroke {
+  width: 8px; height: 8px;
+  transform: rotate(45deg);
+}
+.nearme-card .ttl {
+  font-family: var(--font-display); font-style: italic;
+  font-size: 24px; line-height: 1.05; letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.nearme-card .next {
+  font-size: 12px; color: var(--ink-3); margin-top: 12px;
+  display: flex; align-items: center; gap: 5px;
+}
+.nearme-card .bar { height: 4px; border-radius: 0; background: var(--canvas-2); margin-top: 14px; overflow: hidden; }
+.nearme-card .bar > i { display: block; height: 100%; }
+
+/* ─── List card ─── */
+.cardstack { display: grid; gap: 12px; padding: 0 24px 12px; }
+.list-card-wrap { position: relative; }
+.list-card-actions {
+  position: absolute; top: 0; right: 8px; bottom: 0;
+  display: flex; gap: 6px; align-items: center; z-index: 1;
+}
+.list-card-actions button {
+  width: 48px; height: 64px; border-radius: 8px;
+  display: grid; place-items: center; gap: 2px;
+  font-size: 10px; font-weight: 600; color: var(--cream);
+  letter-spacing: 0.04em;
+  font-family: var(--font-display); font-style: italic;
+}
+.list-card-actions .pin   { background: var(--olive); }
+.list-card-actions .share { background: var(--ochre); color: var(--ink); }
+.list-card-actions .del   { background: var(--wine); }
+
+.list-card {
+  position: relative;
+  background: var(--bone);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  padding: 16px 18px 16px 22px;
+  display: grid; grid-template-columns: auto 1fr auto;
+  align-items: center; gap: 16px;
+  z-index: 2; cursor: pointer; user-select: none;
+  transition: transform 240ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: var(--soft-1);
+  overflow: hidden;
+}
+.list-card.swiping { transition: none; }
+.list-card .ring-wrap { width: 48px; height: 48px; position: relative; }
+.list-card .ring-num {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  font-family: var(--font-display); font-style: italic;
+  font-size: 16px; letter-spacing: -0.01em;
+}
+.list-card .body { min-width: 0; }
+.list-card .cat-line {
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--font-ui); font-size: 11px; font-weight: 500;
+  color: var(--ink-3); letter-spacing: 0.06em;
+}
+.list-card .pin-tag { font-family: var(--font-hand); text-transform: none; letter-spacing: 0; font-size: 14px; color: var(--terracotta); }
+.list-card .name {
+  font-family: var(--font-display); font-style: italic;
+  font-size: 24px; line-height: 1.05; letter-spacing: -0.01em;
+  color: var(--ink); margin: 4px 0 4px;
+}
+.list-card .progress-line { font-size: 12px; color: var(--ink-3); }
+.list-card .arrow { color: var(--ink-4); }
+
+.ring-svg .meter { transition: stroke-dashoffset 320ms ease; stroke-linecap: round; }
+
+/* ─── Backlog ─── */
+.banner-stamped {
+  margin: 4px 24px 18px;
+  background: var(--bone);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  padding: 22px;
+  position: relative;
+  box-shadow: var(--soft-1);
+}
+.banner-stamped::before {
+  content: ""; position: absolute;
+  top: 12px; right: 14px;
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: var(--wine);
+  opacity: 0.15;
+}
+.banner-stamped::after {
+  content: "✦"; position: absolute;
+  top: 26px; right: 30px;
+  color: var(--wine); font-size: 24px; line-height: 1;
+  transform: rotate(15deg);
+  font-family: var(--font-display);
+}
+.banner-stamped .label {
+  font-family: var(--font-hand); font-size: 19px;
+  color: var(--terracotta-2); line-height: 1; margin-bottom: 8px;
+}
+.banner-stamped h3 {
+  font-family: var(--font-display); font-style: italic;
+  font-size: 26px; line-height: 1.15; letter-spacing: -0.01em;
+  margin: 0 0 16px; color: var(--ink); max-width: 22ch;
+  position: relative;
+}
+.banner-stamped .actions { display: flex; gap: 14px; align-items: center; position: relative; }
+.banner-stamped .btn-go {
+  background: var(--ink); color: var(--cream);
+  font-family: var(--font-display); font-style: italic;
+  padding: 10px 18px; border-radius: 999px;
+  font-size: 16px;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.banner-stamped .btn-skip { color: var(--ink-3); font-family: var(--font-display); font-style: italic; font-size: 15px; padding: 10px 4px; }
+
+.backlog-card {
+  margin: 0 24px 10px;
+  background: var(--bone);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: 14px 18px;
+  display: grid; grid-template-columns: 1fr auto; gap: 14px; align-items: center;
+  position: relative;
+  box-shadow: var(--soft-1);
+}
+.backlog-card .source-wrap {
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--font-ui); font-size: 10px; font-weight: 600;
+  color: var(--ink-3);
+  text-transform: uppercase; letter-spacing: 0.14em;
+  margin-bottom: 6px;
+}
+.backlog-card .source-wrap .stroke { width: 6px; height: 6px; transform: rotate(45deg); }
+.backlog-card .ttl { font-family: var(--font-display); font-style: italic; font-size: 19px; line-height: 1.15; letter-spacing: -0.005em; color: var(--ink); }
+.backlog-card .sub { font-size: 13px; color: var(--ink-3); margin-top: 4px; }
+.backlog-card .add {
+  height: 36px; padding: 0 14px;
+  background: transparent; color: var(--olive-2);
+  border: 1px solid var(--olive);
+  border-radius: 999px;
+  font-family: var(--font-display); font-style: italic; font-size: 14px;
+  display: inline-flex; align-items: center; gap: 4px;
+}
+
+/* ─── Explore ─── */
+.featured {
+  margin: 4px 24px 22px;
+  background: var(--bone);
+  border: 1px solid var(--line);
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  box-shadow: var(--soft-2);
+}
+.featured .visual {
+  height: 220px;
+  position: relative; overflow: hidden;
+  background:
+    radial-gradient(ellipse 280px 200px at 25% 30%, var(--terracotta) 0%, transparent 60%),
+    radial-gradient(ellipse 240px 180px at 75% 70%, var(--olive) 0%, transparent 65%),
+    radial-gradient(ellipse 200px 140px at 50% 50%, var(--ochre) 0%, transparent 70%),
+    var(--cypress);
+}
+.featured .visual::before {
+  content: ""; position: absolute; inset: 0;
+  background: var(--tile-pattern);
+  opacity: 0.4;
+}
+.featured .visual::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 50%, rgba(47, 40, 32, 0.45) 100%);
+}
+.featured .visual .stamp {
+  position: absolute; bottom: 18px; left: 22px; z-index: 2;
+  color: var(--cream);
+}
+.featured .visual .meta {
+  font-family: var(--font-hand); font-size: 19px;
+  margin-bottom: 4px; line-height: 1;
+  opacity: 0.9;
+}
+.featured .visual h2 {
+  font-family: var(--font-display); font-style: italic;
+  font-size: 34px; line-height: 1; letter-spacing: -0.01em;
+  margin: 0; max-width: 12ch;
+}
+.featured .visual .seal {
+  position: absolute; top: 18px; right: 18px; z-index: 2;
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  background: var(--bone);
+  border: 2px solid var(--cream);
+  color: var(--wine);
+  display: grid; place-items: center;
+  font-family: var(--font-display); font-style: italic;
+  font-size: 18px; line-height: 0.9; text-align: center;
+  transform: rotate(-12deg);
+  box-shadow: var(--soft-1);
+}
+.featured .visual .seal small { display: block; font-family: var(--font-ui); font-style: normal; font-size: 8px; font-weight: 600; letter-spacing: 0.18em; margin-top: 2px; opacity: 0.7; }
+.featured .body { padding: 22px 24px 24px; }
+.featured .by-line { font-size: 13px; color: var(--ink-3); margin-bottom: 14px; }
+.featured .by-line b { color: var(--ink); font-weight: 600; }
+.featured p { font-size: 14px; color: var(--ink-2); margin: 0 0 18px; line-height: 1.55; max-width: 32ch; }
+.featured .stat-row { display: flex; gap: 24px; padding-bottom: 18px; border-bottom: 1px solid var(--line); margin-bottom: 18px; }
+.featured .stat .num { font-family: var(--font-display); font-style: italic; font-size: 24px; line-height: 1; letter-spacing: -0.01em; color: var(--ink); }
+.featured .stat .lbl { font-size: 10px; color: var(--ink-3); margin-top: 4px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; }
+.featured .actions { display: flex; gap: 10px; }
+.featured .btn-follow {
+  flex: 1;
+  background: var(--terracotta); color: var(--cream);
+  border-radius: 999px; padding: 12px 18px;
+  font-family: var(--font-display); font-style: italic;
+  font-size: 17px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+}
+.featured .btn-copy {
+  background: transparent; color: var(--ink);
+  border: 1px solid var(--line-2);
+  border-radius: 999px; padding: 12px 18px;
+  font-family: var(--font-display); font-style: italic;
+  font-size: 17px;
+}
+
+.explore-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 24px 8px; }
+.explore-card {
+  background: var(--bone);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: 14px;
+  cursor: pointer;
+  position: relative; overflow: hidden;
+  box-shadow: var(--soft-1);
+}
+.explore-card .stroke-line {
+  position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+}
+.explore-card .body { padding-left: 6px; }
+.explore-card .cat-row { font-family: var(--font-ui); font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 8px; }
+.explore-card .ttl { font-family: var(--font-display); font-style: italic; font-size: 19px; line-height: 1.05; letter-spacing: -0.005em; color: var(--ink); }
+.explore-card .by { font-size: 11px; color: var(--ink-4); margin-top: 4px; }
+.explore-card .stats { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; font-size: 11px; color: var(--ink-3); font-weight: 500; }
+
+/* ─── Profile ─── */
+.profile-hero {
+  margin: 4px 24px 18px;
+  background: var(--bone);
+  border: 1px solid var(--line);
+  border-radius: var(--r-xl);
+  padding: 24px;
+  position: relative; overflow: hidden;
+  box-shadow: var(--soft-2);
+}
+.profile-hero::before {
+  content: ""; position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 300px 200px at 90% 0%, rgba(118, 132, 86, 0.18) 0%, transparent 70%),
+    radial-gradient(ellipse 240px 180px at 0% 100%, rgba(197, 104, 65, 0.16) 0%, transparent 70%);
+  z-index: 0;
+}
+.profile-hero > * { position: relative; z-index: 1; }
+.profile-hero .row { display: flex; align-items: center; gap: 16px; }
+.profile-hero .avatar {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: var(--ochre);
+  display: grid; place-items: center;
+  font-family: var(--font-display); font-style: italic;
+  font-size: 32px;
+  color: var(--ink);
+  border: 3px solid var(--bone);
+  box-shadow: var(--soft-1);
+}
+.profile-hero .name { font-family: var(--font-display); font-style: italic; font-size: 32px; letter-spacing: -0.01em; line-height: 1; color: var(--ink); }
+.profile-hero .since { font-family: var(--font-hand); font-size: 18px; color: var(--terracotta-2); margin-top: 4px; line-height: 1; }
+.profile-hero .level { font-family: var(--font-ui); font-size: 12px; font-weight: 500; color: var(--olive-2); margin-top: 8px; display: inline-flex; align-items: center; gap: 6px; }
+.profile-hero .level .stroke { width: 6px; height: 6px; background: var(--olive); transform: rotate(45deg); }
+.profile-hero .progress-label { display: flex; justify-content: space-between; align-items: baseline; margin-top: 18px; font-family: var(--font-ui); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--ink-3); }
+.profile-hero .progress-label .pct { font-family: var(--font-display); font-style: italic; font-size: 32px; letter-spacing: -0.01em; line-height: 1; color: var(--terracotta); }
+.journey-bar {
+  height: 6px; background: var(--canvas-2);
+  overflow: hidden; margin-top: 10px;
+  position: relative;
+}
+.journey-bar > i {
+  display: block; height: 100%;
+  background: linear-gradient(90deg, var(--olive), var(--ochre) 50%, var(--terracotta));
+  transition: width 600ms ease;
+}
+
+.stat-strip { margin: 0 24px 18px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.stat-cell { background: var(--bone); border: 1px solid var(--line); border-radius: var(--r-md); padding: 14px 8px; text-align: center; box-shadow: var(--soft-1); }
+.stat-cell .num { font-family: var(--font-display); font-style: italic; font-size: 28px; line-height: 1; letter-spacing: -0.01em; }
+.stat-cell .lbl { font-family: var(--font-ui); font-size: 10px; font-weight: 600; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.14em; margin-top: 6px; }
+
+.achv-row { display: flex; gap: 12px; padding: 0 24px 22px; overflow-x: auto; scrollbar-width: none; }
+.achv-row::-webkit-scrollbar { display: none; }
+.achv {
+  flex: 0 0 92px; text-align: center;
+}
+.achv .seal-disc {
+  width: 64px; height: 64px; margin: 0 auto;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--wine);
+  color: var(--cream);
+  position: relative;
+  border: 2px solid var(--bone);
+  box-shadow: var(--soft-1);
+  transform: rotate(-4deg);
+}
+.achv .seal-disc::after {
+  content: ""; position: absolute; inset: 4px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  opacity: 0.4;
+}
+.achv .seal-disc.olive { background: var(--olive); }
+.achv .seal-disc.ochre { background: var(--ochre); color: var(--ink); }
+.achv .seal-disc.terracotta { background: var(--terracotta); }
+.achv .seal-disc.cypress { background: var(--cypress); }
+.achv .name { font-family: var(--font-display); font-style: italic; font-size: 13px; margin-top: 8px; color: var(--ink); line-height: 1.15; }
+.achv .date { font-family: var(--font-hand); font-size: 14px; color: var(--ink-3); margin-top: 1px; line-height: 1; }
+
+.plist-rows { padding: 0 24px 8px; }
+.plist-row { display: grid; grid-template-columns: auto 1fr auto; gap: 14px; align-items: center; padding: 12px 0; border-bottom: 1px dashed var(--line-2); }
+.plist-row:last-child { border-bottom: 0; }
+.plist-row .stroke { width: 8px; height: 8px; flex-shrink: 0; transform: rotate(45deg); }
+.plist-row .ttl { font-family: var(--font-display); font-style: italic; font-size: 17px; line-height: 1.15; }
+.plist-row .bar-mini { height: 3px; background: var(--canvas-2); margin-top: 6px; overflow: hidden; }
+.plist-row .bar-mini > i { display: block; height: 100%; }
+.plist-row .pct { font-family: var(--font-display); font-style: italic; font-size: 18px; letter-spacing: -0.01em; }
+
+.activity-row { display: grid; grid-template-columns: auto 1fr auto; gap: 14px; align-items: center; padding: 12px 0; border-bottom: 1px dashed var(--line-2); }
+.activity-row:last-child { border-bottom: 0; }
+.activity-row .ico-wrap { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; }
+.activity-row .ttl { font-weight: 500; font-size: 14px; line-height: 1.25; }
+.activity-row .sub { font-size: 12px; color: var(--ink-3); margin-top: 2px; }
+.activity-row .stamp-time { font-family: var(--font-hand); font-size: 16px; color: var(--ink-3); }
+
+/* ─── Landing ─── */
+.landing { padding: 56px 24px 100px; display: grid; gap: 28px; }
+.landing .lede {
+  font-family: var(--font-display); font-style: italic;
+  font-size: 46px; line-height: 1; letter-spacing: -0.015em;
+  color: var(--ink);
+}
+.landing .lede em { color: var(--terracotta); font-style: italic; }
+.landing .lede .olive { color: var(--olive); font-style: italic; }
+.landing .signature { font-family: var(--font-hand); font-size: 24px; color: var(--terracotta-2); margin-top: 6px; }
+.landing .sub { font-size: 16px; color: var(--ink-2); max-width: 32ch; line-height: 1.6; }
+.landing .cta-row { display: flex; gap: 12px; flex-wrap: wrap; }
+.landing .btn-mag {
+  background: var(--ink); color: var(--cream);
+  padding: 14px 22px; border-radius: 999px;
+  font-family: var(--font-display); font-style: italic; font-size: 17px;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.landing .btn-line {
+  background: var(--bone); color: var(--ink);
+  border: 1px solid var(--line-2);
+  padding: 14px 22px; border-radius: 999px;
+  font-family: var(--font-display); font-style: italic; font-size: 17px;
+}
+.featured-mini {
+  background: var(--bone); border: 1px solid var(--line);
+  border-radius: var(--r-lg); padding: 18px;
+  box-shadow: var(--soft-1);
+  display: grid; gap: 12px;
+}
+.featured-mini .head { display: flex; align-items: center; gap: 8px; }
+.featured-mini .head .stroke { width: 8px; height: 8px; transform: rotate(45deg); }
+.featured-mini .name { font-family: var(--font-display); font-style: italic; font-size: 22px; line-height: 1; letter-spacing: -0.005em; color: var(--ink); }
+.featured-mini .by { font-size: 11px; color: var(--ink-3); margin-top: 4px; }
+.featured-mini .preview-row { display: flex; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px dashed var(--line-2); }
+.featured-mini .preview-row:last-child { border-bottom: 0; }
+.featured-mini .preview-row .dot { width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid var(--ink-4); flex-shrink: 0; display: grid; place-items: center; }
+.featured-mini .preview-row .dot.done { background: var(--olive); border-color: var(--olive); color: var(--cream); }
+.featured-mini .preview-row .ttl-pl { font-family: var(--font-display); font-style: italic; font-size: 15px; flex: 1; }
+.featured-mini .preview-row .strike { color: var(--ink-3); }
+
+/* ─── Sheets ─── */
+.scrim {
+  position: absolute; inset: 0;
+  background: rgba(47, 40, 32, 0.50);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 30; opacity: 0; pointer-events: none;
+  transition: opacity 240ms ease;
+}
+.scrim.show { opacity: 1; pointer-events: auto; }
+
+.sheet {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  height: 80%;
+  background: var(--canvas);
+  border-top-left-radius: 28px; border-top-right-radius: 28px;
+  z-index: 40;
+  transform: translateY(100%);
+  transition: transform 320ms cubic-bezier(0.2, 0.8, 0.2, 1), height 240ms ease;
+  display: grid; grid-template-rows: auto auto 1fr auto;
+  box-shadow: var(--soft-up);
+  overflow: hidden;
+}
+.sheet.open { transform: translateY(0); }
+.sheet.tall { height: 92%; }
+.sheet .grabber { width: 36px; height: 4px; background: var(--ink-4); margin: 12px auto 6px; cursor: grab; opacity: 0.5; }
+
+.sheet-head {
+  padding: 14px 24px 18px;
+  border-bottom: 1px dashed var(--line-2);
+  position: relative;
+}
+.sheet-head::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0;
+  height: 4px;
+  background: linear-gradient(90deg, transparent 0%, transparent 16%, var(--terracotta) 16%, var(--terracotta) 17%, transparent 17%, transparent 32%, var(--olive) 32%, var(--olive) 33%, transparent 33%, transparent 48%, var(--ochre) 48%, var(--ochre) 49%, transparent 49%, transparent 64%, var(--wine) 64%, var(--wine) 65%, transparent 65%);
+  opacity: 0.3;
+}
+.sheet-head .top { display: flex; align-items: flex-start; gap: 18px; margin-bottom: 16px; }
+.sheet-head .ttl-block { flex: 1; min-width: 0; }
+.sheet-head .cat-row {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--font-ui); font-size: 11px; font-weight: 600;
+  color: var(--ink-3); letter-spacing: 0.14em; text-transform: uppercase;
+}
+.sheet-head .cat-row .stroke { width: 8px; height: 8px; transform: rotate(45deg); }
+.sheet-head h2 { font-family: var(--font-display); font-style: italic; font-size: 32px; line-height: 1.05; letter-spacing: -0.01em; margin: 6px 0 6px; color: var(--ink); }
+.sheet-head p { font-size: 14px; color: var(--ink-2); margin: 0; line-height: 1.5; max-width: 30ch; }
+.sheet-head .ring-wrap { width: 80px; height: 80px; position: relative; flex-shrink: 0; }
+.sheet-head .ring-wrap .ring-pct { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--font-display); font-style: italic; font-size: 22px; letter-spacing: -0.01em; color: var(--ink); }
+.sheet-head .toolrow { display: flex; gap: 10px; align-items: center; }
+.sheet-head .pillbtn {
+  background: var(--bone); color: var(--ink-2);
+  border: 1px solid var(--line);
+  font-family: var(--font-display); font-style: italic; font-size: 14px;
+  padding: 7px 14px; border-radius: 999px;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.sheet-head .pillbtn.solid { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+.sheet-head .meta { font-family: var(--font-ui); font-size: 11px; font-weight: 600; color: var(--ink-3); margin-left: auto; text-transform: uppercase; letter-spacing: 0.14em; }
+
+.sheet-list { overflow-y: auto; padding: 0; }
+.sheet-list::-webkit-scrollbar { display: none; }
+
+.poi-row {
+  display: grid; grid-template-columns: auto 1fr auto;
+  gap: 14px; align-items: center;
+  padding: 16px 24px;
+  cursor: pointer;
+  border-bottom: 1px dashed var(--line-2);
+  transition: background 160ms ease;
+}
+.poi-row:hover { background: rgba(200, 148, 60, 0.08); }
+.poi-row .check {
+  width: 24px; height: 24px; border-radius: 50%;
+  border: 1.5px solid var(--ink-4);
+  display: grid; place-items: center;
+  background: var(--bone);
+  transition: all 200ms ease;
+}
+.poi-row.done .check {
+  background: var(--olive); border-color: var(--olive); color: var(--cream);
+}
+.poi-row.done .name { color: var(--ink-3); text-decoration: line-through; text-decoration-color: var(--ink-4); }
+.poi-row .name { font-family: var(--font-display); font-style: italic; font-size: 17px; line-height: 1.2; letter-spacing: -0.005em; color: var(--ink); }
+.poi-row .meta-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 4px; font-size: 12px; color: var(--ink-3); font-weight: 500; }
+.poi-row .star { color: var(--ochre); }
+.poi-row .note-tag { font-family: var(--font-hand); color: var(--terracotta); font-size: 14px; }
+.poi-row .arrow { color: var(--ink-4); }
+
+.sheet-footer { padding: 14px 24px 22px; border-top: 1px solid var(--line); display: flex; gap: 10px; }
+.sheet-footer .btn-add {
+  flex: 1; height: 48px; border-radius: 14px;
+  background: var(--ink); color: var(--cream);
+  font-family: var(--font-display); font-style: italic; font-size: 17px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+}
+.sheet-footer .btn-share { width: 48px; height: 48px; border-radius: 14px; background: var(--bone); color: var(--ink); border: 1px solid var(--line-2); display: grid; place-items: center; }
+
+/* ─── POI panel ─── */
+.poi-panel {
+  position: absolute; left: 0; right: 0; top: 0; bottom: 0;
+  background: var(--canvas);
+  z-index: 50;
+  transform: translateY(100%);
+  transition: transform 320ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  display: grid; grid-template-rows: auto auto 1fr auto;
+  overflow: hidden;
+}
+.poi-panel.open { transform: translateY(0); }
+.poi-head {
+  padding: 56px 24px 22px;
+  background:
+    radial-gradient(ellipse 300px 200px at 30% 20%, var(--terracotta) 0%, transparent 60%),
+    radial-gradient(ellipse 240px 180px at 80% 80%, var(--olive) 0%, transparent 60%),
+    var(--cypress);
+  color: var(--cream);
+  position: relative;
+  border-bottom: 4px solid var(--ink);
+}
+.poi-head::before {
+  content: ""; position: absolute; inset: 0;
+  background: var(--tile-pattern);
+  opacity: 0.3;
+}
+.poi-head::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 50%, rgba(47, 40, 32, 0.45) 100%);
+}
+.poi-head > * { position: relative; z-index: 1; }
+.poi-head .top { display: flex; gap: 8px; align-items: center; margin-bottom: 24px; }
+.poi-head .top .icon-btn { background: rgba(47, 40, 32, 0.5); border-color: rgba(255, 252, 241, 0.4); color: var(--cream); backdrop-filter: blur(6px); }
+.poi-head .top .right { margin-left: auto; }
+.poi-head .cat-tag { font-family: var(--font-ui); font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; opacity: 0.92; display: inline-flex; align-items: center; gap: 8px; }
+.poi-head .cat-tag .stroke { width: 8px; height: 8px; transform: rotate(45deg); }
+.poi-head h2 { font-family: var(--font-display); font-style: italic; font-size: 38px; letter-spacing: -0.01em; line-height: 1; margin: 6px 0 6px; }
+.poi-head .addr { font-size: 13px; opacity: 0.92; display: flex; align-items: center; gap: 5px; }
+
+.poi-tabs { display: flex; gap: 28px; padding: 14px 24px 0; border-bottom: 1px solid var(--line); }
+.poi-tabs button { background: transparent; font-family: var(--font-display); font-style: italic; font-size: 18px; color: var(--ink-3); padding: 8px 0; border-bottom: 2px solid transparent; }
+.poi-tabs button.active { color: var(--ink); border-bottom-color: var(--terracotta); }
+.poi-body { overflow-y: auto; padding: 18px 24px 24px; }
+.poi-body::-webkit-scrollbar { display: none; }
+
+.field { display: grid; gap: 10px; margin-bottom: 22px; }
+.field label { font-family: var(--font-ui); font-size: 10px; font-weight: 700; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.16em; }
+.field .stars { display: flex; gap: 6px; }
+.field .stars button { width: 32px; height: 32px; display: grid; place-items: center; font-size: 26px; color: var(--ink-4); transition: all 160ms ease; }
+.field .stars button:hover { transform: scale(1.1); color: var(--ink-3); }
+.field .stars button.active { color: var(--ochre); }
+.field textarea {
+  border: 1px solid var(--line); border-radius: 12px;
+  padding: 14px 16px; font-size: 17px; line-height: 1.5; min-height: 120px; resize: none;
+  background: var(--bone);
+  font-family: var(--font-hand);
+  color: var(--ink);
+}
+.field textarea:focus { border-color: var(--terracotta); }
+.field .row-meta { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.field .pill-meta {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--bone); border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 7px 12px;
+  font-family: var(--font-display); font-style: italic; font-size: 14px;
+}
+.field .pill-meta.solid { background: var(--olive); color: var(--cream); border-color: var(--olive); }
+.field .info-row { display: grid; grid-template-columns: auto 1fr; gap: 14px; padding: 14px 0; border-bottom: 1px dashed var(--line-2); }
+.field .info-row:last-child { border-bottom: 0; }
+.field .info-row .ico { width: 36px; height: 36px; border-radius: 8px; display: grid; place-items: center; background: var(--canvas-2); color: var(--ink-2); }
+.field .info-row .ico.terra { background: rgba(197, 104, 65, 0.18); color: var(--terracotta-2); }
+.field .info-row .ico.olive { background: rgba(118, 132, 86, 0.18); color: var(--olive-2); }
+.field .info-row .ico.ochre { background: rgba(200, 148, 60, 0.20); color: var(--ochre-2); }
+.field .info-row .data { font-weight: 500; font-size: 14px; }
+.field .info-row .data b { display: block; font-family: var(--font-ui); font-weight: 600; font-size: 10px; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 4px; }
+
+.poi-footer { padding: 14px 24px 22px; border-top: 1px solid var(--line); display: flex; gap: 10px; }
+.poi-footer button { flex: 1; }
+.btn-mark {
+  height: 48px; border-radius: 14px;
+  background: var(--olive); color: var(--cream);
+  font-family: var(--font-display); font-style: italic; font-size: 17px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+}
+.btn-mark.unmark { background: var(--bone); color: var(--ink); border: 1px solid var(--line-2); }
+.btn-done { height: 48px; border-radius: 14px; background: var(--ink); color: var(--cream); font-family: var(--font-display); font-style: italic; font-size: 17px; flex: 0 0 100px !important; }
+
+/* ─── Filter sheet ─── */
+.filter-sheet { height: 64%; }
+.filter-sheet .sheet-list { padding: 14px 24px; }
+.filter-group { margin-bottom: 22px; }
+.filter-group .h { font-family: var(--font-ui); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.16em; color: var(--ink-3); margin-bottom: 12px; }
+.filter-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* ─── FAB & add ─── */
+.fab {
+  position: absolute; right: 24px; bottom: 96px;
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: var(--terracotta); color: var(--cream);
+  display: grid; place-items: center;
+  z-index: 15;
+  box-shadow: 0 4px 12px rgba(197, 104, 65, 0.32), 0 12px 28px -8px rgba(47, 40, 32, 0.18);
+  transition: transform 200ms ease;
+}
+.fab:active { transform: scale(0.92); }
+.add-modal { height: 60%; }
+.create-tile {
+  display: grid; grid-template-columns: 48px 1fr auto; align-items: center; gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px dashed var(--line-2);
+  cursor: pointer;
+}
+.create-tile:last-child { border-bottom: 0; }
+.create-tile .ico { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; }
+.create-tile .label { font-family: var(--font-display); font-style: italic; font-size: 22px; letter-spacing: -0.005em; line-height: 1; color: var(--ink); }
+.create-tile .desc { font-size: 12.5px; color: var(--ink-3); margin-top: 4px; line-height: 1.4; }
+
+/* ─── Auth ─── */
+.auth-modal {
+  position: absolute; left: 24px; right: 24px; top: 50%;
+  transform: translateY(-50%) scale(0.94);
+  background: var(--bone);
+  border: 1px solid var(--line);
+  border-radius: var(--r-xl);
+  padding: 28px;
+  z-index: 60;
+  box-shadow: var(--soft-3);
+  opacity: 0; pointer-events: none;
+  transition: all 240ms ease;
+  position: absolute; overflow: hidden;
+}
+.auth-modal::before {
+  content: ""; position: absolute; left: 0; top: 0; right: 0; height: 4px;
+  background: linear-gradient(90deg, var(--wine), var(--terracotta), var(--ochre), var(--olive));
+}
+.auth-modal.show { opacity: 1; pointer-events: auto; transform: translateY(-50%) scale(1); }
+.auth-modal h2 { font-family: var(--font-display); font-style: italic; font-size: 32px; letter-spacing: -0.005em; line-height: 1; margin: 8px 0 4px; color: var(--ink); }
+.auth-modal .greet-line { font-family: var(--font-hand); font-size: 19px; color: var(--terracotta-2); margin-bottom: 18px; line-height: 1; }
+.auth-modal input { width: 100%; height: 48px; border: 1px solid var(--line-2); border-radius: 12px; padding: 0 14px; font-weight: 500; background: var(--cream); margin-bottom: 8px; font-family: var(--font-display); font-style: italic; font-size: 17px; color: var(--ink); }
+.auth-modal input:focus { border-color: var(--terracotta); }
+.auth-modal .btn-go { width: 100%; height: 48px; border-radius: 12px; background: var(--ink); color: var(--cream); font-family: var(--font-display); font-style: italic; font-size: 17px; margin-top: 10px; }
+.auth-modal .switch { text-align: center; margin-top: 14px; font-size: 13px; color: var(--ink-3); }
+.auth-modal .switch a { color: var(--terracotta); font-weight: 600; cursor: pointer; }
+
+/* ─── Celebration · wax seal ─── */
+.celebration { position: absolute; inset: 0; display: grid; place-items: center; z-index: 100; pointer-events: none; opacity: 0; }
+.celebration.show { animation: pop 1500ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+.celebration .seal {
+  width: 200px; height: 200px;
+  border-radius: 50%;
+  background:
+    radial-gradient(ellipse at 40% 35%, rgba(255,255,255,0.22) 0%, transparent 40%),
+    var(--wine);
+  display: grid; place-items: center;
+  position: relative;
+  transform: rotate(-8deg);
+  box-shadow:
+    inset 0 -4px 12px rgba(0,0,0,0.22),
+    inset 0 4px 12px rgba(255,255,255,0.10),
+    0 12px 32px -8px rgba(47, 40, 32, 0.40);
+}
+.celebration .seal::before {
+  content: ""; position: absolute; inset: 14px;
+  border: 1.5px solid var(--cream);
+  border-radius: 50%;
+  opacity: 0.55;
+}
+.celebration .seal::after {
+  content: ""; position: absolute; inset: -10px -10px;
+  border-radius: 50%;
+  background:
+    repeating-conic-gradient(from 0deg, var(--wine) 0deg 8deg, transparent 8deg 16deg);
+  z-index: -1;
+  opacity: 0.5;
+}
+.celebration .seal .label {
+  font-family: var(--font-display); font-style: italic;
+  font-size: 28px; color: var(--cream);
+  text-align: center; line-height: 1;
+  letter-spacing: -0.005em;
+  position: relative;
+}
+.celebration .seal .label small {
+  display: block;
+  font-family: var(--font-hand); font-style: normal; font-size: 18px;
+  margin-top: 6px; opacity: 0.95;
+}
+@keyframes pop { 0%{opacity:0;transform:scale(0.5) rotate(-12deg);} 18%{opacity:1;transform:scale(1.06) rotate(-6deg);} 60%{opacity:1;transform:scale(1) rotate(-8deg);} 100%{opacity:0;transform:scale(1.04) rotate(-10deg);} }
+
+.toast { position: absolute; bottom: 110px; left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--cream); padding: 10px 18px; border-radius: 999px; font-family: var(--font-display); font-style: italic; font-size: 14px; z-index: 200; box-shadow: var(--soft-2); }
+</style>
+</head>
+<body>
+
+<div class="stage">
+
+  <aside style="position: sticky; top: 32px; align-self: start; max-width: 320px;">
+    <div class="brand-mark"><span class="epic">Epic</span><span class="log">log</span><span class="dot">.</span></div>
+    <p class="tagline">A small <em>casa</em> for the journeys you'll keep — slow living, sun-bleached.</p>
+    <p class="signed">— da una piccola villa</p>
+
+    <div class="spec-card">
+      <h4>Italian Countryside Palette</h4>
+      <div class="swatch-row">
+        <div class="swatch dark" style="background: #C56841">terra</div>
+        <div class="swatch lite" style="background: #C8943C">ocra</div>
+        <div class="swatch dark" style="background: #768456">olivo</div>
+        <div class="swatch dark" style="background: #3F5634">cipresso</div>
+        <div class="swatch dark" style="background: #7C2A2C">vino</div>
+        <div class="swatch lite" style="background: #F4EBD8">canvas</div>
+      </div>
+      <p style="font-size: 13px; color: var(--ink-2); margin: 14px 0 0; line-height: 1.6;">
+        Borrowed from a hilltown afternoon: terracotta tile, olive grove, ochre wine label, cypress, sun-bleached canvas. Warm, slow, and a little stamped.
+      </p>
+    </div>
+
+    <div class="spec-card">
+      <h4>Type</h4>
+      <div class="type-stack">
+        <div><div class="label">Display · DM Serif Display</div><div class="display-demo">Una mattina<br><em>in Toscana.</em></div></div>
+        <div><div class="label">UI · Karla</div><div class="ui-demo">Coffee circuits — 14 / 20 visited</div></div>
+        <div><div class="label">Personal · Caveat</div><div class="hand-demo">"il pane qui è la migliore" — m.</div></div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="phone">
+    <div class="screen" id="screen">
+      <div class="app">
+
+        <svg class="botanical" viewBox="0 0 96 140" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
+          <path d="M48 138 V 20"/>
+          <path d="M48 50 Q 30 44 22 28"/>
+          <path d="M48 60 Q 66 54 74 36"/>
+          <path d="M48 32 Q 36 26 32 16"/>
+          <path d="M48 72 Q 62 66 70 50"/>
+          <path d="M48 84 Q 32 78 24 64"/>
+          <ellipse cx="22" cy="28" rx="7" ry="3" transform="rotate(-30 22 28)"/>
+          <ellipse cx="74" cy="36" rx="7" ry="3" transform="rotate(30 74 36)"/>
+          <ellipse cx="32" cy="16" rx="6" ry="2.5" transform="rotate(-40 32 16)"/>
+          <ellipse cx="70" cy="50" rx="6" ry="2.5" transform="rotate(35 70 50)"/>
+          <ellipse cx="24" cy="64" rx="6" ry="2.5" transform="rotate(-30 24 64)"/>
+        </svg>
+
+        <div class="header" id="header">
+          <div>
+            <div class="header-brand"><span class="epic">Epic</span><span class="log">log</span><span class="dot">.</span></div>
+            <div class="header-greet" id="headerGreet">buongiorno, m.</div>
+          </div>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <button class="icon-btn" id="searchBtn"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></button>
+            <button class="icon-btn" id="filterBtn"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M3 6h18M6 12h12M9 18h6"/></svg></button>
+          </div>
+        </div>
+
+        <div class="scroll" id="scroll">
+
+          <section data-screen="landing" class="screen-pane" hidden>
+            <div class="landing">
+              <div>
+                <div class="lede">Slow journeys,<br><em>long lunches</em>,<br><span class="olive">olive groves</span>.</div>
+                <div class="signature">— a quiet farmstay for places kept</div>
+                <p class="sub" style="margin-top: 18px;">Save what catches your eye. Stamp it visited when you arrive. Take your time getting there.</p>
+              </div>
+              <div class="cta-row">
+                <button class="btn-mag" data-auth="signup">Begin <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+                <button class="btn-line" data-auth="signin">Sign in</button>
+              </div>
+              <div>
+                <div class="eyebrow" style="margin: 0 0 8px;">curated this week</div>
+                <div class="featured-mini">
+                  <div class="head"><span class="stroke" style="background: var(--olive)"></span><span style="font-size: 11px; font-weight: 600; color: var(--ink-3); letter-spacing: 0.14em; text-transform: uppercase;">Coffee · Seattle</span></div>
+                  <div><div class="name">Seattle Coffee Circuit</div><div class="by">by @rooster · 12 places · 2,148 followers</div></div>
+                  <div>
+                    <div class="preview-row"><span class="dot done"><svg width="9" height="9" fill="none" stroke="currentColor" stroke-width="2.6" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span><span class="ttl-pl strike">Victrola Coffee Roasters</span></div>
+                    <div class="preview-row"><span class="dot done"><svg width="9" height="9" fill="none" stroke="currentColor" stroke-width="2.6" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span><span class="ttl-pl strike">Espresso Vivace</span></div>
+                    <div class="preview-row"><span class="dot"></span><span class="ttl-pl">Analog Coffee</span></div>
+                    <div class="preview-row"><span class="dot"></span><span class="ttl-pl">Slate Coffee Roasters</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section data-screen="lists" class="screen-pane">
+            <div class="toolbar">
+              <div class="search">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+                <input placeholder="dove andiamo…" />
+              </div>
+            </div>
+            <div class="chip-row" id="filterChips">
+              <button class="chip solid">All</button>
+              <button class="chip">Near me</button>
+              <button class="chip">In progress</button>
+              <button class="chip">Completed</button>
+              <button class="chip">Coffee</button>
+              <button class="chip">Food</button>
+            </div>
+            <div class="eyebrow">a passeggio · close by</div>
+            <div class="section-title">Vicino<span class="meta">3 lists</span></div>
+            <div class="nearme-row" id="nearMeRow"></div>
+            <div class="eyebrow">la tua collezione</div>
+            <div class="section-title">Your journeys<span class="meta" id="listsCount"></span></div>
+            <div class="cardstack" id="listsStack"></div>
+          </section>
+
+          <section data-screen="backlog" class="screen-pane" hidden>
+            <div class="banner-stamped">
+              <div class="label">un piccolo pensiero —</div>
+              <h3>Six places from Kyoto have been resting here. Shall we stamp them as a list?</h3>
+              <div class="actions">
+                <button class="btn-go">Sì, draft <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+                <button class="btn-skip">Forse più tardi</button>
+              </div>
+            </div>
+            <div style="padding: 0 24px 16px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+              <button class="chip solid" id="importBtn"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2v-7M16 6l-4-4-4 4M12 2v13"/></svg> Paste a link</button>
+              <span style="font-family: var(--font-display); font-style: italic; font-size: 13px; color: var(--ink-3);">TikTok · Instagram · Rednote · any URL</span>
+            </div>
+            <div id="backlogList"></div>
+          </section>
+
+          <section data-screen="explore" class="screen-pane" hidden>
+            <div class="eyebrow">il pezzo della settimana</div>
+            <div class="featured">
+              <div class="visual">
+                <div class="seal">CRTD<br><small>2026</small></div>
+                <div class="stamp">
+                  <div class="meta">tokyo · giappone</div>
+                  <h2>Hidden Tokyo Ramen Trail</h2>
+                </div>
+              </div>
+              <div class="body">
+                <div class="by-line"><b>@noodlepilgrim</b> · published Nov 2026</div>
+                <p>Eighteen counter shops locals queue for — yuzu shio, miso butter, late-night tsukemen.</p>
+                <div class="stat-row">
+                  <div class="stat"><div class="num">4.9</div><div class="lbl">Rating</div></div>
+                  <div class="stat"><div class="num">2,148</div><div class="lbl">Following</div></div>
+                  <div class="stat"><div class="num">87</div><div class="lbl">Copies</div></div>
+                </div>
+                <div class="actions">
+                  <button class="btn-follow">Follow</button>
+                  <button class="btn-copy">Make a copy</button>
+                </div>
+              </div>
+            </div>
+            <div class="chip-row">
+              <button class="chip solid">Trending</button><button class="chip">Near me</button><button class="chip">Nuovo</button><button class="chip">From follows</button>
+            </div>
+            <div class="eyebrow">curated by community</div>
+            <div class="section-title">Other journeys<span class="meta">2,492</span></div>
+            <div class="explore-grid" id="exploreGrid"></div>
+          </section>
+
+          <section data-screen="profile" class="screen-pane" hidden>
+            <div class="profile-hero">
+              <div class="row">
+                <div class="avatar">M</div>
+                <div>
+                  <div class="name">Maya Reyes</div>
+                  <div class="since">— in viaggio dal '24</div>
+                  <div class="level"><span class="stroke"></span> Wayfarer · Level 7</div>
+                </div>
+              </div>
+              <div class="progress-label"><span>Overall journey</span><span class="pct">62%</span></div>
+              <div class="journey-bar"><i style="width: 62%"></i></div>
+            </div>
+
+            <div class="stat-strip">
+              <div class="stat-cell"><div class="num" style="color: var(--terracotta)">147</div><div class="lbl">Visited</div></div>
+              <div class="stat-cell"><div class="num" style="color: var(--olive-2)">12</div><div class="lbl">Lists</div></div>
+              <div class="stat-cell"><div class="num" style="color: var(--ochre-2)">5</div><div class="lbl">Done</div></div>
+              <div class="stat-cell"><div class="num" style="color: var(--wine)">23</div><div class="lbl">Backlog</div></div>
+            </div>
+
+            <div class="eyebrow">i timbri · seals collected</div>
+            <div class="section-title" style="padding-top: 0;">Achievements</div>
+            <div class="achv-row">
+              <div class="achv"><div class="seal-disc olive"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="name">Completionist</div><div class="date">apr ’26</div></div>
+              <div class="achv"><div class="seal-disc"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 14s-1-3 4-3 4 3 4 3M9 9h.01M15 9h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><div class="name">On Fire</div><div class="date">mar ’26</div></div>
+              <div class="achv"><div class="seal-disc cypress"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg></div><div class="name">Globetrotter</div><div class="date">feb ’26</div></div>
+              <div class="achv"><div class="seal-disc ochre"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div class="name">Scout</div><div class="date">jan ’26</div></div>
+              <div class="achv"><div class="seal-disc terracotta"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2L15 8l7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg></div><div class="name">Curator</div><div class="date">dec ’25</div></div>
+            </div>
+
+            <div class="eyebrow">ogni viaggio</div>
+            <div class="section-title" style="padding-top: 0;">Your lists</div>
+            <div class="plist-rows" id="profileLists"></div>
+
+            <div class="eyebrow" style="margin-top: 20px;">di recente</div>
+            <div class="section-title" style="padding-top: 0;">Lately</div>
+            <div style="padding: 0 24px 32px;">
+              <div class="activity-row">
+                <div class="ico-wrap" style="background: rgba(118, 132, 86, 0.18); color: var(--olive-2);"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div>
+                <div><div class="ttl">Visited Analog Coffee</div><div class="sub">Seattle Coffee Circuit</div></div>
+                <div class="stamp-time">due ore fa</div>
+              </div>
+              <div class="activity-row">
+                <div class="ico-wrap" style="background: rgba(200, 148, 60, 0.18); color: var(--ochre-2);"><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L15 8l7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg></div>
+                <div><div class="ttl">Loved Slate Coffee — five stars</div><div class="sub">Yesterday</div></div>
+                <div class="stamp-time">ieri</div>
+              </div>
+              <div class="activity-row">
+                <div class="ico-wrap" style="background: rgba(197, 104, 65, 0.16); color: var(--terracotta-2);"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9.66 17.66L4.34 12.34a2 2 0 010-2.83L10 4 20 14l-5.51 5.51a2 2 0 01-2.83 0l-2-1.85z"/></svg></div>
+                <div><div class="ttl">Drafted "Kyoto Day Trip"</div><div class="sub">From your backlog</div></div>
+                <div class="stamp-time">due giorni fa</div>
+              </div>
+            </div>
+          </section>
+
+        </div>
+
+        <button class="fab" id="fab"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+
+        <nav class="bnav" id="bnav">
+          <button data-tab="lists" class="active"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13"/><circle cx="3" cy="6" r="1.4"/><circle cx="3" cy="12" r="1.4"/><circle cx="3" cy="18" r="1.4"/></svg><span>Liste</span></button>
+          <button data-tab="backlog"><span class="badge"></span><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg><span>Backlog</span></button>
+          <button data-tab="explore"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg><span>Explore</span></button>
+          <button data-tab="profile"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Profile</span></button>
+        </nav>
+
+        <div class="scrim" id="scrim"></div>
+
+        <div class="sheet" id="listSheet">
+          <div class="grabber" id="grabber"></div>
+          <div class="sheet-head">
+            <div class="top">
+              <div class="ttl-block">
+                <div class="cat-row" id="sheetCatRow"><span class="stroke"></span><span id="sheetCatLabel">Coffee · Seattle</span></div>
+                <h2 id="sheetTitle">Seattle Coffee Circuit</h2>
+                <p id="sheetDesc">Twelve great roasters across the Emerald City.</p>
+              </div>
+              <div class="ring-wrap">
+                <svg class="ring-svg" width="80" height="80" viewBox="0 0 80 80">
+                  <circle cx="40" cy="40" r="34" fill="none" stroke="rgba(47,40,32,0.10)" stroke-width="3"/>
+                  <circle id="sheetMeter" class="meter" cx="40" cy="40" r="34" fill="none" stroke="var(--terracotta)" stroke-width="3" stroke-dasharray="213.6" stroke-dashoffset="64" transform="rotate(-90 40 40)"/>
+                </svg>
+                <div class="ring-pct" id="sheetPct">70%</div>
+              </div>
+            </div>
+            <div class="toolrow">
+              <button class="pillbtn solid"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Map view</button>
+              <button class="pillbtn">Sort</button>
+              <span class="meta" id="sheetMeta">6 LEFT</span>
+            </div>
+          </div>
+          <div class="sheet-list" id="sheetList"></div>
+          <div class="sheet-footer">
+            <button class="btn-add" id="addPlaceBtn"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg> Add place</button>
+            <button class="btn-share"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98"/></svg></button>
+          </div>
+        </div>
+
+        <div class="poi-panel" id="poiPanel">
+          <div class="poi-head">
+            <div class="top">
+              <button class="icon-btn" id="poiClose"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
+              <button class="icon-btn right"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+            </div>
+            <div class="cat-tag" id="poiCat"><span class="stroke" style="background: var(--ochre)"></span><span id="poiCatLabel">Coffee · Capitol Hill</span></div>
+            <h2 id="poiName">Analog Coffee</h2>
+            <div class="addr"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg><span id="poiSub">12-min walk · 235 Summit Ave E</span></div>
+          </div>
+          <div class="poi-tabs"><button class="active" data-poitab="notes">Notes</button><button data-poitab="details">Details</button></div>
+          <div class="poi-body">
+            <div data-poipane="notes">
+              <div class="field"><label>Rating</label><div class="stars" id="poiStars"><button data-r="1">★</button><button data-r="2">★</button><button data-r="3">★</button><button data-r="4">★</button><button data-r="5">★</button></div></div>
+              <div class="field"><label>Notes — saves automatically</label><textarea>pour-over was unreal — sit by the window if you can. skip the espresso, get the drip.</textarea></div>
+              <div class="field"><label>When</label><div class="row-meta"><span class="pill-meta">14 Aprile 2026</span><span class="pill-meta solid"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> Visited</span></div></div>
+            </div>
+            <div data-poipane="details" hidden>
+              <div class="field">
+                <div class="info-row"><div class="ico terra"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div class="data"><b>Address</b>235 Summit Ave E, Seattle, WA 98102</div></div>
+                <div class="info-row"><div class="ico olive"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg></div><div class="data"><b>Phone</b>+1 (206) 422-2199</div></div>
+                <div class="info-row"><div class="ico ochre"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg></div><div class="data"><b>Website</b><span style="color: var(--terracotta-2); font-weight: 600;">analogcoffee.com</span></div></div>
+                <div class="info-row"><div class="ico"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><circle cx="7" cy="7" r="1"/></svg></div><div class="data"><b>Tags</b><div style="display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap;"><span class="pill-meta">Coffee</span><span class="pill-meta">Pour-over</span><span class="pill-meta">Capitol Hill</span></div></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="poi-footer">
+            <button class="btn-mark" id="poiMark"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> <span id="poiMarkLabel">Mark unvisited</span></button>
+            <button class="btn-done" id="poiDone">Done</button>
+          </div>
+        </div>
+
+        <div class="sheet filter-sheet" id="filterSheet">
+          <div class="grabber"></div>
+          <div class="sheet-head">
+            <div class="top"><div class="ttl-block"><div class="cat-row"><span class="stroke" style="background: var(--terracotta)"></span><span>Filter</span></div><h2>Sort &amp; filter</h2><p>Trova ciò che ti serve.</p></div></div>
+          </div>
+          <div class="sheet-list">
+            <div class="filter-group" style="margin: 14px 24px 0;"><div class="h">Sort by</div><div class="filter-tags"><button class="chip solid">Most recent</button><button class="chip">Most complete</button><button class="chip">A–Z</button><button class="chip">Done first</button></div></div>
+            <div class="filter-group" style="margin: 14px 24px 0;"><div class="h">Progress</div><div class="filter-tags"><button class="chip solid">All</button><button class="chip">In progress</button><button class="chip">Completed</button></div></div>
+            <div class="filter-group" style="margin: 14px 24px 0;"><div class="h">Categories</div><div class="filter-tags"><button class="chip">Coffee</button><button class="chip">Food</button><button class="chip">Countries</button><button class="chip">Landmarks</button><button class="chip">Nature</button></div></div>
+          </div>
+          <div class="sheet-footer"><button class="btn-add" id="filterApply">Apply</button></div>
+        </div>
+
+        <div class="sheet add-modal" id="addModal">
+          <div class="grabber"></div>
+          <div class="sheet-head">
+            <div class="top"><div class="ttl-block"><div class="cat-row"><span class="stroke" style="background: var(--olive)"></span><span>Create</span></div><h2>Inizia · Begin</h2><p>Quattro modi per cominciare.</p></div></div>
+          </div>
+          <div class="sheet-list" style="padding: 4px 24px 24px;">
+            <div class="create-tile"><div class="ico" style="background: rgba(197, 104, 65, 0.16); color: var(--terracotta-2);"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg></div><div><div class="label">A blank page</div><div class="desc">Empty list, fill it slowly.</div></div><svg width="18" height="18" fill="none" stroke="var(--ink-4)" stroke-width="1.8" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></div>
+            <div class="create-tile"><div class="ico" style="background: rgba(118, 132, 86, 0.18); color: var(--olive-2);"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg></div><div><div class="label">From a link</div><div class="desc">Paste any URL — we'll read it.</div></div><svg width="18" height="18" fill="none" stroke="var(--ink-4)" stroke-width="1.8" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></div>
+            <div class="create-tile"><div class="ico" style="background: rgba(200, 148, 60, 0.18); color: var(--ochre-2);"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 2L15 8l7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg></div><div><div class="label">Ask AI</div><div class="desc">A draft from a single sentence.</div></div><svg width="18" height="18" fill="none" stroke="var(--ink-4)" stroke-width="1.8" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></div>
+            <div class="create-tile"><div class="ico" style="background: rgba(124, 42, 44, 0.16); color: var(--wine);"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg></div><div><div class="label">Borrow from someone</div><div class="desc">Follow or copy a curated list.</div></div><svg width="18" height="18" fill="none" stroke="var(--ink-4)" stroke-width="1.8" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></div>
+          </div>
+        </div>
+
+        <div class="auth-modal" id="authModal">
+          <h2 id="authTitle">Bentornato</h2>
+          <div class="greet-line">— so glad you're back</div>
+          <input placeholder="Email" type="email" value="demo@epiclog.app" />
+          <input placeholder="Password" type="password" value="demo1234" />
+          <button class="btn-go" id="authGo">Sign in</button>
+          <div class="switch">New here? <a id="authSwitch">Begin</a></div>
+        </div>
+
+        <div class="celebration" id="celebration">
+          <div class="seal">
+            <div class="label">VISITATO<small>stamped &amp; sealed</small></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <aside style="position: sticky; top: 32px; align-self: start; max-width: 320px;">
+    <div class="spec-card">
+      <h4>Slow-living principles</h4>
+      <div class="principles">
+        <div class="principle"><span class="pin"></span><span>Stamps, seals and dashed dividers — the language of a guestbook, not a CRM.</span></div>
+        <div class="principle"><span class="pin olive"></span><span>DM Serif Display does the editorial work; Karla keeps things grounded.</span></div>
+        <div class="principle"><span class="pin ochre"></span><span>Italian copy slips into headers, greetings, and microcopy — never to be cute, always to set the pace.</span></div>
+        <div class="principle"><span class="pin wine"></span><span>The "visited" stamp is a wax seal in chianti red, slightly off-axis.</span></div>
+      </div>
+    </div>
+    <div class="spec-card" style="background: var(--ink); color: var(--cream); border-color: var(--ink);">
+      <h4 style="color: var(--ochre)">Try it</h4>
+      <div style="font-size: 13px; line-height: 1.7; font-family: var(--font-display); font-style: italic; font-size: 15px;">
+        <div>· Tap a list — sheet glides up</div>
+        <div>· Drag the grabber to expand</div>
+        <div>· Tap a place — POI con tile pattern</div>
+        <div>· Swipe right → <span style="color: var(--ochre)">wax seal stamp</span></div>
+        <div>· Swipe left — pin / share / delete</div>
+        <div>· Tap profile avatar — landing</div>
+      </div>
+    </div>
+  </aside>
+
+</div>
+
+<script>
+const CAT = {
+  Coffee:    'var(--olive)',
+  Food:      'var(--terracotta)',
+  Countries: 'var(--cypress)',
+  Landmarks: 'var(--wine)',
+  Nature:    'var(--olive)',
+  Seasonal:  'var(--ochre)',
+};
+
+const LISTS = [
+  { id:'l1', name:'Seattle Coffee Circuit', cat:'Coffee', region:'Seattle', pinned:true, desc:'Twelve great roasters across the Emerald City.', places:[
+    { id:'p1', name:'Victrola Coffee Roasters', addr:'310 E Pike St', sub:'Capitol Hill', visited:true,  rating:4, notes:'Charming, busy mornings.' },
+    { id:'p2', name:'Espresso Vivace',          addr:'532 Broadway E', sub:'Capitol Hill', visited:true,  rating:5, notes:'Schomer himself.' },
+    { id:'p3', name:'Analog Coffee',            addr:'235 Summit Ave E', sub:'Capitol Hill', visited:true,  rating:5, notes:'Pour-over was unreal.' },
+    { id:'p4', name:'Slate Coffee Roasters',    addr:'5413 6th Ave NW',  sub:'Ballard',      visited:false, rating:0, notes:'' },
+    { id:'p5', name:'Caffè Vita',               addr:'1005 E Pike St',   sub:'Capitol Hill', visited:true,  rating:4, notes:'' },
+    { id:'p6', name:'Milstead & Co.',           addr:'770 N 34th St',    sub:'Fremont',      visited:true,  rating:5, notes:'Fremont go-to.' },
+    { id:'p7', name:'Onda Origins',             addr:'1601 N 45th St',   sub:'Wallingford',  visited:false, rating:0, notes:'' },
+    { id:'p8', name:'Storyville',               addr:'1001 1st Ave',     sub:'Pike Place',   visited:true,  rating:4, notes:'' },
+    { id:'p9', name:'Lighthouse Roasters',      addr:'400 N 43rd St',    sub:'Fremont',      visited:false, rating:0, notes:'' },
+    { id:'p10', name:'Bird & Beckett',          addr:'600 N 36th St',    sub:'Fremont',      visited:false, rating:0, notes:'' },
+  ]},
+  { id:'l2', name:'Hidden Tokyo Ramen Trail', cat:'Food', region:'Tokyo', pinned:false, desc:'18 hand-picked counter shops, mapped by a real local.', places:[
+    { id:'r1', name:'Ichiran Shibuya', addr:'Udagawacho 13-7', sub:'Shibuya', visited:true, rating:4, notes:'Solo seats.' },
+    { id:'r2', name:'Afuri Ebisu', addr:'Ebisu 1-1-7', sub:'Ebisu', visited:true, rating:5, notes:'Yuzu shio essential.' },
+    { id:'r3', name:'Tsuta', addr:'Sugamo 1-14-1', sub:'Sugamo', visited:false, rating:0, notes:'' },
+    { id:'r4', name:'Menya Saimi', addr:'Sapporo', sub:'Sapporo', visited:false, rating:0, notes:'' },
+    { id:'r5', name:'Fuunji', addr:'Yoyogi 2-14-3', sub:'Yoyogi', visited:true, rating:4, notes:'Tsukemen.' },
+    { id:'r6', name:'Rokurinsha', addr:'Tokyo Station', sub:'Marunouchi', visited:false, rating:0, notes:'' },
+  ]},
+  { id:'l3', name:'Cammino di San Francesco', cat:'Countries', region:'Umbria', pinned:false, desc:'A slow walking pilgrimage through Umbrian hill towns.', places:[
+    { id:'c1', name:'Assisi',  addr:'Umbria',  sub:'Tau Cross',   visited:true, rating:5, notes:'Basilica is breathtaking.' },
+    { id:'c2', name:'Spello',   addr:'Umbria',  sub:'Roman gates',  visited:true, rating:4, notes:'' },
+    { id:'c3', name:'Trevi',  addr:'Umbria',   sub:'Olive groves', visited:true, rating:5, notes:'Best olive oil.' },
+    { id:'c4', name:'Spoleto',  addr:'Umbria',  sub:'Aqueduct',     visited:false, rating:0, notes:'' },
+    { id:'c5', name:'Norcia',   addr:'Umbria',  sub:'Sibillini',    visited:false, rating:0, notes:'' },
+  ]},
+  { id:'l4', name:'NYC Bagel Showdown', cat:'Food', region:'NYC', pinned:false, desc:'Top 10 bagel shops in the five boroughs.', places:[
+    { id:'b1', name:'Absolute Bagels', addr:'Broadway & 108', sub:'UWS', visited:true, rating:5, notes:'' },
+    { id:'b2', name:'Russ & Daughters', addr:'Houston St', sub:'LES', visited:true, rating:5, notes:'' },
+    { id:'b3', name:'Tompkins Square', addr:'East Village', sub:'East Village', visited:false, rating:0, notes:'' },
+    { id:'b4', name:"Murray's Bagels", addr:'6th Ave', sub:'West Village', visited:false, rating:0, notes:'' },
+  ]},
+  { id:'l5', name:'Wonders of Iceland', cat:'Nature', region:'Iceland', pinned:false, desc:'Glaciers, geysers, and the Ring Road.', places:[
+    { id:'i1', name:'Þingvellir', addr:'Iceland', sub:'UNESCO', visited:false, rating:0, notes:'' },
+    { id:'i2', name:'Geysir', addr:'Iceland', sub:'Haukadalur', visited:false, rating:0, notes:'' },
+    { id:'i3', name:'Gullfoss', addr:'Iceland', sub:'Hvítá', visited:false, rating:0, notes:'' },
+  ]},
+];
+const NEAR_ME = [{listId:'l1',dist:'0.3 mi',next:'Slate Coffee'},{listId:'l4',dist:'1.2 mi',next:'Tompkins Square'},{listId:'l1',dist:'0.7 mi',next:'Storyville'}];
+const BACKLOG = [
+  {id:'b1',src:'Instagram',color:'#C56841',ttl:'Trattoria al Lago',sub:'Lakeside, set menu, run by a nonna who knows.'},
+  {id:'b2',src:'TikTok',color:'#2F2820',ttl:'Onibus Coffee — Nakameguro',sub:'Shaded laneway, single-origin, lockers for cyclists.'},
+  {id:'b3',src:'Rednote',color:'#7C2A2C',ttl:'Cantina Tre Stelle',sub:'Wine bar in a 14th-century cellar, no menu.'},
+  {id:'b4',src:'Link',color:'#768456',ttl:'Forno Campo de Fiori',sub:'Hand-stretched pizza bianca, hot from the oven.'},
+  {id:'b5',src:'Instagram',color:'#C56841',ttl:'Camelback (Nishi-Azabu)',sub:'Sweet-shrimp katsu sando.'},
+  {id:'b6',src:'TikTok',color:'#2F2820',ttl:'Bear Pond Espresso',sub:'Angel-stain. No talking allowed.'},
+];
+const EXPLORE = [
+  {ttl:'Hidden Tokyo Ramen Trail',by:'@noodlepilgrim',cat:'Food',region:'Tokyo',count:18,follows:'2.1k'},
+  {ttl:'Cammino di San Francesco',by:'@borgowanderer',cat:'Countries',region:'Umbria',count:12,follows:'1.4k'},
+  {ttl:'Tuscan Hilltowns',by:'@vinotraveller',cat:'Landmarks',region:'Tuscany',count:14,follows:'2.8k'},
+  {ttl:'Wonders of Iceland',by:'@northbound',cat:'Nature',region:'Iceland',count:12,follows:'3.2k'},
+  {ttl:'Mexico Mezcal Tour',by:'@espadinjules',cat:'Food',region:'Oaxaca',count:9,follows:'644'},
+  {ttl:'Romanesque Spain',by:'@archnerd',cat:'Landmarks',region:'Spain',count:14,follows:'1.1k'},
+];
+
+let state = { tab:'lists', sheetTall:false, pinned:{l1:true}, currentListId:null, currentPlaceId:null };
+const $ = (s,r=document)=>r.querySelector(s);
+const $$ = (s,r=document)=>Array.from(r.querySelectorAll(s));
+const progress = l => { const t=l.places.length, d=l.places.filter(p=>p.visited).length; return {total:t,done:d,pct:t?Math.round(d/t*100):0}; };
+function ringSVG(pct,size=48,color='var(--terracotta)'){
+  const r=size/2-3,c=2*Math.PI*r,off=c-(pct/100)*c;
+  return `<svg class="ring-svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="rgba(47,40,32,0.10)" stroke-width="3"/><circle class="meter" cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="${color}" stroke-width="3" stroke-linecap="round" stroke-dasharray="${c.toFixed(2)}" stroke-dashoffset="${off.toFixed(2)}" transform="rotate(-90 ${size/2} ${size/2})"/></svg>`;
+}
+
+function renderNearMe(){
+  $('#nearMeRow').innerHTML = NEAR_ME.map(n=>{
+    const list=LISTS.find(l=>l.id===n.listId), p=progress(list), c=CAT[list.cat];
+    return `<div class="nearme-card" data-listid="${list.id}">
+      <div class="seal">${p.pct}%</div>
+      <div class="body">
+        <div class="cat-row"><span class="stroke" style="background:${c}"></span> <span>${list.cat.toUpperCase()} · ${list.region.toUpperCase()}</span></div>
+        <div class="ttl">${list.name}</div>
+        <div class="next"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> ${n.dist} · ${n.next}</div>
+        <div class="bar"><i style="width:${p.pct}%;background:${c}"></i></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+function renderLists(){
+  const stack=$('#listsStack'); stack.innerHTML='';
+  const sorted=[...LISTS].sort((a,b)=>(state.pinned[b.id]?1:0)-(state.pinned[a.id]?1:0));
+  $('#listsCount').textContent=`${sorted.length} totale`;
+  sorted.forEach(list=>{
+    const p=progress(list), c=CAT[list.cat];
+    const wrap=document.createElement('div'); wrap.className='list-card-wrap';
+    wrap.innerHTML=`
+      <div class="list-card-actions">
+        <button class="pin"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 17v5M9 11l-5 5 5 5M19 11l5 5-5 5M12 2v15"/></svg>${state.pinned[list.id]?'Unpin':'Pin'}</button>
+        <button class="share"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98"/></svg>Share</button>
+        <button class="del"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6"/></svg>Del</button>
+      </div>
+      <div class="list-card" data-listid="${list.id}">
+        <div class="ring-wrap">${ringSVG(p.pct,48,c)}<div class="ring-num" style="color:${c}">${p.pct}</div></div>
+        <div class="body">
+          <div class="cat-line"><span style="color:${c}">${list.cat.toUpperCase()} · ${list.region.toUpperCase()}</span>${state.pinned[list.id]?`<span class="pin-tag">— pinned</span>`:''}</div>
+          <div class="name">${list.name}</div>
+          <div class="progress-line">${p.done} di ${p.total} · ${p.total-p.done} to visit</div>
+        </div>
+        <div class="arrow"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></div>
+      </div>`;
+    stack.appendChild(wrap); attachSwipe(wrap,list);
+  });
+}
+function renderBacklog(){
+  $('#backlogList').innerHTML = BACKLOG.map(b=>`
+    <div class="backlog-card" data-id="${b.id}">
+      <div>
+        <div class="source-wrap"><span class="stroke" style="background:${b.color}"></span> ${b.src} · just saved</div>
+        <div class="ttl">${b.ttl}</div>
+        <div class="sub">${b.sub}</div>
+      </div>
+      <button class="add"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg> Add</button>
+    </div>`).join('');
+}
+function renderExplore(){
+  $('#exploreGrid').innerHTML = EXPLORE.map(e=>{
+    const c=CAT[e.cat];
+    return `<div class="explore-card" data-explore>
+      <div class="stroke-line" style="background:${c}"></div>
+      <div class="body">
+        <div class="cat-row">${e.cat} · ${e.region}</div>
+        <div class="ttl">${e.ttl}</div>
+        <div class="by">${e.by}</div>
+        <div class="stats"><span>${e.count} places</span><span>${e.follows}</span></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+function renderProfile(){
+  $('#profileLists').innerHTML = LISTS.map(l=>{
+    const p=progress(l), c=CAT[l.cat];
+    return `<div class="plist-row">
+      <span class="stroke" style="background:${c}"></span>
+      <div><div class="ttl">${l.name}</div><div class="bar-mini"><i style="width:${p.pct}%;background:${c}"></i></div></div>
+      <div class="pct" style="color:${c}">${p.pct}%</div>
+    </div>`;
+  }).join('');
+}
+
+function openListSheet(id){
+  const list=LISTS.find(l=>l.id===id); if(!list)return;
+  state.currentListId=id; const p=progress(list), c=CAT[list.cat];
+  $('#sheetTitle').textContent=list.name;
+  $('#sheetDesc').textContent=list.desc;
+  $('#sheetCatLabel').textContent=`${list.cat} · ${list.region}`;
+  $('#sheetCatRow').querySelector('.stroke').style.background=c;
+  $('#sheetMeta').textContent=`${p.total-p.done} LEFT`;
+  $('#sheetPct').textContent=p.pct+'%';
+  const r=34,circ=2*Math.PI*r;
+  $('#sheetMeter').setAttribute('stroke-dasharray',circ.toFixed(2));
+  $('#sheetMeter').setAttribute('stroke-dashoffset',(circ-p.pct/100*circ).toFixed(2));
+  $('#sheetMeter').setAttribute('stroke',c);
+  $('#sheetList').innerHTML = list.places.map(place=>`
+    <div class="poi-row ${place.visited?'done':''}" data-place="${place.id}">
+      <div class="check" data-toggle="${place.id}">${place.visited?`<svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.6" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>`:''}</div>
+      <div>
+        <div class="name">${place.name}</div>
+        <div class="meta-row">${place.rating?`<span class="star">${'★'.repeat(place.rating)}</span>`:''}<span>${place.sub}</span>${place.notes?`<span class="note-tag">— "${place.notes.slice(0,28)}${place.notes.length>28?'…':''}"</span>`:''}</div>
+      </div>
+      <div class="arrow"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></div>
+    </div>`).join('');
+  state.sheetTall=false;
+  $('#listSheet').classList.add('open'); $('#listSheet').classList.remove('tall');
+  $('#scrim').classList.add('show');
+}
+function closeSheet(){ $('#listSheet').classList.remove('open','tall'); $('#filterSheet').classList.remove('open'); $('#addModal').classList.remove('open'); $('#authModal').classList.remove('show'); $('#scrim').classList.remove('show'); }
+function openPOI(pid){
+  const list=LISTS.find(l=>l.id===state.currentListId); if(!list)return;
+  const place=list.places.find(p=>p.id===pid); if(!place)return;
+  state.currentPlaceId=pid; const c=CAT[list.cat];
+  $('#poiName').textContent=place.name;
+  $('#poiCatLabel').textContent=`${list.cat} · ${place.sub}`;
+  $('#poiCat').querySelector('.stroke').style.background=c;
+  $('#poiSub').textContent=place.addr;
+  $('#poiMarkLabel').textContent=place.visited?'Mark unvisited':'Mark visited';
+  $('#poiMark').classList.toggle('unmark',place.visited);
+  $$('#poiStars button').forEach((b,i)=>b.classList.toggle('active',i<place.rating));
+  $('[data-poipane="notes"] textarea').value=place.notes||'';
+  $('#poiPanel').classList.add('open');
+}
+function closePOI(){ $('#poiPanel').classList.remove('open'); }
+function switchTab(tab){
+  state.tab=tab;
+  $$('.bnav button').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
+  $$('.screen-pane').forEach(s=>s.hidden=(s.dataset.screen!==tab));
+  const head=$('#header');
+  const greets={lists:'buongiorno, m.',backlog:'7 saved · 1 looks like a list',explore:'curated by community',profile:'in viaggio dal ’24'};
+  if(tab==='lists'||tab==='landing'){
+    head.querySelector('.header-brand').style.display='';
+    if(head.querySelector('.header-title'))head.querySelector('.header-title').remove();
+  }else{
+    head.querySelector('.header-brand').style.display='none';
+    let t=head.querySelector('.header-title');
+    if(!t){t=document.createElement('div');t.className='header-title';head.querySelector('.header-brand').parentNode.insertBefore(t,$('#headerGreet'));}
+    t.textContent={backlog:'Backlog',explore:'Explore',profile:'You'}[tab]||'';
+  }
+  $('#headerGreet').textContent=greets[tab]||'';
+  $('#scroll').scrollTop=0;
+}
+function attachSwipe(wrap,list){
+  const card=wrap.querySelector('.list-card'), ACTION=80, CHEER=110;
+  let startX=0,dx=0,dragging=false;
+  card.addEventListener('pointerdown',e=>{ if(e.target.closest('.list-card-actions'))return; card.setPointerCapture(e.pointerId); startX=e.clientX; dragging=true; card.classList.add('swiping'); });
+  card.addEventListener('pointermove',e=>{ if(!dragging)return; dx=Math.max(-200,Math.min(200,e.clientX-startX)); card.style.transform=`translateX(${dx}px)`; });
+  function end(){ if(!dragging)return; dragging=false; card.classList.remove('swiping');
+    if(dx>CHEER){card.style.transform='translateX(120%)';trigger();setTimeout(()=>card.style.transform='',500);}
+    else if(dx<-ACTION){card.style.transform='translateX(-180px)';}
+    else card.style.transform=''; dx=0;
+  }
+  card.addEventListener('pointerup',end); card.addEventListener('pointercancel',end);
+  card.addEventListener('click',()=>{ if(Math.abs(dx)<5)openListSheet(list.id); });
+  wrap.querySelector('.pin').addEventListener('click',e=>{e.stopPropagation();state.pinned[list.id]=!state.pinned[list.id];renderLists();});
+  wrap.querySelector('.share').addEventListener('click',e=>{e.stopPropagation();toast('Share link copied');card.style.transform='';});
+  wrap.querySelector('.del').addEventListener('click',e=>{e.stopPropagation();wrap.style.transition='all 240ms ease';wrap.style.transform='translateX(-110%)';wrap.style.opacity='0';setTimeout(()=>wrap.remove(),240);});
+}
+function trigger(){ const c=$('#celebration'); c.classList.remove('show'); void c.offsetWidth; c.classList.add('show'); }
+function toast(m){ const t=document.createElement('div'); t.className='toast'; t.textContent=m; $('#screen').appendChild(t); setTimeout(()=>t.remove(),1800); }
+function dragSheet(){
+  const g=$('#grabber'); let sy=0,d=false;
+  g.addEventListener('pointerdown',e=>{g.setPointerCapture(e.pointerId);sy=e.clientY;d=true;});
+  g.addEventListener('pointermove',e=>{ if(!d)return; const dy=e.clientY-sy;
+    if(dy<-30){$('#listSheet').classList.add('tall');state.sheetTall=true;d=false;}
+    else if(dy>30){if(state.sheetTall){$('#listSheet').classList.remove('tall');state.sheetTall=false;d=false;}else{closeSheet();d=false;}}
+  });
+  g.addEventListener('pointerup',()=>d=false);
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  renderNearMe(); renderLists(); renderBacklog(); renderExplore(); renderProfile(); dragSheet();
+  $$('.bnav button').forEach(b=>b.addEventListener('click',()=>switchTab(b.dataset.tab)));
+  $('#filterBtn').addEventListener('click',()=>{$('#filterSheet').classList.add('open');$('#scrim').classList.add('show');});
+  $('#filterApply').addEventListener('click',()=>{toast('Filters applied');closeSheet();});
+  $('#searchBtn').addEventListener('click',()=>toast('Search · coming soon'));
+  $('#scrim').addEventListener('click',closeSheet);
+  $('#poiClose').addEventListener('click',closePOI);
+  $('#poiDone').addEventListener('click',closePOI);
+  $$('.poi-tabs button').forEach(b=>b.addEventListener('click',()=>{
+    const tab=b.dataset.poitab;
+    $$('.poi-tabs button').forEach(bb=>bb.classList.toggle('active',bb===b));
+    $$('[data-poipane]').forEach(p=>p.hidden=p.dataset.poipane!==tab);
+  }));
+  $$('#poiStars button').forEach(b=>b.addEventListener('click',()=>{
+    const r=+b.dataset.r, list=LISTS.find(l=>l.id===state.currentListId), place=list&&list.places.find(p=>p.id===state.currentPlaceId);
+    if(place)place.rating=r;
+    $$('#poiStars button').forEach((bb,i)=>bb.classList.toggle('active',i<r));
+    toast('Rating saved');
+  }));
+  $('#poiMark').addEventListener('click',()=>{
+    const list=LISTS.find(l=>l.id===state.currentListId), place=list&&list.places.find(p=>p.id===state.currentPlaceId);
+    if(!place)return; place.visited=!place.visited;
+    $('#poiMarkLabel').textContent=place.visited?'Mark unvisited':'Mark visited';
+    $('#poiMark').classList.toggle('unmark',place.visited);
+    if(place.visited)trigger();
+    openListSheet(list.id);
+  });
+  $('#sheetList').addEventListener('click',e=>{
+    const t=e.target.closest('[data-toggle]'), r=e.target.closest('[data-place]');
+    if(t){ e.stopPropagation(); const list=LISTS.find(l=>l.id===state.currentListId), place=list.places.find(p=>p.id===t.dataset.toggle); place.visited=!place.visited; if(place.visited)trigger(); openListSheet(list.id); return; }
+    if(r)openPOI(r.dataset.place);
+  });
+  $('#nearMeRow').addEventListener('click',e=>{ const c=e.target.closest('[data-listid]'); if(c)openListSheet(c.dataset.listid); });
+  $('#fab').addEventListener('click',()=>{$('#addModal').classList.add('open');$('#scrim').classList.add('show');});
+  $('#addPlaceBtn').addEventListener('click',()=>toast('Add place · coming soon'));
+  $$('[data-auth]').forEach(b=>b.addEventListener('click',()=>{
+    const m=b.dataset.auth;
+    $('#authTitle').textContent=m==='signup'?'Inizia':'Bentornato';
+    $('#authGo').textContent=m==='signup'?'Begin':'Sign in';
+    $('#authModal').classList.add('show');$('#scrim').classList.add('show');
+  }));
+  $('#authGo').addEventListener('click',()=>{closeSheet();switchTab('lists');toast('Bentornato, m.');});
+  $('#authSwitch').addEventListener('click',()=>{const t=$('#authTitle');t.textContent=t.textContent==='Bentornato'?'Inizia':'Bentornato';$('#authGo').textContent=$('#authGo').textContent==='Sign in'?'Begin':'Sign in';});
+  $('#scroll').addEventListener('scroll',()=>$('#header').classList.toggle('compress',$('#scroll').scrollTop>24));
+  $('#importBtn').addEventListener('click',()=>toast('Paste a link · reading…'));
+  $('#filterChips').addEventListener('click',e=>{const c=e.target.closest('.chip'); if(!c)return; $$('#filterChips .chip').forEach(x=>x.classList.remove('solid')); c.classList.add('solid');});
+  document.addEventListener('click',e=>{const av=e.target.closest('.profile-hero .avatar'); if(av)switchTab('landing');});
+});
+</script>
+</body>
+</html>

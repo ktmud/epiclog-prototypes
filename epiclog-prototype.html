@@ -1,0 +1,2360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<title>Epiclog — SPA Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,700;0,9..144,900;1,9..144,700;1,9..144,900&family=Inter+Tight:wght@400;500;600;700;800&family=Geist+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* ─────────────────────────────────────────────────────────────
+   Epiclog · Design Language · "Epic Pop"
+   Bold, confident, joyful — built to make travel feel cinematic.
+   ───────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --magenta:       #FF2D78;   /* primary brand · "epic" */
+  --magenta-soft:  #FFE0EC;
+  --cobalt:        #1F3DFF;   /* electric accent */
+  --cobalt-soft:   #E2E7FF;
+  --citrine:       #FFDC1A;   /* pop · highlights */
+  --citrine-soft:  #FFF6C2;
+  --mint:          #16D9A6;   /* success · check-in */
+  --mint-soft:     #DAFBEF;
+  --coral:         #FF7A3D;   /* warmth */
+  --plum:          #5A1E96;   /* deep accent */
+
+  /* Surfaces */
+  --paper:         #FFF6E8;   /* warm cream */
+  --paper-2:       #FFEFD6;
+  --ink:           #0F0E17;   /* near-black with hint of plum */
+  --ink-2:         #2B2839;
+  --ink-3:         #6B6478;
+  --ink-4:         #A8A2B5;
+  --line:          #1F1B2E14;
+  --line-strong:   #1F1B2E2A;
+  --white:         #FFFFFF;
+
+  /* Type */
+  --font-display: 'Fraunces', 'Times New Roman', serif;
+  --font-ui:      'Inter Tight', system-ui, -apple-system, sans-serif;
+  --font-mono:    'Geist Mono', ui-monospace, monospace;
+
+  /* Spacing & shape */
+  --r-sm:  10px;
+  --r-md:  16px;
+  --r-lg:  22px;
+  --r-xl:  28px;
+  --r-pill: 999px;
+
+  /* Hard pop shadows */
+  --pop-1: 4px 4px 0 var(--ink);
+  --pop-2: 6px 6px 0 var(--ink);
+  --pop-3: 8px 8px 0 var(--ink);
+  --soft:  0 8px 32px -12px rgba(15, 14, 23, 0.18);
+  --soft-up: 0 -8px 32px -12px rgba(15, 14, 23, 0.18);
+}
+
+/* ─── Reset ─── */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--font-ui);
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--ink);
+  background:
+    radial-gradient(1100px 600px at 12% -10%, var(--citrine-soft) 0%, transparent 50%),
+    radial-gradient(900px 500px at 90% 10%, var(--magenta-soft) 0%, transparent 55%),
+    radial-gradient(900px 700px at 80% 110%, var(--cobalt-soft) 0%, transparent 50%),
+    var(--paper);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+button { font-family: inherit; font-size: inherit; color: inherit; cursor: pointer; border: 0; background: transparent; }
+input, textarea { font-family: inherit; font-size: 16px; color: inherit; }
+ul { list-style: none; padding: 0; margin: 0; }
+a { color: inherit; text-decoration: none; }
+
+/* ─── Showcase chrome (desktop only) ─── */
+.stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  justify-items: center;
+  padding: 32px 16px 64px;
+  gap: 32px;
+  min-height: 100vh;
+}
+@media (min-width: 1100px) {
+  .stage {
+    grid-template-columns: 320px minmax(0, auto) 320px;
+    gap: 56px;
+    padding: 56px 48px;
+  }
+}
+
+.brand-mark {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-style: italic;
+  font-size: 56px;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+}
+.brand-mark .epic { color: var(--magenta); }
+.brand-mark .log  { color: var(--ink); }
+.brand-mark .dot  { color: var(--citrine); }
+
+.tagline {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-top: 14px;
+  max-width: 18ch;
+}
+.tagline em { color: var(--magenta); font-style: italic; }
+
+.spec-card {
+  background: var(--white);
+  border: 2px solid var(--ink);
+  border-radius: var(--r-lg);
+  padding: 18px 18px 20px;
+  box-shadow: var(--pop-2);
+  margin-top: 22px;
+}
+.spec-card h4 {
+  margin: 0 0 12px;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.swatch-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.swatch {
+  width: 44px; height: 56px; border-radius: 10px;
+  border: 2px solid var(--ink);
+  position: relative;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  display: flex; align-items: flex-end; justify-content: center;
+  padding-bottom: 4px;
+  color: var(--ink);
+  box-shadow: 2px 2px 0 var(--ink);
+}
+.swatch.dark { color: var(--paper); }
+.type-stack { display: grid; gap: 10px; }
+.type-stack .demo {
+  border: 1.5px solid var(--line-strong);
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+.type-stack .label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--ink-3); margin-bottom: 4px; font-weight: 600; }
+.type-stack .display-demo { font-family: var(--font-display); font-style: italic; font-weight: 900; font-size: 28px; line-height: 1; letter-spacing: -0.02em; }
+.type-stack .ui-demo { font-family: var(--font-ui); font-weight: 700; font-size: 18px; letter-spacing: -0.01em; }
+.type-stack .mono-demo { font-family: var(--font-mono); font-weight: 600; font-size: 16px; letter-spacing: -0.02em; }
+
+.principles { display: grid; gap: 10px; margin-top: 4px; }
+.principle {
+  display: flex; gap: 10px; align-items: flex-start;
+  font-size: 13px;
+  line-height: 1.4;
+}
+.principle .pin {
+  flex: 0 0 auto;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--citrine);
+  color: var(--ink);
+  display: grid; place-items: center;
+  font-family: var(--font-display); font-weight: 900; font-style: italic;
+  font-size: 13px;
+  border: 2px solid var(--ink);
+}
+
+/* ─── Phone frame ─── */
+.phone {
+  --w: 390px;
+  --h: 820px;
+  width: var(--w);
+  height: var(--h);
+  border-radius: 56px;
+  background: var(--ink);
+  padding: 14px;
+  box-shadow:
+    14px 14px 0 var(--ink),
+    var(--soft);
+  position: relative;
+  flex: 0 0 auto;
+}
+.phone::before {
+  content: ""; position: absolute;
+  top: 22px; left: 50%; transform: translateX(-50%);
+  width: 110px; height: 28px; border-radius: 999px;
+  background: var(--ink); z-index: 30;
+}
+.screen {
+  width: 100%; height: 100%;
+  border-radius: 44px;
+  background: var(--paper);
+  overflow: hidden;
+  position: relative;
+  isolation: isolate;
+}
+
+/* ─── App layout ─── */
+.app { width: 100%; height: 100%; display: grid; grid-template-rows: auto 1fr auto; }
+
+.header {
+  padding: 56px 20px 14px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--paper);
+  position: relative;
+  z-index: 10;
+}
+.header.compress { padding-top: 24px; }
+.header-brand {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-style: italic;
+  font-size: 32px;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+.header-brand .epic { color: var(--magenta); }
+.header-brand .dot { color: var(--citrine); }
+.header-title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 900;
+  font-size: 28px;
+  letter-spacing: -0.02em;
+}
+.icon-btn {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: var(--white);
+  display: grid; place-items: center;
+  border: 2px solid var(--ink);
+  box-shadow: var(--pop-1);
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+.icon-btn:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--ink); }
+.icon-btn.ghost { background: transparent; border: 0; box-shadow: none; }
+.icon-btn.ghost:active { transform: scale(0.94); }
+
+.scroll {
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+  padding-bottom: 100px;
+  scroll-behavior: smooth;
+}
+.scroll::-webkit-scrollbar { display: none; }
+
+/* ─── Bottom nav ─── */
+.bnav {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  height: 86px;
+  padding: 8px 14px 22px;
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  background: rgba(255, 246, 232, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1.5px solid var(--line);
+  z-index: 20;
+}
+.bnav button {
+  display: grid; place-items: center; gap: 4px;
+  border-radius: 14px;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 11px;
+  color: var(--ink-3);
+  position: relative;
+  letter-spacing: -0.005em;
+  transition: color 120ms ease;
+}
+.bnav button.active { color: var(--ink); }
+.bnav button.active::before {
+  content: ""; position: absolute;
+  width: 30px; height: 4px; border-radius: 4px;
+  background: var(--magenta);
+  top: 0;
+}
+.bnav .badge {
+  position: absolute;
+  top: 4px; right: 22%;
+  background: var(--magenta);
+  color: var(--white);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  border-radius: 10px;
+  padding: 1px 5px;
+  border: 1.5px solid var(--ink);
+}
+
+/* ─── Lists tab ─── */
+.toolbar {
+  display: flex; align-items: center; gap: 8px;
+  padding: 4px 20px 12px;
+}
+.search {
+  flex: 1;
+  display: flex; align-items: center; gap: 8px;
+  height: 44px;
+  background: var(--white);
+  border: 2px solid var(--ink);
+  border-radius: 14px;
+  padding: 0 14px;
+  box-shadow: var(--pop-1);
+}
+.search input { flex: 1; border: 0; outline: 0; background: transparent; font-weight: 500; }
+.search input::placeholder { color: var(--ink-4); }
+.chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 30px;
+  padding: 0 12px;
+  border-radius: var(--r-pill);
+  background: var(--white);
+  border: 1.5px solid var(--ink);
+  font-weight: 600; font-size: 12px;
+  white-space: nowrap;
+}
+.chip.solid { background: var(--ink); color: var(--paper); }
+.chip.mag   { background: var(--magenta); color: var(--white); border-color: var(--ink); }
+.chip-row {
+  display: flex; gap: 8px; padding: 0 20px 14px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.chip-row::-webkit-scrollbar { display: none; }
+
+.section-title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 900;
+  font-size: 22px;
+  letter-spacing: -0.02em;
+  padding: 14px 20px 10px;
+  display: flex; align-items: baseline; justify-content: space-between;
+}
+.section-title .meta {
+  font-family: var(--font-mono);
+  font-style: normal;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink-3);
+}
+
+/* ── Near Me horizontal cards ── */
+.nearme-row {
+  display: flex; gap: 14px;
+  padding: 0 20px 18px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.nearme-row::-webkit-scrollbar { display: none; }
+.nearme-card {
+  flex: 0 0 240px;
+  background: var(--white);
+  border: 2px solid var(--ink);
+  border-radius: var(--r-lg);
+  padding: 14px;
+  box-shadow: var(--pop-2);
+  display: grid; gap: 8px;
+  position: relative;
+  overflow: hidden;
+}
+.nearme-card .swatch-band {
+  position: absolute; top: 0; left: 0; right: 0; height: 8px;
+}
+.nearme-card .row { display: flex; align-items: center; gap: 8px; padding-top: 4px; }
+.nearme-card .cat {
+  width: 32px; height: 32px; border-radius: 10px;
+  display: grid; place-items: center;
+  border: 2px solid var(--ink);
+}
+.nearme-card .title { font-weight: 800; font-size: 14px; line-height: 1.2; letter-spacing: -0.01em; }
+.nearme-card .next { font-size: 13px; color: var(--ink-2); font-weight: 500; }
+.nearme-card .dist { font-family: var(--font-mono); font-size: 11px; color: var(--ink-3); font-weight: 600; }
+.nearme-card .bar { height: 6px; border-radius: 999px; background: var(--paper-2); overflow: hidden; }
+.nearme-card .bar > i { display: block; height: 100%; border-radius: 999px; background: var(--ink); }
+
+/* ── List card ── */
+.cardstack { display: grid; gap: 14px; padding: 0 20px 8px; }
+.list-card-wrap { position: relative; height: 96px; }
+.list-card-actions {
+  position: absolute; top: 0; right: 0; bottom: 0;
+  display: flex; gap: 8px;
+  align-items: center;
+  padding-right: 10px;
+  width: 220px; justify-content: flex-end;
+}
+.list-card-actions button {
+  width: 50px; height: 64px; border-radius: 14px;
+  border: 2px solid var(--ink);
+  display: grid; place-items: center; gap: 2px;
+  font-size: 10px; font-weight: 700; color: var(--white);
+  box-shadow: var(--pop-1);
+}
+.list-card-actions .pin { background: var(--cobalt); }
+.list-card-actions .share { background: var(--coral); }
+.list-card-actions .del { background: var(--ink); }
+
+.list-card {
+  position: absolute; inset: 0;
+  background: var(--white);
+  border: 2px solid var(--ink);
+  border-radius: var(--r-lg);
+  padding: 14px 16px;
+  display: grid; grid-template-columns: 56px 1fr auto; align-items: center; gap: 14px;
+  box-shadow: var(--pop-2);
+  transition: transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 220ms ease;
+  cursor: pointer;
+  z-index: 2;
+  user-select: none;
+}
+.list-card.swiping { transition: none; }
+.list-card.celebrate {
+  background: var(--mint);
+  border-color: var(--ink);
+}
+.list-card .ring-wrap { position: relative; width: 56px; height: 56px; }
+.list-card .meta-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.list-card .name {
+  font-family: var(--font-display);
+  font-weight: 900; font-style: italic;
+  font-size: 18px;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+.list-card .progress-line { font-family: var(--font-mono); font-size: 11px; font-weight: 600; color: var(--ink-3); }
+.list-card .pin-badge {
+  font-size: 10px; font-weight: 700; color: var(--cobalt);
+  text-transform: uppercase; letter-spacing: 0.1em;
+}
+.list-card .arrow { width: 28px; height: 28px; border-radius: 50%; background: var(--ink); color: var(--paper); display: grid; place-items: center; }
+
+/* Progress ring */
+.ring-svg { transform: rotate(-90deg); }
+.ring-svg .track { stroke: var(--paper-2); }
+.ring-svg .meter { stroke: var(--magenta); stroke-linecap: round; transition: stroke-dashoffset 280ms ease; }
+.ring-pct {
+  position: absolute; inset: 0;
+  display: grid; place-items: center;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: -0.02em;
+}
+
+/* ─── Backlog ─── */
+.banner {
+  margin: 0 20px 14px;
+  background: var(--ink);
+  color: var(--paper);
+  border: 2px solid var(--ink);
+  border-radius: var(--r-lg);
+  padding: 16px;
+  display: grid; gap: 10px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--pop-2);
+}
+.banner .blob {
+  position: absolute; right: -40px; top: -40px;
+  width: 160px; height: 160px; border-radius: 50%;
+  background: var(--magenta);
+  opacity: 0.7;
+  filter: blur(2px);
+}
+.banner .label {
+  font-family: var(--font-mono); font-size: 10px; font-weight: 700;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--citrine);
+  position: relative;
+}
+.banner h3 {
+  font-family: var(--font-display); font-style: italic; font-weight: 900;
+  font-size: 22px; letter-spacing: -0.02em;
+  margin: 0;
+  position: relative;
+}
+.banner .actions { display: flex; gap: 10px; position: relative; }
+.banner .btn-primary {
+  background: var(--citrine); color: var(--ink);
+  font-weight: 700;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 2px solid var(--ink);
+  font-size: 13px;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.banner .btn-ghost { color: var(--paper); font-weight: 700; font-size: 13px; padding: 10px 4px; }
+
+.backlog-item {
+  margin: 0 20px 10px;
+  background: var(--white);
+  border: 2px solid var(--ink);
+  border-radius: var(--r-md);
+  padding: 12px 14px;
+  display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 10px;
+  box-shadow: var(--pop-1);
+}
+.backlog-item .source {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-family: var(--font-mono); font-size: 10px; font-weight: 600;
+  color: var(--ink-3);
+  margin-bottom: 4px;
+  text-transform: uppercase; letter-spacing: 0.06em;
+}
+.backlog-item .ttl { font-weight: 700; font-size: 14px; line-height: 1.25; letter-spacing: -0.01em; }
+.backlog-item .sub { font-size: 12px; color: var(--ink-3); margin-top: 2px; }
+.backlog-item button.add {
+  height: 36px; padding: 0 12px;
+  background: var(--cobalt); color: var(--white);
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  font-weight: 700; font-size: 12px;
+  box-shadow: var(--pop-1);
+}
+
+/* ─── Explore ─── */
+.hero-feature {
+  margin: 8px 20px 16px;
+  border: 2px solid var(--ink);
+  border-radius: var(--r-xl);
+  padding: 22px 18px;
+  background: linear-gradient(135deg, var(--magenta) 0%, var(--coral) 100%);
+  color: var(--white);
+  box-shadow: var(--pop-2);
+  position: relative;
+  overflow: hidden;
+}
+.hero-feature .tagline-mini {
+  font-family: var(--font-mono); font-size: 10px; font-weight: 700;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--citrine);
+}
+.hero-feature h2 {
+  font-family: var(--font-display); font-style: italic; font-weight: 900;
+  font-size: 30px; line-height: 1; margin: 8px 0 12px; letter-spacing: -0.02em;
+}
+.hero-feature .stat-row { display: flex; gap: 16px; align-items: center; }
+.hero-feature .stat { font-family: var(--font-mono); font-weight: 700; font-size: 12px; }
+.hero-feature .cta {
+  margin-top: 14px;
+  background: var(--ink); color: var(--paper);
+  border-radius: 999px; padding: 10px 16px;
+  font-weight: 700; font-size: 13px;
+  display: inline-flex; align-items: center; gap: 6px;
+  border: 2px solid var(--ink);
+}
+
+.explore-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 12px; padding: 0 20px 8px;
+}
+.explore-card {
+  background: var(--white);
+  border: 2px solid var(--ink);
+  border-radius: var(--r-md);
+  padding: 12px;
+  box-shadow: var(--pop-1);
+  display: grid; gap: 6px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+.explore-card .band { height: 6px; border-radius: 6px; margin-bottom: 6px; }
+.explore-card .ttl { font-family: var(--font-display); font-style: italic; font-weight: 900; font-size: 16px; line-height: 1.05; letter-spacing: -0.02em; }
+.explore-card .by { font-size: 11px; color: var(--ink-3); font-weight: 500; }
+.explore-card .stats { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 11px; font-weight: 600; }
+.explore-card .pill { background: var(--ink); color: var(--paper); border-radius: 999px; padding: 2px 8px; font-size: 10px; font-weight: 700; }
+
+/* ─── Profile ─── */
+.profile-hero {
+  margin: 8px 20px 16px;
+  border: 2px solid var(--ink);
+  border-radius: var(--r-xl);
+  padding: 22px;
+  background:
+    radial-gradient(circle at 20% 0%, var(--cobalt) 0%, transparent 60%),
+    radial-gradient(circle at 100% 100%, var(--plum) 0%, transparent 60%),
+    var(--ink);
+  color: var(--paper);
+  box-shadow: var(--pop-2);
+  position: relative;
+  overflow: hidden;
+}
+.profile-hero .avatar {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: var(--citrine);
+  border: 3px solid var(--paper);
+  display: grid; place-items: center;
+  font-family: var(--font-display); font-style: italic; font-weight: 900; font-size: 28px;
+  color: var(--ink); letter-spacing: -0.04em;
+}
+.profile-hero .name { font-family: var(--font-display); font-style: italic; font-weight: 900; font-size: 28px; margin-top: 12px; letter-spacing: -0.02em; }
+.profile-hero .level {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--magenta); color: var(--white);
+  font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+  padding: 4px 10px; border-radius: 999px;
+  margin-top: 6px;
+}
+.profile-hero .progress-label {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-top: 14px;
+  font-family: var(--font-mono); font-weight: 700; font-size: 11px;
+  color: var(--paper);
+}
+.profile-hero .progress-label .pct { color: var(--citrine); font-size: 14px; }
+.shimmer-bar {
+  height: 12px; border-radius: 999px;
+  background: rgba(255, 246, 232, 0.18);
+  overflow: hidden; margin-top: 8px;
+  position: relative;
+}
+.shimmer-bar > i {
+  display: block; height: 100%;
+  background: linear-gradient(90deg, var(--magenta) 0%, var(--citrine) 50%, var(--mint) 100%);
+  border-radius: 999px;
+  position: relative;
+  transition: width 600ms ease;
+}
+.shimmer-bar > i::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(110deg, transparent 35%, rgba(255,255,255,0.55) 50%, transparent 65%);
+  animation: shimmer 2.6s linear infinite;
+}
+@keyframes shimmer {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(100%); }
+}
+
+.stat-strip {
+  margin: 0 20px 16px;
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+.stat-cell {
+  background: var(--white); border: 2px solid var(--ink); border-radius: var(--r-md);
+  padding: 10px 8px; text-align: center;
+  box-shadow: var(--pop-1);
+}
+.stat-cell .num { font-family: var(--font-display); font-style: italic; font-weight: 900; font-size: 24px; line-height: 1; letter-spacing: -0.02em; }
+.stat-cell .lbl { font-family: var(--font-mono); font-size: 9px; font-weight: 700; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.12em; margin-top: 4px; }
+
+.achv-row {
+  display: flex; gap: 10px; padding: 0 20px 18px;
+  overflow-x: auto; scrollbar-width: none;
+}
+.achv-row::-webkit-scrollbar { display: none; }
+.achv {
+  flex: 0 0 96px;
+  background: var(--white);
+  border: 2px solid var(--ink);
+  border-radius: var(--r-md);
+  padding: 12px 8px; text-align: center;
+  box-shadow: var(--pop-1);
+  display: grid; gap: 4px;
+}
+.achv .icon-wrap {
+  width: 38px; height: 38px; margin: 0 auto;
+  border-radius: 50%; display: grid; place-items: center;
+  border: 2px solid var(--ink);
+}
+.achv .name { font-size: 11px; font-weight: 700; }
+
+/* ─── Landing (anonymous) ─── */
+.landing {
+  padding: 56px 20px 100px;
+  display: grid; gap: 24px;
+}
+.landing .lede {
+  font-family: var(--font-display);
+  font-style: italic; font-weight: 900;
+  font-size: 38px; line-height: 0.95;
+  letter-spacing: -0.03em;
+}
+.landing .lede .epic { color: var(--magenta); }
+.landing .lede em { font-style: italic; color: var(--cobalt); }
+.landing .sub {
+  font-size: 15px; line-height: 1.5; color: var(--ink-2);
+  max-width: 30ch;
+}
+.landing .cta-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.landing .btn-mag {
+  background: var(--magenta); color: var(--white);
+  border: 2px solid var(--ink);
+  padding: 14px 18px;
+  border-radius: 999px;
+  font-weight: 700;
+  box-shadow: var(--pop-2);
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.landing .btn-line {
+  background: var(--white);
+  border: 2px solid var(--ink);
+  padding: 14px 18px;
+  border-radius: 999px;
+  font-weight: 700;
+  box-shadow: var(--pop-1);
+}
+.landing .preview {
+  background: var(--white);
+  border: 2px solid var(--ink);
+  border-radius: var(--r-xl);
+  padding: 16px;
+  box-shadow: var(--pop-3);
+}
+.landing .preview-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--line-strong);
+}
+.landing .preview-row:last-child { border-bottom: 0; }
+.landing .preview-row .dot { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--ink); }
+.landing .preview-row .dot.done { background: var(--mint); }
+.landing .preview-row .ttl { font-weight: 700; font-size: 14px; flex: 1; }
+.landing .preview-row .strike { text-decoration: line-through; color: var(--ink-3); }
+
+/* ─── Detail bottom sheet ─── */
+.scrim {
+  position: absolute; inset: 0;
+  background: rgba(15, 14, 23, 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 30;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 240ms ease;
+}
+.scrim.show { opacity: 1; pointer-events: auto; }
+
+.sheet {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  height: 76%;
+  background: var(--paper);
+  border-top-left-radius: 28px;
+  border-top-right-radius: 28px;
+  z-index: 40;
+  transform: translateY(100%);
+  transition: transform 320ms cubic-bezier(0.2, 0.8, 0.2, 1), height 240ms ease;
+  display: grid; grid-template-rows: auto auto 1fr auto;
+  box-shadow: 0 -10px 40px -8px rgba(15, 14, 23, 0.35);
+  overflow: hidden;
+}
+.sheet.open { transform: translateY(0); }
+.sheet.tall { height: 92%; }
+.sheet .grabber {
+  width: 44px; height: 5px; border-radius: 5px;
+  background: var(--ink-4);
+  margin: 10px auto 6px;
+}
+.sheet-header {
+  padding: 8px 20px 16px;
+  background: linear-gradient(180deg, var(--magenta) 0%, var(--coral) 100%);
+  color: var(--white);
+  display: grid; grid-template-columns: 1fr auto; gap: 14px; align-items: center;
+}
+.sheet-header.cobalt { background: linear-gradient(180deg, var(--cobalt) 0%, var(--plum) 100%); }
+.sheet-header.mint   { background: linear-gradient(180deg, var(--mint) 0%, var(--cobalt) 100%); }
+.sheet-header .ttl-wrap .cat-row { display: inline-flex; align-items: center; gap: 6px; }
+.sheet-header .cat-tag {
+  font-family: var(--font-mono); font-size: 10px; font-weight: 700;
+  background: rgba(15, 14, 23, 0.2); padding: 3px 8px; border-radius: 999px;
+  text-transform: uppercase; letter-spacing: 0.12em;
+}
+.sheet-header h2 {
+  font-family: var(--font-display); font-style: italic; font-weight: 900;
+  font-size: 28px; letter-spacing: -0.02em; line-height: 1; margin: 8px 0 4px;
+}
+.sheet-header p { font-size: 13px; opacity: 0.92; margin: 0; max-width: 24ch; }
+
+.sheet-header .ring-wrap {
+  width: 80px; height: 80px;
+  position: relative;
+  flex: 0 0 auto;
+}
+.sheet-header .ring-wrap .ring-pct {
+  font-family: var(--font-display); font-style: italic; font-weight: 900;
+  font-size: 22px; color: var(--white);
+}
+.sheet-toolbar {
+  background: var(--paper);
+  padding: 12px 20px;
+  display: flex; gap: 8px; align-items: center;
+  border-bottom: 1.5px solid var(--line);
+}
+.sheet-toolbar .meta {
+  font-family: var(--font-mono); font-size: 11px; font-weight: 600;
+  color: var(--ink-3);
+  margin-left: auto;
+}
+.sheet-toolbar .pillbtn {
+  background: var(--ink); color: var(--paper);
+  font-size: 12px; font-weight: 700;
+  padding: 6px 12px; border-radius: 999px;
+  display: inline-flex; align-items: center; gap: 4px;
+}
+
+.sheet-list { overflow-y: auto; padding: 4px 0 16px; }
+.sheet-list::-webkit-scrollbar { display: none; }
+.poi-row {
+  display: grid; grid-template-columns: 28px 1fr; align-items: center; gap: 14px;
+  padding: 14px 20px;
+  border-bottom: 1px dashed var(--line-strong);
+  cursor: pointer;
+  transition: background 160ms ease;
+}
+.poi-row:hover { background: rgba(255, 220, 26, 0.18); }
+.poi-row .check {
+  width: 24px; height: 24px; border-radius: 50%;
+  border: 2.5px solid var(--ink);
+  display: grid; place-items: center;
+  background: var(--white);
+  transition: all 160ms ease;
+}
+.poi-row.done .check {
+  background: var(--mint);
+  border-color: var(--ink);
+}
+.poi-row.done .name { text-decoration: line-through; color: var(--ink-3); }
+.poi-row .name { font-weight: 700; font-size: 15px; letter-spacing: -0.005em; }
+.poi-row .meta-row { display: flex; gap: 8px; align-items: center; margin-top: 3px; font-family: var(--font-mono); font-size: 11px; font-weight: 600; color: var(--ink-3); }
+.poi-row .star { color: var(--citrine); font-size: 12px; -webkit-text-stroke: 0.5px var(--ink); }
+
+.sheet-footer {
+  background: var(--paper);
+  padding: 14px 20px 22px;
+  border-top: 1.5px solid var(--line);
+  display: flex; gap: 10px;
+}
+.sheet-footer .btn-add {
+  flex: 1; height: 48px; border-radius: 14px;
+  background: var(--ink); color: var(--paper);
+  border: 2px solid var(--ink);
+  font-weight: 700; font-size: 14px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  box-shadow: var(--pop-1);
+}
+.sheet-footer .btn-share {
+  width: 48px; height: 48px; border-radius: 14px;
+  background: var(--citrine); color: var(--ink);
+  border: 2px solid var(--ink);
+  display: grid; place-items: center;
+  box-shadow: var(--pop-1);
+}
+
+/* ─── POI panel ─── */
+.poi-panel {
+  position: absolute; left: 0; right: 0; top: 0; bottom: 0;
+  background: var(--paper);
+  z-index: 50;
+  transform: translateY(100%);
+  transition: transform 320ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  display: grid; grid-template-rows: auto auto 1fr auto;
+}
+.poi-panel.open { transform: translateY(0); }
+.poi-header {
+  padding: 56px 20px 16px;
+  background: var(--ink);
+  color: var(--paper);
+  display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 8px;
+}
+.poi-header h2 {
+  font-family: var(--font-display); font-style: italic; font-weight: 900;
+  font-size: 24px; letter-spacing: -0.02em; line-height: 1.05; margin: 0;
+}
+.poi-header .meta { font-family: var(--font-mono); font-size: 11px; font-weight: 600; color: var(--ink-4); margin-top: 4px; }
+.poi-tabs {
+  background: var(--ink);
+  padding: 0 20px 16px;
+  display: flex; gap: 8px;
+}
+.poi-tabs button {
+  background: transparent; color: var(--ink-4);
+  font-weight: 700; font-size: 13px; letter-spacing: -0.005em;
+  padding: 8px 14px;
+  border-radius: 999px;
+}
+.poi-tabs button.active {
+  background: var(--magenta); color: var(--white);
+}
+.poi-body { overflow-y: auto; padding: 20px; }
+.poi-body::-webkit-scrollbar { display: none; }
+.field { display: grid; gap: 6px; margin-bottom: 18px; }
+.field label { font-family: var(--font-mono); font-size: 10px; font-weight: 700; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.14em; }
+.field .stars { display: flex; gap: 3px; }
+.field .stars button {
+  width: 30px; height: 30px;
+  display: grid; place-items: center;
+  font-size: 22px;
+  color: var(--ink-4);
+  -webkit-text-stroke: 1px var(--ink-4);
+}
+.field .stars button.active { color: var(--citrine); -webkit-text-stroke: 1px var(--ink); }
+.field textarea {
+  border: 2px solid var(--ink); border-radius: var(--r-md);
+  padding: 12px; font-size: 15px; line-height: 1.4; min-height: 110px; resize: none;
+  background: var(--white); outline: none;
+  box-shadow: var(--pop-1);
+}
+.field textarea:focus { border-color: var(--magenta); }
+.field .row-meta { display: flex; gap: 12px; align-items: center; }
+.field .pill-meta {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--white); border: 2px solid var(--ink); border-radius: 999px;
+  padding: 6px 12px; font-weight: 600; font-size: 13px;
+}
+
+.poi-footer {
+  padding: 14px 20px 22px;
+  border-top: 1.5px solid var(--line);
+  display: flex; gap: 10px;
+}
+.poi-footer button { flex: 1; }
+.btn-mark {
+  height: 48px; border-radius: 14px;
+  background: var(--mint); color: var(--ink);
+  border: 2px solid var(--ink);
+  font-weight: 700; font-size: 14px;
+  box-shadow: var(--pop-1);
+}
+.btn-mark.unmark { background: var(--white); }
+.btn-done {
+  height: 48px; border-radius: 14px;
+  background: var(--ink); color: var(--paper);
+  border: 2px solid var(--ink);
+  font-weight: 700; font-size: 14px;
+  flex: 0 0 100px !important;
+  box-shadow: var(--pop-1);
+}
+
+/* ─── Filter sheet ─── */
+.filter-sheet { height: 60%; }
+.filter-sheet .sheet-list { padding: 14px 20px; }
+.filter-group { margin-bottom: 18px; }
+.filter-group .h {
+  font-family: var(--font-mono); font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.14em; color: var(--ink-3); margin-bottom: 10px;
+}
+.filter-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* ─── Celebration ─── */
+.celebration {
+  position: absolute; inset: 0;
+  display: grid; place-items: center;
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0;
+}
+.celebration.show {
+  animation: celebrate 1500ms ease forwards;
+}
+.celebration .burst {
+  font-family: var(--font-display); font-style: italic; font-weight: 900;
+  font-size: 56px; color: var(--magenta); letter-spacing: -0.04em;
+  text-shadow: 4px 4px 0 var(--ink);
+}
+@keyframes celebrate {
+  0%   { opacity: 0; transform: scale(0.5); }
+  20%  { opacity: 1; transform: scale(1.1); }
+  60%  { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.05); }
+}
+.confetti {
+  position: absolute; inset: 0; overflow: hidden; pointer-events: none;
+}
+.confetti i {
+  position: absolute; width: 8px; height: 14px;
+  border-radius: 2px;
+  opacity: 0;
+}
+.confetti.show i { animation: fall 1500ms ease-out forwards; }
+@keyframes fall {
+  0% { transform: translateY(-30px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(800px) rotate(720deg); opacity: 0; }
+}
+
+/* ─── Auth modal ─── */
+.auth-modal {
+  position: absolute; left: 20px; right: 20px; top: 50%;
+  transform: translateY(-50%) scale(0.9);
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  border-radius: var(--r-xl);
+  padding: 24px;
+  z-index: 60;
+  box-shadow: var(--pop-3);
+  opacity: 0; pointer-events: none;
+  transition: all 240ms ease;
+}
+.auth-modal.show { opacity: 1; pointer-events: auto; transform: translateY(-50%) scale(1); }
+.auth-modal h2 {
+  font-family: var(--font-display); font-style: italic; font-weight: 900;
+  font-size: 28px; letter-spacing: -0.02em; margin: 0 0 16px;
+}
+.auth-modal .input-row {
+  display: grid; gap: 8px; margin-bottom: 12px;
+}
+.auth-modal input {
+  height: 46px;
+  border: 2px solid var(--ink);
+  border-radius: 12px;
+  padding: 0 14px;
+  font-weight: 500;
+  background: var(--white);
+  outline: none;
+  box-shadow: var(--pop-1);
+}
+.auth-modal input:focus { border-color: var(--magenta); }
+.auth-modal .btn-go {
+  width: 100%; height: 48px; border-radius: 12px;
+  background: var(--magenta); color: var(--white);
+  border: 2px solid var(--ink);
+  font-weight: 800; font-size: 15px;
+  box-shadow: var(--pop-1);
+  margin-top: 8px;
+}
+.auth-modal .switch { text-align: center; margin-top: 12px; font-size: 13px; }
+.auth-modal .switch a { color: var(--cobalt); font-weight: 700; cursor: pointer; }
+
+/* ─── Add modal (FAB) ─── */
+.fab {
+  position: absolute; right: 20px; bottom: 100px;
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: var(--ink); color: var(--paper);
+  border: 2.5px solid var(--ink);
+  display: grid; place-items: center;
+  box-shadow: var(--pop-2);
+  z-index: 15;
+  transition: transform 200ms ease;
+}
+.fab:active { transform: scale(0.92); }
+.add-modal { height: 64%; }
+.create-tile {
+  display: grid; grid-template-columns: 56px 1fr auto; align-items: center; gap: 14px;
+  background: var(--white); border: 2px solid var(--ink); border-radius: var(--r-md);
+  padding: 14px; margin-bottom: 10px;
+  box-shadow: var(--pop-1);
+}
+.create-tile .ico {
+  width: 44px; height: 44px; border-radius: 12px;
+  display: grid; place-items: center;
+  border: 2px solid var(--ink);
+}
+.create-tile .label { font-family: var(--font-display); font-style: italic; font-weight: 900; font-size: 18px; letter-spacing: -0.02em; }
+.create-tile .desc { font-size: 12px; color: var(--ink-3); margin-top: 2px; }
+
+/* ─── Misc ─── */
+.dot-row { display: inline-flex; gap: 3px; align-items: center; }
+.dot-row i { width: 6px; height: 6px; border-radius: 50%; background: var(--paper-2); border: 1px solid var(--ink); }
+.dot-row i.on { background: var(--mint); }
+
+.pin-marker {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-family: var(--font-mono); font-size: 10px; font-weight: 700;
+  color: var(--cobalt);
+}
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <!-- Left rail: brand & principles -->
+  <aside style="position: sticky; top: 32px; align-self: start; max-width: 320px;">
+    <div class="brand-mark">
+      <span class="epic">Epic</span><span class="log">log</span><span class="dot">.</span>
+    </div>
+    <p class="tagline">Log the <em>epic</em>. Live the <em>epic</em>.</p>
+
+    <div class="spec-card">
+      <h4>Design Principles</h4>
+      <div class="principles">
+        <div class="principle"><span class="pin">1</span><span><b>Bold over beige.</b> Confident colour and chunky type signal that this is for living, not for filing.</span></div>
+        <div class="principle"><span class="pin">2</span><span><b>Progress is the product.</b> Rings, bars, and check-ins are first-class — not afterthoughts.</span></div>
+        <div class="principle"><span class="pin">3</span><span><b>Capture in one tap.</b> The Backlog is sacred. Friction stays at zero.</span></div>
+        <div class="principle"><span class="pin">4</span><span><b>One screen, many scales.</b> Same patterns work for "Soviet states" and "ramen near me".</span></div>
+      </div>
+    </div>
+
+    <div class="spec-card">
+      <h4>Type</h4>
+      <div class="type-stack">
+        <div class="demo">
+          <div class="label">Display · Fraunces</div>
+          <div class="display-demo">Epiclog<span style="color: var(--magenta)">.</span></div>
+        </div>
+        <div class="demo">
+          <div class="label">UI · Inter Tight</div>
+          <div class="ui-demo">Coffee circuits, ramen trails.</div>
+        </div>
+        <div class="demo">
+          <div class="label">Numbers · Geist Mono</div>
+          <div class="mono-demo">14 / 20 · 70%</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Center: Phone -->
+  <div class="phone">
+    <div class="screen" id="screen">
+      <div class="app">
+
+        <!-- HEADER -->
+        <div class="header" id="header">
+          <div class="header-brand"><span class="epic">Epic</span><span>log</span><span class="dot">.</span></div>
+          <div style="display: flex; gap: 10px; align-items: center;">
+            <button class="icon-btn" id="searchBtn" title="Search">
+              <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            </button>
+            <button class="icon-btn" id="filterBtn" title="Filter">
+              <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M3 6h18M6 12h12M9 18h6"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="scroll" id="scroll">
+
+          <!-- ── LANDING (anonymous) ── -->
+          <section data-screen="landing" class="screen-pane" hidden>
+            <div class="landing">
+              <div>
+                <div class="lede">
+                  Your life's<br>
+                  <em>epic</em> journeys,<br>
+                  <span class="epic">logged.</span>
+                </div>
+                <p class="sub">Build travel lists, check off places as you go, and turn every link you save into a themed adventure.</p>
+              </div>
+              <div class="cta-row">
+                <button class="btn-mag" data-auth="signup">Start free
+                  <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </button>
+                <button class="btn-line" data-auth="signin">Sign in</button>
+              </div>
+
+              <div>
+                <div class="section-title" style="padding: 0 0 10px">
+                  Trending in your city
+                </div>
+                <div class="preview">
+                  <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                    <div style="width:36px;height:36px;border-radius:10px;background:var(--mint);border:2px solid var(--ink);display:grid;place-items:center;">
+                      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M17 8h1a4 4 0 010 8h-1M3 8h14v9a4 4 0 01-4 4H7a4 4 0 01-4-4z"/><path d="M6 1v3M10 1v3M14 1v3"/></svg>
+                    </div>
+                    <div style="flex:1">
+                      <div style="font-family: var(--font-display); font-style: italic; font-weight: 900; font-size: 18px; letter-spacing: -0.02em;">Seattle Coffee Circuit</div>
+                      <div style="font-size: 12px; color: var(--ink-3);">by @rooster · 12 places</div>
+                    </div>
+                  </div>
+                  <div class="preview-row">
+                    <span class="dot done"></span>
+                    <span class="ttl strike">Victrola Coffee Roasters</span>
+                  </div>
+                  <div class="preview-row">
+                    <span class="dot done"></span>
+                    <span class="ttl strike">Espresso Vivace</span>
+                  </div>
+                  <div class="preview-row">
+                    <span class="dot"></span>
+                    <span class="ttl">Analog Coffee</span>
+                  </div>
+                  <div class="preview-row">
+                    <span class="dot"></span>
+                    <span class="ttl">Slate Coffee Roasters</span>
+                  </div>
+                </div>
+              </div>
+
+              <div style="display: grid; gap: 12px;">
+                <div class="explore-card" data-explore>
+                  <div class="band" style="background: var(--cobalt)"></div>
+                  <div class="ttl">Hidden Tokyo Ramen Trail</div>
+                  <div class="by">by @noodlepilgrim · 18 places</div>
+                  <div class="stats"><span class="pill">FOOD</span> <span>2.1k followers</span></div>
+                </div>
+                <div class="explore-card" data-explore>
+                  <div class="band" style="background: var(--magenta)"></div>
+                  <div class="ttl">Soviet States Quest</div>
+                  <div class="by">by @borderwalker · 15 places</div>
+                  <div class="stats"><span class="pill">COUNTRIES</span> <span>892 followers</span></div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ── LISTS ── -->
+          <section data-screen="lists" class="screen-pane">
+            <div class="toolbar">
+              <div class="search">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+                <input placeholder="Search lists, places…" />
+              </div>
+            </div>
+            <div class="chip-row" id="filterChips">
+              <button class="chip solid">All</button>
+              <button class="chip">Near Me</button>
+              <button class="chip">In Progress</button>
+              <button class="chip">Completed</button>
+              <button class="chip">Coffee</button>
+              <button class="chip">Food</button>
+              <button class="chip">Countries</button>
+            </div>
+
+            <div class="section-title">
+              Near you now <span class="meta">3 lists · 12 places</span>
+            </div>
+            <div class="nearme-row" id="nearMeRow"></div>
+
+            <div class="section-title">
+              All lists <span class="meta" id="listsCount"></span>
+            </div>
+            <div class="cardstack" id="listsStack"></div>
+          </section>
+
+          <!-- ── BACKLOG ── -->
+          <section data-screen="backlog" class="screen-pane" hidden>
+            <div class="banner">
+              <div class="blob"></div>
+              <div class="label">AI Suggestion · Just now</div>
+              <h3>Looks like you're building a Kyoto trip — turn 6 backlog places into a list?</h3>
+              <div class="actions">
+                <button class="btn-primary">Create list
+                  <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </button>
+                <button class="btn-ghost">Not now</button>
+              </div>
+            </div>
+
+            <div style="padding: 0 20px 14px;">
+              <button class="chip mag" id="importBtn">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2v-7M16 6l-4-4-4 4M12 2v13"/></svg>
+                Paste a link
+              </button>
+              <span style="margin-left: 8px; font-size: 12px; color: var(--ink-3); font-weight: 600;">Instagram · TikTok · Rednote · any URL</span>
+            </div>
+
+            <div id="backlogList"></div>
+          </section>
+
+          <!-- ── EXPLORE ── -->
+          <section data-screen="explore" class="screen-pane" hidden>
+            <div class="hero-feature">
+              <div class="tagline-mini">Featured this week</div>
+              <h2>Hidden Tokyo Ramen Trail</h2>
+              <p style="font-size: 13px; opacity: 0.92; max-width: 28ch; margin: 0 0 6px;">18 hand-picked counter shops, mapped by a real Tokyo local.</p>
+              <div class="stat-row">
+                <div class="stat">★ 4.9</div>
+                <div class="stat">2.1k follows</div>
+                <div class="stat">87 copies</div>
+              </div>
+              <button class="cta">Follow list
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+              </button>
+            </div>
+
+            <div class="chip-row">
+              <button class="chip solid">Trending</button>
+              <button class="chip">Near Me</button>
+              <button class="chip">New</button>
+              <button class="chip">Community picks</button>
+            </div>
+
+            <div class="section-title">Made by community <span class="meta">2,492 lists</span></div>
+            <div class="explore-grid" id="exploreGrid"></div>
+          </section>
+
+          <!-- ── PROFILE ── -->
+          <section data-screen="profile" class="screen-pane" hidden>
+            <div class="profile-hero">
+              <div class="avatar">M</div>
+              <div class="name">Maya R.</div>
+              <div class="level">★ Level 7 · Globetrotter</div>
+
+              <div class="progress-label">
+                <span>Overall journey</span>
+                <span class="pct">62%</span>
+              </div>
+              <div class="shimmer-bar"><i style="width: 62%"></i></div>
+            </div>
+
+            <div class="stat-strip">
+              <div class="stat-cell"><div class="num" style="color: var(--magenta)">147</div><div class="lbl">Visited</div></div>
+              <div class="stat-cell"><div class="num" style="color: var(--cobalt)">12</div><div class="lbl">Lists</div></div>
+              <div class="stat-cell"><div class="num" style="color: var(--mint)">5</div><div class="lbl">Done</div></div>
+              <div class="stat-cell"><div class="num" style="color: var(--coral)">23</div><div class="lbl">Backlog</div></div>
+            </div>
+
+            <div class="section-title">Achievements</div>
+            <div class="achv-row">
+              <div class="achv">
+                <div class="icon-wrap" style="background: var(--mint)">
+                  <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+                </div>
+                <div class="name">Completionist</div>
+              </div>
+              <div class="achv">
+                <div class="icon-wrap" style="background: var(--coral)">
+                  <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M8 14s-1-3 4-3 4 3 4 3M9 9h.01M15 9h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </div>
+                <div class="name">On Fire</div>
+              </div>
+              <div class="achv">
+                <div class="icon-wrap" style="background: var(--cobalt); color: var(--white)">
+                  <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg>
+                </div>
+                <div class="name">Globetrotter</div>
+              </div>
+              <div class="achv">
+                <div class="icon-wrap" style="background: var(--citrine)">
+                  <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                </div>
+                <div class="name">Scout</div>
+              </div>
+              <div class="achv">
+                <div class="icon-wrap" style="background: var(--plum); color: var(--white)">
+                  <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 2L15 8l7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg>
+                </div>
+                <div class="name">Curator</div>
+              </div>
+            </div>
+
+            <div class="section-title">List progress</div>
+            <div style="padding: 0 20px 8px; display: grid; gap: 10px;" id="profileLists"></div>
+
+            <div class="section-title">Recent activity</div>
+            <div style="padding: 0 20px 24px; display: grid; gap: 10px;">
+              <div class="backlog-item" style="grid-template-columns: 36px 1fr">
+                <div style="width:36px;height:36px;border-radius:10px;background:var(--mint-soft);border:2px solid var(--ink);display:grid;place-items:center;">
+                  <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+                </div>
+                <div>
+                  <div class="ttl">Visited Analog Coffee</div>
+                  <div class="sub">Seattle Coffee Circuit · 2h ago</div>
+                </div>
+              </div>
+              <div class="backlog-item" style="grid-template-columns: 36px 1fr">
+                <div style="width:36px;height:36px;border-radius:10px;background:var(--citrine-soft);border:2px solid var(--ink);display:grid;place-items:center;">
+                  <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 2L15 8l7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg>
+                </div>
+                <div>
+                  <div class="ttl">Rated Slate Coffee 5 stars</div>
+                  <div class="sub">Yesterday</div>
+                </div>
+              </div>
+              <div class="backlog-item" style="grid-template-columns: 36px 1fr">
+                <div style="width:36px;height:36px;border-radius:10px;background:var(--magenta-soft);border:2px solid var(--ink);display:grid;place-items:center;">
+                  <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9.66 17.66L4.34 12.34a2 2 0 010-2.83L10 4 20 14l-5.51 5.51a2 2 0 01-2.83 0l-2-1.85z"/></svg>
+                </div>
+                <div>
+                  <div class="ttl">AI suggested "Kyoto Day Trip" list</div>
+                  <div class="sub">2 days ago · from your Backlog</div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+        </div>
+
+        <!-- FAB -->
+        <button class="fab" id="fab" title="Add">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+
+        <!-- BOTTOM NAV -->
+        <nav class="bnav" id="bnav">
+          <button data-tab="lists" class="active">
+            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13"/><circle cx="3" cy="6" r="1.5"/><circle cx="3" cy="12" r="1.5"/><circle cx="3" cy="18" r="1.5"/></svg>
+            <span>Lists</span>
+          </button>
+          <button data-tab="backlog">
+            <span class="badge">7</span>
+            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg>
+            <span>Backlog</span>
+          </button>
+          <button data-tab="explore">
+            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+            <span>Explore</span>
+          </button>
+          <button data-tab="profile">
+            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span>Profile</span>
+          </button>
+        </nav>
+
+        <!-- Scrim & sheets -->
+        <div class="scrim" id="scrim"></div>
+
+        <!-- List detail bottom sheet -->
+        <div class="sheet" id="listSheet">
+          <div class="grabber" id="grabber"></div>
+          <div class="sheet-header" id="sheetHead">
+            <div class="ttl-wrap">
+              <div class="cat-row">
+                <span class="cat-tag" id="sheetCat">COFFEE</span>
+              </div>
+              <h2 id="sheetTitle">Seattle Coffee Circuit</h2>
+              <p id="sheetDesc">Twelve great roasters across the Emerald City — from Capitol Hill to Ballard.</p>
+            </div>
+            <div class="ring-wrap">
+              <svg class="ring-svg" width="80" height="80" viewBox="0 0 80 80">
+                <circle class="track" cx="40" cy="40" r="34" fill="none" stroke-width="6" stroke="rgba(255,255,255,0.25)"/>
+                <circle id="sheetMeter" class="meter" cx="40" cy="40" r="34" fill="none" stroke-width="6" stroke="white"
+                  stroke-dasharray="213.6" stroke-dashoffset="64"/>
+              </svg>
+              <div class="ring-pct" id="sheetPct">70%</div>
+            </div>
+          </div>
+          <div class="sheet-toolbar">
+            <button class="pillbtn">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Map view
+            </button>
+            <span class="meta" id="sheetMeta">14 / 20 · 6 left</span>
+          </div>
+          <div class="sheet-list" id="sheetList"></div>
+          <div class="sheet-footer">
+            <button class="btn-add" id="addPlaceBtn">
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+              Add place
+            </button>
+            <button class="btn-share">
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- POI Panel -->
+        <div class="poi-panel" id="poiPanel">
+          <div class="poi-header">
+            <div>
+              <h2 id="poiName">Analog Coffee</h2>
+              <div class="meta" id="poiSub">Capitol Hill · 12 min walk</div>
+            </div>
+            <button class="icon-btn ghost" style="color: var(--paper)" title="Edit">
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </button>
+            <button class="icon-btn ghost" style="color: var(--paper)" id="poiClose" title="Close">
+              <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+          <div class="poi-tabs">
+            <button class="active" data-poitab="notes">My Notes</button>
+            <button data-poitab="details">Place Details</button>
+          </div>
+          <div class="poi-body">
+            <div data-poipane="notes">
+              <div class="field">
+                <label>Your rating</label>
+                <div class="stars" id="poiStars">
+                  <button data-r="1">★</button><button data-r="2">★</button><button data-r="3">★</button><button data-r="4">★</button><button data-r="5">★</button>
+                </div>
+              </div>
+              <div class="field">
+                <label>Notes (auto-saves)</label>
+                <textarea placeholder="Pour-over was 9/10. Skip the espresso, get the drip. Sit by the window if you can.">Pour-over was 9/10. Skip the espresso, get the drip. Sit by the window if you can.</textarea>
+              </div>
+              <div class="field">
+                <label>Visit date</label>
+                <div class="row-meta">
+                  <span class="pill-meta">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                    Apr 14, 2026
+                  </span>
+                  <span class="pill-meta" style="background: var(--mint-soft);">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+                    Visited
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div data-poipane="details" hidden>
+              <div class="field">
+                <label>Address</label>
+                <div style="font-weight: 600;">235 Summit Ave E, Seattle, WA 98102</div>
+              </div>
+              <div class="field">
+                <label>Phone</label>
+                <div style="font-weight: 600;">+1 (206) 422-2199</div>
+              </div>
+              <div class="field">
+                <label>Website</label>
+                <div style="font-weight: 600; color: var(--cobalt);">analogcoffee.com</div>
+              </div>
+              <div class="field">
+                <label>Tags</label>
+                <div class="row-meta">
+                  <span class="pill-meta">Coffee</span>
+                  <span class="pill-meta">Pour-over</span>
+                  <span class="pill-meta">Capitol Hill</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="poi-footer">
+            <button class="btn-mark" id="poiMark">
+              <span id="poiMarkLabel">Mark unvisited</span>
+            </button>
+            <button class="btn-done" id="poiDone">Done</button>
+          </div>
+        </div>
+
+        <!-- Filter sheet -->
+        <div class="sheet filter-sheet" id="filterSheet">
+          <div class="grabber"></div>
+          <div class="sheet-header cobalt">
+            <div class="ttl-wrap">
+              <div class="cat-row"><span class="cat-tag">FILTER</span></div>
+              <h2>Sort &amp; filter</h2>
+              <p>Pick categories, sort order, and progress.</p>
+            </div>
+            <button class="icon-btn ghost" style="color: var(--white)" id="filterClose">
+              <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+          <div class="sheet-list">
+            <div class="filter-group">
+              <div class="h">Sort by</div>
+              <div class="filter-tags">
+                <button class="chip solid">Most recent</button>
+                <button class="chip">Most complete</button>
+                <button class="chip">A–Z</button>
+                <button class="chip">Done first</button>
+              </div>
+            </div>
+            <div class="filter-group">
+              <div class="h">Progress</div>
+              <div class="filter-tags">
+                <button class="chip solid">All</button>
+                <button class="chip">In progress</button>
+                <button class="chip">Completed</button>
+                <button class="chip">Not started</button>
+              </div>
+            </div>
+            <div class="filter-group">
+              <div class="h">Categories</div>
+              <div class="filter-tags">
+                <button class="chip">Coffee</button>
+                <button class="chip">Food</button>
+                <button class="chip">Countries</button>
+                <button class="chip">Landmarks</button>
+                <button class="chip">Nature</button>
+                <button class="chip">Seasonal</button>
+              </div>
+            </div>
+            <div class="filter-group">
+              <div class="h">View</div>
+              <div class="filter-tags">
+                <button class="chip solid">Flat</button>
+                <button class="chip">Grouped by category</button>
+                <button class="chip">Grouped by progress</button>
+              </div>
+            </div>
+          </div>
+          <div class="sheet-footer">
+            <button class="btn-add" id="filterApply">Apply</button>
+          </div>
+        </div>
+
+        <!-- Add modal (FAB) -->
+        <div class="sheet add-modal" id="addModal">
+          <div class="grabber"></div>
+          <div class="sheet-header mint">
+            <div class="ttl-wrap">
+              <div class="cat-row"><span class="cat-tag">CREATE</span></div>
+              <h2>Start a new list</h2>
+              <p>Four ways to begin your next adventure.</p>
+            </div>
+            <button class="icon-btn ghost" style="color: var(--ink)" id="addClose">
+              <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+          <div class="sheet-list" style="padding: 16px 20px;">
+            <div class="create-tile">
+              <div class="ico" style="background: var(--magenta-soft)">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+              </div>
+              <div>
+                <div class="label">From scratch</div>
+                <div class="desc">Empty list, add places one by one.</div>
+              </div>
+              <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+            </div>
+            <div class="create-tile">
+              <div class="ico" style="background: var(--cobalt-soft)">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+              </div>
+              <div>
+                <div class="label">Import from link</div>
+                <div class="desc">Paste TikTok, Instagram, Rednote, or any URL.</div>
+              </div>
+              <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+            </div>
+            <div class="create-tile">
+              <div class="ico" style="background: var(--citrine-soft)">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 2L15 8l7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg>
+              </div>
+              <div>
+                <div class="label">AI suggest</div>
+                <div class="desc">Tell us a theme — we'll draft 10 places.</div>
+              </div>
+              <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+            </div>
+            <div class="create-tile">
+              <div class="ico" style="background: var(--mint-soft)">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+              </div>
+              <div>
+                <div class="label">Browse public lists</div>
+                <div class="desc">Follow or copy a curated favourite.</div>
+              </div>
+              <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Auth modal -->
+        <div class="auth-modal" id="authModal">
+          <h2 id="authTitle">Welcome back</h2>
+          <div class="input-row">
+            <input placeholder="Email" type="email" value="demo@epiclog.app" />
+            <input placeholder="Password" type="password" value="demo1234" />
+          </div>
+          <button class="btn-go" id="authGo">Sign in</button>
+          <div class="switch">
+            New here? <a id="authSwitch">Create account</a>
+          </div>
+        </div>
+
+        <!-- Celebration -->
+        <div class="celebration" id="celebration">
+          <div class="burst">Epic.</div>
+        </div>
+        <div class="confetti" id="confetti"></div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Right rail: palette swatches & feature index -->
+  <aside style="position: sticky; top: 32px; align-self: start; max-width: 320px;">
+    <div class="spec-card">
+      <h4>Palette · Epic Pop</h4>
+      <div class="swatch-row">
+        <div class="swatch dark" style="background: #FF2D78">FF2D78</div>
+        <div class="swatch dark" style="background: #1F3DFF">1F3DFF</div>
+        <div class="swatch" style="background: #FFDC1A">FFDC1A</div>
+        <div class="swatch dark" style="background: #16D9A6">16D9A6</div>
+        <div class="swatch dark" style="background: #FF7A3D">FF7A3D</div>
+        <div class="swatch dark" style="background: #5A1E96">5A1E96</div>
+        <div class="swatch dark" style="background: #0F0E17">0F0E17</div>
+        <div class="swatch" style="background: #FFF6E8">FFF6E8</div>
+      </div>
+      <p style="font-size: 12px; color: var(--ink-3); margin: 12px 0 0; line-height: 1.5;">
+        Magenta carries the brand verb (<i>log</i>). Cobalt anchors trust and progress. Citrine is the celebration. Mint signals "done". Hard ink shadows give every surface a confident edge.
+      </p>
+    </div>
+
+    <div class="spec-card">
+      <h4>What's in this prototype</h4>
+      <div class="principles">
+        <div class="principle"><span class="pin">★</span><span><b>Lists tab</b> with Near Me row, swipe-to-pin/share/delete cards, progress rings.</span></div>
+        <div class="principle"><span class="pin">★</span><span><b>List Detail</b> bottom sheet — drag the grabber to expand to 92%.</span></div>
+        <div class="principle"><span class="pin">★</span><span><b>POI panel</b> — Notes & Place Details tabs with auto-save patterns.</span></div>
+        <div class="principle"><span class="pin">★</span><span><b>Backlog</b> with AI grouping banner & per-source attribution.</span></div>
+        <div class="principle"><span class="pin">★</span><span><b>Explore</b> with featured hero & community grid.</span></div>
+        <div class="principle"><span class="pin">★</span><span><b>Profile</b> with shimmer journey bar, stat strip, achievements.</span></div>
+        <div class="principle"><span class="pin">★</span><span><b>Anonymous landing</b> via the avatar in profile (toggle).</span></div>
+      </div>
+    </div>
+
+    <div class="spec-card" style="background: var(--ink); color: var(--paper);">
+      <h4 style="color: var(--ink-4)">Try it</h4>
+      <div style="font-size: 13px; line-height: 1.6;">
+        <div>· Tap a list card → bottom sheet</div>
+        <div>· Drag the grabber to expand</div>
+        <div>· Tap a place row → POI panel</div>
+        <div>· Swipe a list card right → <span style="color: var(--mint)">check-in burst</span></div>
+        <div>· Swipe a list card left → reveal pin / share / delete</div>
+        <div>· Tap <span style="color: var(--citrine)">+</span> FAB → create flow</div>
+        <div>· Tap filter icon → sort & filter sheet</div>
+      </div>
+    </div>
+  </aside>
+
+</div>
+
+<script>
+/* ─────────────────────────────────────────────────────────────
+   Epiclog · Prototype runtime
+   No frameworks — vanilla JS for a transparent SPA shell.
+   ───────────────────────────────────────────────────────────── */
+
+const CATEGORY = {
+  Coffee:    { color: 'var(--coral)',   bg: 'var(--magenta-soft)', icon: 'M17 8h1a4 4 0 010 8h-1M3 8h14v9a4 4 0 01-4 4H7a4 4 0 01-4-4z M6 1v3 M10 1v3 M14 1v3' },
+  Food:      { color: 'var(--magenta)', bg: 'var(--magenta-soft)', icon: 'M3 11l18-5v12L3 14v-3z M11.6 16.8a3 3 0 11-5.8-1.6' },
+  Countries: { color: 'var(--cobalt)',  bg: 'var(--cobalt-soft)',  icon: 'M3 3l18 18 M3 21L21 3' },
+  Landmarks: { color: 'var(--plum)',    bg: 'var(--magenta-soft)', icon: 'M3 21h18 M5 21V7l8-4 8 4v14 M9 9h1v1H9z M14 9h1v1h-1z M9 13h1v1H9z M14 13h1v1h-1z' },
+  Nature:    { color: 'var(--mint)',    bg: 'var(--mint-soft)',    icon: 'M12 2L4 14h16L12 2z M12 14v8' },
+  Seasonal:  { color: 'var(--citrine)', bg: 'var(--citrine-soft)', icon: 'M12 2v20 M2 12h20 M5 5l14 14 M19 5L5 19' },
+};
+
+const LISTS = [
+  { id: 'l1', name: 'Seattle Coffee Circuit',  cat: 'Coffee',    pinned: true,  desc: 'Twelve great roasters across the Emerald City — from Capitol Hill to Ballard.', places: [
+    { id:'p1', name:'Victrola Coffee Roasters', addr:'310 E Pike St', visited:true,  rating:4, notes:'Charming, busy mornings.', tags:['Pour-over','Capitol Hill'] },
+    { id:'p2', name:'Espresso Vivace',          addr:'532 Broadway E', visited:true,  rating:5, notes:'David Schomer himself.',     tags:['Espresso'] },
+    { id:'p3', name:'Analog Coffee',            addr:'235 Summit Ave E', visited:true,  rating:5, notes:'Pour-over was 9/10.', tags:['Pour-over','Capitol Hill'] },
+    { id:'p4', name:'Slate Coffee Roasters',    addr:'5413 6th Ave NW',  visited:false, rating:0, notes:'', tags:['Tasting flight'] },
+    { id:'p5', name:'Caffè Vita',               addr:'1005 E Pike St',   visited:true,  rating:4, notes:'', tags:['Espresso'] },
+    { id:'p6', name:'Milstead & Co.',           addr:'770 N 34th St',    visited:true,  rating:5, notes:'Fremont go-to.', tags:['Multi-roaster'] },
+    { id:'p7', name:'Onda Origins',             addr:'1601 N 45th St',   visited:false, rating:0, notes:'', tags:['Direct trade'] },
+    { id:'p8', name:'Storyville',               addr:'1001 1st Ave',     visited:true,  rating:4, notes:'', tags:['Pike Place'] },
+    { id:'p9', name:'Lighthouse Roasters',      addr:'400 N 43rd St',    visited:false, rating:0, notes:'', tags:['Roastery'] },
+    { id:'p10', name:'Bird & Beckett',          addr:'600 N 36th St',    visited:false, rating:0, notes:'', tags:['Bookstore café'] },
+  ]},
+  { id: 'l2', name: 'Hidden Tokyo Ramen Trail', cat: 'Food', pinned: false, desc: '18 hand-picked counter shops, mapped by a real Tokyo local.', places: [
+    { id:'r1', name:'Ichiran Shibuya',          addr:'Udagawacho 13-7',   visited:true,  rating:4, notes:'Late-night, solo seats.', tags:['Tonkotsu'] },
+    { id:'r2', name:'Afuri Ebisu',              addr:'Ebisu 1-1-7',       visited:true,  rating:5, notes:'Yuzu shio is essential.', tags:['Shio'] },
+    { id:'r3', name:'Tsuta',                    addr:'Sugamo 1-14-1',     visited:false, rating:0, notes:'', tags:['Michelin'] },
+    { id:'r4', name:'Menya Saimi',              addr:'Sapporo 4-jo',      visited:false, rating:0, notes:'', tags:['Miso'] },
+    { id:'r5', name:'Fuunji',                   addr:'Yoyogi 2-14-3',     visited:true,  rating:4, notes:'Tsukemen, always queue.', tags:['Tsukemen'] },
+    { id:'r6', name:'Rokurinsha',               addr:'Tokyo Station',     visited:false, rating:0, notes:'', tags:['Tsukemen'] },
+  ]},
+  { id: 'l3', name: 'Soviet States Quest',  cat: 'Countries', pinned: false, desc: 'All 15 former Soviet republics — a slow geopolitical crawl.', places: [
+    { id:'c1', name:'Estonia',     addr:'Tallinn',   visited:true, rating:5, notes:'Old town in winter.', tags:['Baltic'] },
+    { id:'c2', name:'Latvia',      addr:'Riga',      visited:true, rating:4, notes:'', tags:['Baltic'] },
+    { id:'c3', name:'Lithuania',   addr:'Vilnius',   visited:true, rating:4, notes:'', tags:['Baltic'] },
+    { id:'c4', name:'Georgia',     addr:'Tbilisi',   visited:true, rating:5, notes:'Khachapuri at Shavi Lomi.', tags:['Caucasus'] },
+    { id:'c5', name:'Armenia',     addr:'Yerevan',   visited:false, rating:0, notes:'', tags:['Caucasus'] },
+    { id:'c6', name:'Azerbaijan',  addr:'Baku',      visited:false, rating:0, notes:'', tags:['Caucasus'] },
+    { id:'c7', name:'Uzbekistan',  addr:'Tashkent',  visited:false, rating:0, notes:'', tags:['Central Asia'] },
+    { id:'c8', name:'Kazakhstan',  addr:'Almaty',    visited:false, rating:0, notes:'', tags:['Central Asia'] },
+  ]},
+  { id: 'l4', name: 'NYC Bagel Showdown',  cat: 'Food', pinned: false, desc: 'Top 10 bagel shops in the five boroughs.', places: [
+    { id:'b1', name:'Absolute Bagels',     addr:'Broadway & 108',   visited:true, rating:5, notes:'', tags:['Upper West'] },
+    { id:'b2', name:'Russ & Daughters',    addr:'Houston St',       visited:true, rating:5, notes:'', tags:['LES'] },
+    { id:'b3', name:'Tompkins Square Bagels', addr:'East Village',  visited:false, rating:0, notes:'', tags:['East Village'] },
+    { id:'b4', name:"Murray's Bagels",     addr:'6th Ave',          visited:false, rating:0, notes:'', tags:['West Village'] },
+  ]},
+  { id: 'l5', name: 'Wonders of Iceland', cat: 'Nature', pinned: false, desc: 'Glaciers, geysers, and the Ring Road in seven days.', places: [
+    { id:'i1', name:'Þingvellir',          addr:'Iceland',  visited:false, rating:0, notes:'', tags:['UNESCO'] },
+    { id:'i2', name:'Geysir',              addr:'Iceland',  visited:false, rating:0, notes:'', tags:['Geyser'] },
+    { id:'i3', name:'Gullfoss',            addr:'Iceland',  visited:false, rating:0, notes:'', tags:['Waterfall'] },
+  ]},
+];
+
+const NEAR_ME = [
+  { listId: 'l1', dist: '0.3 mi',  next: 'Analog Coffee' },
+  { listId: 'l4', dist: '1.2 mi',  next: 'Absolute Bagels' },
+  { listId: 'l1', dist: '0.7 mi',  next: 'Storyville Coffee' },
+];
+
+const BACKLOG_ITEMS = [
+  { id:'b1', src:'Instagram', ttl:'Onibus Coffee — Nakameguro',  sub:'Shaded laneway, single-origin, lockers for cyclists.' },
+  { id:'b2', src:'TikTok',    ttl:'Tsujihan unagi don',          sub:'Famous queue, 90-min wait, worth it.' },
+  { id:'b3', src:'Rednote',   ttl:'Kyoto Saryo',                 sub:'Matcha tasting in a 100-year-old machiya.' },
+  { id:'b4', src:'Link',      ttl:'Kissaten "Eight"',            sub:'Showa-era cafe — fluffy hotcake, cream soda.' },
+  { id:'b5', src:'Instagram', ttl:'Camelback sandwich (Nishi-Azabu)', sub:'Sweet-shrimp katsu sando, sold out by 1pm.' },
+  { id:'b6', src:'TikTok',    ttl:'Bear Pond Espresso',          sub:'Angel-stain espresso. No talking allowed.' },
+  { id:'b7', src:'Rednote',   ttl:'Glitch Coffee Brewers',       sub:'High-acidity light roast, gentleman barista.' },
+];
+
+const EXPLORE_LISTS = [
+  { ttl:'Hidden Tokyo Ramen Trail', by:'@noodlepilgrim', cat:'Food', count:18, color:'var(--cobalt)' },
+  { ttl:'Soviet States Quest',      by:'@borderwalker',  cat:'Countries', count:15, color:'var(--magenta)' },
+  { ttl:'NYC Bagel Showdown',       by:'@bagelhead',     cat:'Food', count:10, color:'var(--coral)' },
+  { ttl:'Wonders of Iceland',       by:'@northbound',    cat:'Nature', count:12, color:'var(--mint)' },
+  { ttl:'Mexico Mezcal Tour',       by:'@espadinjules',  cat:'Food', count:9,  color:'var(--citrine)' },
+  { ttl:'Romanesque Spain',         by:'@archnerd',      cat:'Landmarks', count:14, color:'var(--plum)' },
+];
+
+/* ─── State ─── */
+let state = {
+  tab: 'lists',          // 'landing' | 'lists' | 'backlog' | 'explore' | 'profile'
+  openSheet: null,       // 'list' | 'filter' | 'add' | null
+  sheetTall: false,
+  poiOpen: false,
+  authOpen: false,
+  pinned: { l1: true },
+  currentListId: null,
+  currentPlaceId: null,
+  poiTab: 'notes',
+};
+
+/* ─── Helpers ─── */
+const $ = (sel, root = document) => root.querySelector(sel);
+const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+
+function svg(path, opts = {}) {
+  const stroke = opts.stroke || 'currentColor';
+  const fill = opts.fill || 'none';
+  const w = opts.size || 18;
+  return `<svg width="${w}" height="${w}" fill="${fill}" stroke="${stroke}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+    ${path.split(' M ').map((p,i)=>`<path d="${i===0?p:'M '+p}"/>`).join('')}
+  </svg>`;
+}
+
+function progress(list) {
+  const total = list.places.length;
+  const done = list.places.filter(p => p.visited).length;
+  return { total, done, pct: total ? Math.round(done / total * 100) : 0 };
+}
+
+function categoryHTML(cat, size = 32) {
+  const c = CATEGORY[cat] || CATEGORY.Coffee;
+  const small = size <= 28;
+  return `<div class="cat" style="width:${size}px;height:${size}px;background:${c.bg};color:${c.color};">
+    ${svg(c.icon, { size: small ? 14 : 16, stroke: c.color })}
+  </div>`;
+}
+
+function ringSVG(pct, size = 56, color = 'var(--magenta)', track = 'var(--paper-2)') {
+  const r = size/2 - 4;
+  const c = 2 * Math.PI * r;
+  const off = c - (pct/100) * c;
+  return `<svg class="ring-svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+    <circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="${track}" stroke-width="4"/>
+    <circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="${color}" stroke-width="4"
+      stroke-linecap="round" stroke-dasharray="${c.toFixed(1)}" stroke-dashoffset="${off.toFixed(1)}" />
+  </svg>`;
+}
+
+/* ─── Renderers ─── */
+function renderNearMe() {
+  const html = NEAR_ME.map(n => {
+    const list = LISTS.find(l => l.id === n.listId);
+    const p = progress(list);
+    const c = CATEGORY[list.cat];
+    return `<div class="nearme-card" data-listid="${list.id}">
+      <div class="swatch-band" style="background:${c.color}"></div>
+      <div class="row">
+        ${categoryHTML(list.cat, 32)}
+        <div style="flex:1; min-width: 0;">
+          <div class="title">${list.name}</div>
+        </div>
+      </div>
+      <div class="next">Next: ${n.next}</div>
+      <div class="dist">↗ ${n.dist} away</div>
+      <div class="bar"><i style="width:${p.pct}%; background:${c.color}"></i></div>
+      <div style="display:flex; justify-content: space-between; font-family: var(--font-mono); font-size: 11px; font-weight: 600;">
+        <span style="color: var(--ink-3)">${p.done}/${p.total}</span>
+        <span style="color: ${c.color}">${p.pct}%</span>
+      </div>
+    </div>`;
+  }).join('');
+  $('#nearMeRow').innerHTML = html;
+}
+
+function renderLists() {
+  const stack = $('#listsStack');
+  stack.innerHTML = '';
+  // Pinned first
+  const sorted = [...LISTS].sort((a,b) => (state.pinned[b.id]?1:0) - (state.pinned[a.id]?1:0));
+  $('#listsCount').textContent = `${sorted.length} lists`;
+  sorted.forEach(list => {
+    const p = progress(list);
+    const c = CATEGORY[list.cat];
+    const wrap = document.createElement('div');
+    wrap.className = 'list-card-wrap';
+    wrap.innerHTML = `
+      <div class="list-card-actions">
+        <button class="pin">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path d="M12 17v5M9 11l-5 5 5 5M19 11l5 5-5 5M12 2v15"/></svg>
+          ${state.pinned[list.id] ? 'Unpin' : 'Pin'}
+        </button>
+        <button class="share">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98"/></svg>
+          Share
+        </button>
+        <button class="del">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+          Delete
+        </button>
+      </div>
+      <div class="list-card" data-listid="${list.id}">
+        <div class="ring-wrap">
+          ${ringSVG(p.pct, 56, c.color)}
+          <div class="ring-pct" style="color: ${c.color}">${p.pct}%</div>
+        </div>
+        <div style="min-width: 0;">
+          <div class="meta-row">
+            ${state.pinned[list.id] ? `<span class="pin-badge">📌 PINNED</span>` : ''}
+            <span style="font-family: var(--font-mono); font-size: 10px; font-weight: 700; color: ${c.color}; text-transform: uppercase; letter-spacing: 0.12em;">${list.cat}</span>
+          </div>
+          <div class="name">${list.name}</div>
+          <div class="progress-line">${p.done} of ${p.total} · ${p.total - p.done} to go</div>
+        </div>
+        <div class="arrow">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+        </div>
+      </div>
+    `;
+    stack.appendChild(wrap);
+    attachSwipe(wrap, list);
+  });
+}
+
+function renderBacklog() {
+  const root = $('#backlogList');
+  root.innerHTML = BACKLOG_ITEMS.map(b => {
+    const colorMap = { Instagram: 'var(--magenta)', TikTok: 'var(--ink)', Rednote: 'var(--coral)', Link: 'var(--cobalt)' };
+    return `<div class="backlog-item" data-id="${b.id}">
+      <div>
+        <div class="source"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${colorMap[b.src]};border:1px solid var(--ink);"></span> ${b.src}</div>
+        <div class="ttl">${b.ttl}</div>
+        <div class="sub">${b.sub}</div>
+      </div>
+      <button class="add">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+        Add
+      </button>
+    </div>`;
+  }).join('');
+}
+
+function renderExplore() {
+  $('#exploreGrid').innerHTML = EXPLORE_LISTS.map(e => `
+    <div class="explore-card" data-explore>
+      <div class="band" style="background:${e.color}"></div>
+      <div class="ttl">${e.ttl}</div>
+      <div class="by">${e.by}</div>
+      <div class="stats"><span class="pill">${e.cat.toUpperCase()}</span> <span>${e.count} places</span></div>
+    </div>
+  `).join('');
+}
+
+function renderProfile() {
+  const root = $('#profileLists');
+  root.innerHTML = LISTS.map(l => {
+    const p = progress(l);
+    const c = CATEGORY[l.cat];
+    return `<div class="backlog-item" style="grid-template-columns: 36px 1fr auto; box-shadow: var(--pop-1);">
+      ${categoryHTML(l.cat, 36)}
+      <div>
+        <div class="ttl" style="font-size: 13px;">${l.name}</div>
+        <div class="bar" style="height:8px;border-radius:999px;background:var(--paper-2);overflow:hidden;margin-top:6px;">
+          <i style="display:block;height:100%;width:${p.pct}%;background:${c.color};border-radius:999px;"></i>
+        </div>
+      </div>
+      <div style="font-family: var(--font-mono); font-weight:700; font-size: 13px; color: ${c.color};">${p.pct}%</div>
+    </div>`;
+  }).join('');
+}
+
+/* ─── Sheet · List Detail ─── */
+function openListSheet(listId) {
+  const list = LISTS.find(l => l.id === listId);
+  if (!list) return;
+  state.currentListId = listId;
+  const p = progress(list);
+  const c = CATEGORY[list.cat];
+
+  $('#sheetCat').textContent = list.cat.toUpperCase();
+  $('#sheetTitle').textContent = list.name;
+  $('#sheetDesc').textContent = list.desc;
+  $('#sheetMeta').textContent = `${p.done} / ${p.total} · ${p.total - p.done} left`;
+  $('#sheetPct').textContent = p.pct + '%';
+  $('#sheetHead').style.background = `linear-gradient(180deg, ${c.color} 0%, ${c.color === 'var(--coral)' ? 'var(--magenta)' : 'var(--ink)'} 140%)`;
+
+  // ring stroke offset
+  const r = 34, circ = 2 * Math.PI * r;
+  $('#sheetMeter').setAttribute('stroke-dasharray', circ.toFixed(2));
+  $('#sheetMeter').setAttribute('stroke-dashoffset', (circ - p.pct/100*circ).toFixed(2));
+
+  // place rows
+  $('#sheetList').innerHTML = list.places.map(place => `
+    <div class="poi-row ${place.visited ? 'done' : ''}" data-place="${place.id}">
+      <div class="check" data-toggle="${place.id}">
+        ${place.visited ? `<svg width="14" height="14" fill="none" stroke="var(--ink)" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>` : ''}
+      </div>
+      <div>
+        <div class="name">${place.name}</div>
+        <div class="meta-row">
+          ${place.rating ? `<span class="star">${'★'.repeat(place.rating)}</span>` : ''}
+          <span>${place.addr}</span>
+          ${place.notes ? `<span>· 📝</span>` : ''}
+          ${place.tags && place.tags.length ? `<span>· ${place.tags.length} tag${place.tags.length>1?'s':''}</span>` : ''}
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  state.openSheet = 'list';
+  state.sheetTall = false;
+  $('#listSheet').classList.add('open');
+  $('#listSheet').classList.remove('tall');
+  $('#scrim').classList.add('show');
+}
+
+function closeSheet() {
+  $('#listSheet').classList.remove('open', 'tall');
+  $('#filterSheet').classList.remove('open');
+  $('#addModal').classList.remove('open');
+  $('#scrim').classList.remove('show');
+  state.openSheet = null;
+}
+
+/* ─── POI panel ─── */
+function openPOI(placeId) {
+  const list = LISTS.find(l => l.id === state.currentListId);
+  if (!list) return;
+  const place = list.places.find(p => p.id === placeId);
+  if (!place) return;
+  state.currentPlaceId = placeId;
+
+  $('#poiName').textContent = place.name;
+  $('#poiSub').textContent = `${list.cat} · ${place.addr}`;
+  $('#poiMarkLabel').textContent = place.visited ? 'Mark unvisited' : 'Mark visited';
+  $('#poiMark').classList.toggle('unmark', place.visited);
+
+  // rating stars
+  $$('#poiStars button').forEach((b, i) => {
+    b.classList.toggle('active', i < place.rating);
+  });
+  // notes
+  const ta = $('[data-poipane="notes"] textarea');
+  ta.value = place.notes || '';
+
+  state.poiOpen = true;
+  $('#poiPanel').classList.add('open');
+}
+
+function closePOI() {
+  $('#poiPanel').classList.remove('open');
+  state.poiOpen = false;
+}
+
+/* ─── Tab switch ─── */
+function switchTab(tab) {
+  state.tab = tab;
+  $$('.bnav button').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+  $$('.screen-pane').forEach(s => s.hidden = (s.dataset.screen !== tab));
+  // header label
+  const titles = { lists: 'Epiclog', backlog: 'Backlog', explore: 'Explore', profile: 'Profile', landing: 'Epiclog' };
+  const head = $('#header');
+  if (tab === 'lists' || tab === 'landing') {
+    head.querySelector('.header-brand').style.display = '';
+    if (head.querySelector('.header-title')) head.querySelector('.header-title').remove();
+  } else {
+    head.querySelector('.header-brand').style.display = 'none';
+    let title = head.querySelector('.header-title');
+    if (!title) {
+      title = document.createElement('div');
+      title.className = 'header-title';
+      head.insertBefore(title, head.querySelector('div:last-child'));
+    }
+    title.textContent = titles[tab];
+  }
+  $('#scroll').scrollTop = 0;
+}
+
+/* ─── Swipe handler ─── */
+function attachSwipe(wrap, list) {
+  const card = wrap.querySelector('.list-card');
+  const ACTION = 80;
+  const CHEER  = 110;
+  let startX = 0, dx = 0, dragging = false, pid = null;
+
+  function onDown(e) {
+    if (e.target.closest('.list-card-actions')) return;
+    pid = e.pointerId;
+    card.setPointerCapture(pid);
+    startX = e.clientX;
+    dragging = true;
+    card.classList.add('swiping');
+  }
+  function onMove(e) {
+    if (!dragging) return;
+    dx = e.clientX - startX;
+    dx = Math.max(-200, Math.min(200, dx));
+    card.style.transform = `translateX(${dx}px)`;
+    if (dx > CHEER) card.classList.add('celebrate');
+    else card.classList.remove('celebrate');
+  }
+  function onUp() {
+    if (!dragging) return;
+    dragging = false;
+    card.classList.remove('swiping');
+    if (dx > CHEER) {
+      // Check-in celebration!
+      card.style.transform = `translateX(120%)`;
+      triggerCelebration();
+      setTimeout(() => {
+        card.style.transform = '';
+        card.classList.remove('celebrate');
+      }, 500);
+    } else if (dx < -ACTION) {
+      card.style.transform = `translateX(-200px)`;
+    } else {
+      card.style.transform = '';
+    }
+    dx = 0;
+  }
+
+  card.addEventListener('pointerdown', onDown);
+  card.addEventListener('pointermove', onMove);
+  card.addEventListener('pointerup', onUp);
+  card.addEventListener('pointercancel', onUp);
+  card.addEventListener('click', (e) => {
+    if (Math.abs(dx) < 5) openListSheet(list.id);
+  });
+
+  // action buttons
+  wrap.querySelector('.pin').addEventListener('click', (e) => {
+    e.stopPropagation();
+    state.pinned[list.id] = !state.pinned[list.id];
+    renderLists();
+  });
+  wrap.querySelector('.share').addEventListener('click', (e) => {
+    e.stopPropagation();
+    flashToast('Share link copied');
+    card.style.transform = '';
+  });
+  wrap.querySelector('.del').addEventListener('click', (e) => {
+    e.stopPropagation();
+    wrap.style.transition = 'all 240ms ease';
+    wrap.style.transform = 'translateX(-110%)';
+    wrap.style.opacity = '0';
+    setTimeout(() => wrap.remove(), 240);
+  });
+}
+
+/* ─── Celebration ─── */
+function triggerCelebration() {
+  const c = $('#celebration');
+  const conf = $('#confetti');
+  c.classList.remove('show');
+  conf.classList.remove('show');
+  void c.offsetWidth;
+
+  // Build confetti
+  conf.innerHTML = '';
+  const colors = ['var(--magenta)', 'var(--cobalt)', 'var(--citrine)', 'var(--mint)', 'var(--coral)'];
+  for (let i = 0; i < 50; i++) {
+    const el = document.createElement('i');
+    el.style.left = (Math.random() * 100) + '%';
+    el.style.top = '-10px';
+    el.style.background = colors[i % colors.length];
+    el.style.animationDelay = (Math.random() * 200) + 'ms';
+    el.style.transform = `rotate(${Math.random() * 360}deg)`;
+    conf.appendChild(el);
+  }
+  c.classList.add('show');
+  conf.classList.add('show');
+}
+
+function flashToast(msg) {
+  let t = document.createElement('div');
+  t.textContent = msg;
+  t.style.cssText = `position: absolute; bottom: 110px; left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--paper); padding: 10px 16px; border-radius: 999px; font-weight: 600; font-size: 13px; z-index: 200; box-shadow: var(--pop-2); border: 2px solid var(--ink);`;
+  $('#screen').appendChild(t);
+  setTimeout(() => t.remove(), 1800);
+}
+
+/* ─── Sheet drag ─── */
+function attachSheetDrag() {
+  const grab = $('#grabber');
+  let startY = 0, dragging = false, pid = null;
+  grab.addEventListener('pointerdown', (e) => {
+    pid = e.pointerId;
+    grab.setPointerCapture(pid);
+    startY = e.clientY;
+    dragging = true;
+  });
+  grab.addEventListener('pointermove', (e) => {
+    if (!dragging) return;
+    const dy = e.clientY - startY;
+    if (dy < -30) {
+      $('#listSheet').classList.add('tall');
+      state.sheetTall = true;
+      dragging = false;
+    } else if (dy > 30) {
+      if (state.sheetTall) {
+        $('#listSheet').classList.remove('tall');
+        state.sheetTall = false;
+        dragging = false;
+      } else {
+        closeSheet();
+        dragging = false;
+      }
+    }
+  });
+  grab.addEventListener('pointerup', () => dragging = false);
+}
+
+/* ─── Wire ─── */
+document.addEventListener('DOMContentLoaded', () => {
+  renderNearMe();
+  renderLists();
+  renderBacklog();
+  renderExplore();
+  renderProfile();
+  attachSheetDrag();
+
+  // Bottom nav
+  $$('.bnav button').forEach(btn => {
+    btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+  });
+
+  // Filter button
+  $('#filterBtn').addEventListener('click', () => {
+    state.openSheet = 'filter';
+    $('#filterSheet').classList.add('open');
+    $('#scrim').classList.add('show');
+  });
+  $('#filterClose').addEventListener('click', closeSheet);
+  $('#filterApply').addEventListener('click', () => { flashToast('Filters applied'); closeSheet(); });
+
+  // Search button → toggle landing for demo
+  $('#searchBtn').addEventListener('click', () => {
+    flashToast('Search · coming soon');
+  });
+
+  // Scrim
+  $('#scrim').addEventListener('click', closeSheet);
+
+  // POI close
+  $('#poiClose').addEventListener('click', closePOI);
+  $('#poiDone').addEventListener('click', closePOI);
+
+  // POI tabs
+  $$('.poi-tabs button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tab = btn.dataset.poitab;
+      state.poiTab = tab;
+      $$('.poi-tabs button').forEach(b => b.classList.toggle('active', b === btn));
+      $$('[data-poipane]').forEach(p => p.hidden = p.dataset.poipane !== tab);
+    });
+  });
+
+  // POI stars
+  $$('#poiStars button').forEach(b => {
+    b.addEventListener('click', () => {
+      const r = +b.dataset.r;
+      const list = LISTS.find(l => l.id === state.currentListId);
+      const place = list && list.places.find(p => p.id === state.currentPlaceId);
+      if (place) place.rating = r;
+      $$('#poiStars button').forEach((bb, i) => bb.classList.toggle('active', i < r));
+      flashToast('Rating saved');
+    });
+  });
+
+  // POI mark visited
+  $('#poiMark').addEventListener('click', () => {
+    const list = LISTS.find(l => l.id === state.currentListId);
+    const place = list && list.places.find(p => p.id === state.currentPlaceId);
+    if (!place) return;
+    place.visited = !place.visited;
+    $('#poiMarkLabel').textContent = place.visited ? 'Mark unvisited' : 'Mark visited';
+    $('#poiMark').classList.toggle('unmark', place.visited);
+    if (place.visited) triggerCelebration();
+    // refresh sheet list
+    openListSheet(list.id);
+  });
+
+  // Sheet list interactions
+  $('#sheetList').addEventListener('click', (e) => {
+    const toggle = e.target.closest('[data-toggle]');
+    const row = e.target.closest('[data-place]');
+    if (toggle) {
+      e.stopPropagation();
+      const list = LISTS.find(l => l.id === state.currentListId);
+      const place = list.places.find(p => p.id === toggle.dataset.toggle);
+      place.visited = !place.visited;
+      if (place.visited) triggerCelebration();
+      openListSheet(list.id);
+      return;
+    }
+    if (row) {
+      openPOI(row.dataset.place);
+    }
+  });
+
+  // Near me cards
+  $('#nearMeRow').addEventListener('click', (e) => {
+    const c = e.target.closest('[data-listid]');
+    if (c) openListSheet(c.dataset.listid);
+  });
+
+  // FAB
+  $('#fab').addEventListener('click', () => {
+    state.openSheet = 'add';
+    $('#addModal').classList.add('open');
+    $('#scrim').classList.add('show');
+  });
+  $('#addClose').addEventListener('click', closeSheet);
+
+  // Add place button (in sheet)
+  $('#addPlaceBtn').addEventListener('click', () => {
+    flashToast('Add place sheet · coming soon');
+  });
+
+  // Auth modal
+  $$('[data-auth]').forEach(b => b.addEventListener('click', () => {
+    const mode = b.dataset.auth;
+    $('#authTitle').textContent = mode === 'signup' ? 'Start free' : 'Welcome back';
+    $('#authGo').textContent = mode === 'signup' ? 'Create account' : 'Sign in';
+    $('#authModal').classList.add('show');
+    $('#scrim').classList.add('show');
+    state.authOpen = true;
+  }));
+  $('#authGo').addEventListener('click', () => {
+    $('#authModal').classList.remove('show');
+    $('#scrim').classList.remove('show');
+    state.authOpen = false;
+    switchTab('lists');
+    flashToast('Welcome back, Maya');
+  });
+  $('#authSwitch').addEventListener('click', () => {
+    $('#authTitle').textContent = $('#authTitle').textContent === 'Welcome back' ? 'Start free' : 'Welcome back';
+    $('#authGo').textContent = $('#authGo').textContent === 'Sign in' ? 'Create account' : 'Sign in';
+  });
+
+  // Compress header on scroll
+  $('#scroll').addEventListener('scroll', () => {
+    $('#header').classList.toggle('compress', $('#scroll').scrollTop > 24);
+  });
+
+  // Backlog import
+  $('#importBtn').addEventListener('click', () => {
+    flashToast('Paste a link · AI extracting…');
+  });
+
+  // Filter chip toggling (visual only)
+  $('#filterChips').addEventListener('click', (e) => {
+    const c = e.target.closest('.chip');
+    if (!c) return;
+    $$('#filterChips .chip').forEach(x => x.classList.remove('solid'));
+    c.classList.add('solid');
+  });
+
+  // Show landing once on first profile-avatar click as a demo path:
+  // Tap the avatar in profile to flip to anonymous landing (just for demo).
+  document.addEventListener('click', (e) => {
+    const av = e.target.closest('.profile-hero .avatar');
+    if (av) {
+      switchTab('landing');
+    }
+  });
+});
+</script>
+</body>
+</html>

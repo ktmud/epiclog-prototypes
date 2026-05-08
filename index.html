@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Epiclog · Design Explorations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Caveat:wght@500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500;1,600;1,700&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,500;1,600&family=Fraunces:ital,opsz,wght@0,9..144,700;0,9..144,900;1,9..144,700;1,9..144,900&family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@500;700;800&family=Inter:wght@400;500;600;700&family=Karla:ital,wght@0,500;0,600;0,700;1,500&family=Lora:ital,wght@0,500;0,600;1,500;1,600;1,700&family=Manrope:wght@500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,500;1,6..72,600;1,6..72,700&family=Paytone+One&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:           #FAF7F2;
+  --surface:      #FFFFFF;
+  --ink:          #1A1715;
+  --ink-2:        #4A4540;
+  --ink-3:        #807A72;
+  --ink-4:        #B5AE9F;
+  --line:         rgba(26, 23, 21, 0.08);
+  --line-2:       rgba(26, 23, 21, 0.16);
+
+  --r-md: 16px;
+  --r-lg: 22px;
+
+  --soft-1: 0 1px 2px rgba(26, 23, 21, 0.04), 0 4px 12px rgba(26, 23, 21, 0.06);
+  --soft-2: 0 2px 4px rgba(26, 23, 21, 0.05), 0 12px 32px -10px rgba(26, 23, 21, 0.14);
+  --soft-3: 0 6px 14px rgba(26, 23, 21, 0.08), 0 32px 64px -16px rgba(26, 23, 21, 0.20);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 15px; line-height: 1.55;
+  color: var(--ink);
+  background:
+    radial-gradient(900px 500px at 8% -8%,  rgba(255, 138, 31, 0.08) 0%, transparent 60%),
+    radial-gradient(800px 600px at 95% 12%, rgba(45, 212, 191, 0.10) 0%, transparent 60%),
+    radial-gradient(900px 700px at 50% 100%, rgba(139, 92, 246, 0.07) 0%, transparent 60%),
+    var(--bg);
+  background-attachment: fixed;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+
+/* ─── Page chrome ─── */
+.page { max-width: 1280px; margin: 0 auto; padding: 56px 32px 96px; }
+@media (min-width: 1024px) { .page { padding: 72px 56px 120px; } }
+
+.head {
+  margin-bottom: 56px;
+  display: grid; gap: 22px;
+  max-width: 720px;
+}
+.head .eyebrow {
+  font-family: 'Geist Mono', ui-monospace, monospace;
+  font-size: 11px; font-weight: 500;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--ink-3);
+  display: inline-flex; align-items: center; gap: 12px;
+}
+.head .eyebrow::before {
+  content: ""; width: 28px; height: 1px;
+  background: var(--ink-3);
+}
+.head h1 {
+  font-family: 'Fraunces', 'Times New Roman', serif;
+  font-style: italic; font-weight: 900;
+  font-size: clamp(48px, 7vw, 72px);
+  line-height: 0.95; letter-spacing: -0.03em;
+  margin: 0;
+}
+.head h1 em {
+  font-style: italic;
+  background: linear-gradient(90deg, #FF4D4F 0%, #FF8A1F 18%, #FFC53D 36%, #2BB673 54%, #06B6D4 70%, #3B82F6 84%, #EC4899 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.head .lede {
+  font-family: 'Fraunces', 'Times New Roman', serif;
+  font-style: italic; font-weight: 700;
+  font-size: 22px; line-height: 1.4;
+  color: var(--ink-2);
+  max-width: 32ch;
+}
+.head .meta {
+  display: flex; gap: 18px; flex-wrap: wrap;
+  font-family: 'Geist Mono', ui-monospace, monospace;
+  font-size: 12px; color: var(--ink-3);
+  letter-spacing: -0.02em;
+  margin-top: 4px;
+}
+.head .meta span {
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.head .meta .dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: linear-gradient(135deg, #FF4D4F, #8B5CF6);
+}
+
+/* ─── Spectrum bar ─── */
+.spectrum {
+  display: flex; height: 4px;
+  margin: 32px 0 56px;
+  border-radius: 4px; overflow: hidden;
+}
+.spectrum i { flex: 1; }
+
+/* ─── Grid ─── */
+.grid {
+  display: grid; gap: 24px;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 720px) { .grid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1080px) { .grid { grid-template-columns: 1fr 1fr 1fr; } }
+
+/* ─── Card ─── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  display: grid; grid-template-rows: auto 1fr auto;
+  box-shadow: var(--soft-1);
+  transition: transform 240ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 240ms ease, border-color 240ms ease;
+  cursor: pointer;
+  position: relative;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--soft-3);
+  border-color: var(--line-2);
+}
+.card .preview {
+  height: 200px;
+  position: relative; overflow: hidden;
+  display: grid; place-items: center;
+  padding: 0 24px;
+  border-bottom: 1px solid var(--line);
+}
+.card .preview .brand {
+  display: inline-flex; align-items: baseline; gap: 4px;
+  text-align: center;
+}
+.card .body {
+  padding: 22px 24px 18px;
+  display: grid; gap: 16px;
+}
+.card h3 {
+  font-family: 'Fraunces', serif;
+  font-style: italic; font-weight: 700;
+  font-size: 28px; line-height: 1; letter-spacing: -0.02em;
+  margin: 0; color: var(--ink);
+}
+.card h3 .num {
+  font-family: 'Geist Mono', ui-monospace, monospace;
+  font-style: normal; font-weight: 500;
+  font-size: 13px; color: var(--ink-4);
+  letter-spacing: -0.02em;
+  margin-right: 6px;
+}
+.card .desc {
+  font-size: 14px; line-height: 1.55;
+  color: var(--ink-2);
+  margin: 0;
+}
+.card .palette {
+  display: flex; gap: 0;
+  border-radius: 6px; overflow: hidden;
+  height: 18px;
+  border: 1px solid var(--line);
+}
+.card .palette i { flex: 1; }
+.card .type-list {
+  font-family: 'Geist Mono', ui-monospace, monospace;
+  font-size: 11px; color: var(--ink-3);
+  letter-spacing: -0.02em;
+  display: flex; gap: 8px; flex-wrap: wrap;
+}
+.card .type-list span { display: inline-block; }
+.card .type-list i {
+  display: inline-block; margin: 0 4px;
+  font-style: normal; color: var(--ink-4);
+}
+.card .cta {
+  padding: 14px 24px;
+  border-top: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 13px; font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.005em;
+}
+.card .cta .arrow {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--ink); color: var(--surface);
+  transition: transform 200ms ease;
+}
+.card:hover .cta .arrow { transform: translateX(4px); }
+.card .cta .filename {
+  font-family: 'Geist Mono', ui-monospace, monospace;
+  font-size: 11px; font-weight: 500;
+  color: var(--ink-3); letter-spacing: -0.02em;
+}
+
+/* ─── Per-card preview backgrounds ─── */
+.preview.epicpop { background:
+  radial-gradient(700px 400px at 12% -10%, #FFF6C2 0%, transparent 50%),
+  radial-gradient(600px 400px at 90% 10%,  #FFE0EC 0%, transparent 55%),
+  #FFF6E8;
+}
+.preview.companion { background:
+  radial-gradient(600px 400px at 10% 5%,  #DEE5D2 0%, transparent 55%),
+  radial-gradient(600px 400px at 95% 20%, #F2D8C9 0%, transparent 55%),
+  #F4ECD8;
+}
+.preview.prism { background:
+  radial-gradient(600px 400px at 8% 0%,   rgba(255, 138, 31, 0.10) 0%, transparent 60%),
+  radial-gradient(700px 500px at 100% 30%, rgba(139, 92, 246, 0.10) 0%, transparent 60%),
+  #FFFFFF;
+}
+.preview.atelier { background:
+  radial-gradient(500px 300px at 18% 12%, rgba(61, 90, 140, 0.20) 0%, transparent 65%),
+  radial-gradient(400px 240px at 82% 28%, rgba(156, 45, 45, 0.18) 0%, transparent 70%),
+  radial-gradient(500px 240px at 50% 90%, rgba(201, 145, 20, 0.15) 0%, transparent 70%),
+  #F4EDE0;
+}
+.preview.folio { background:
+  radial-gradient(500px 300px at 18% 12%, rgba(61, 90, 140, 0.20) 0%, transparent 65%),
+  radial-gradient(400px 240px at 82% 28%, rgba(156, 45, 45, 0.18) 0%, transparent 70%),
+  radial-gradient(500px 240px at 50% 90%, rgba(90, 107, 58, 0.15) 0%, transparent 70%),
+  #F4EDE0;
+}
+.preview.lagoon { background:
+  radial-gradient(500px 300px at 0% 0%,    #5EEAD4 0%, transparent 60%),
+  radial-gradient(500px 400px at 100% 30%, #99F6E4 0%, transparent 60%),
+  radial-gradient(600px 500px at 50% 100%, #2DD4BF 0%, transparent 55%),
+  linear-gradient(180deg, #CCFBF1 0%, #F0FDFA 100%);
+}
+.preview.lagoon::after {
+  content: ""; position: absolute; inset: 0;
+  background-image:
+    radial-gradient(circle at 18% 35%, rgba(255,255,255,0.5) 0%, transparent 4%),
+    radial-gradient(circle at 78% 22%, rgba(255,255,255,0.45) 0%, transparent 3%),
+    radial-gradient(circle at 88% 65%, rgba(255,255,255,0.5) 0%, transparent 5%);
+  pointer-events: none;
+}
+.preview.grove { background: #FAF7EE; }
+.preview.grove::after {
+  content: ""; position: absolute;
+  right: 30px; top: 30px; width: 70px; height: 90px;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 70 90' fill='none' stroke='%236F7A5C' stroke-width='1.2' stroke-linecap='round'><path d='M35 86 V25'/><path d='M35 45 Q22 40 15 25'/><path d='M35 55 Q48 50 56 32'/><path d='M35 32 Q26 26 24 18'/><path d='M35 65 Q44 60 50 46'/><ellipse cx='15' cy='25' rx='5' ry='2.5' transform='rotate(-30 15 25)'/><ellipse cx='56' cy='32' rx='5' ry='2.5' transform='rotate(30 56 32)'/><ellipse cx='24' cy='18' rx='4' ry='2' transform='rotate(-40 24 18)'/><ellipse cx='50' cy='46' rx='4' ry='2' transform='rotate(35 50 46)'/></svg>") no-repeat center;
+  opacity: 0.5;
+}
+.preview.relay {
+  background:
+    repeating-linear-gradient(45deg, transparent 0, transparent 28px, rgba(228, 57, 43, 0.06) 28px, rgba(228, 57, 43, 0.06) 30px),
+    #F2F0EB;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  padding: 0;
+}
+.preview.relay .strip {
+  display: grid; grid-template-columns: 3fr 1fr 1fr; height: 6px;
+  border-bottom: 2px solid #0A0A0A;
+}
+.preview.relay .strip i:nth-child(1) { background: #E4392B; }
+.preview.relay .strip i:nth-child(2) { background: #1B4DC2; }
+.preview.relay .strip i:nth-child(3) { background: #F4D023; }
+.preview.relay .brand-wrap { display: grid; place-items: center; padding: 0 24px; }
+
+.preview.drift { background:
+  radial-gradient(700px 500px at 50% -200px, #DAF3EE 0%, transparent 70%),
+  #F0FAF7;
+}
+.preview.borgo { background:
+  radial-gradient(500px 300px at 12% 4%, rgba(118, 132, 86, 0.18) 0%, transparent 60%),
+  radial-gradient(450px 350px at 95% 18%, rgba(197, 104, 65, 0.18) 0%, transparent 60%),
+  radial-gradient(500px 400px at 80% 100%, rgba(200, 148, 60, 0.20) 0%, transparent 60%),
+  #F4EBD8;
+}
+.preview.lapis { background:
+  radial-gradient(600px 400px at 8% -8%, rgba(27, 79, 204, 0.10) 0%, transparent 60%),
+  radial-gradient(500px 400px at 95% 12%, rgba(200, 0, 45, 0.10) 0%, transparent 60%),
+  radial-gradient(500px 400px at 80% 100%, rgba(232, 160, 32, 0.12) 0%, transparent 60%),
+  #F5F2EC;
+}
+
+/* ─── Per-card brand styles ─── */
+.brand.epicpop {
+  font-family: 'Fraunces', serif;
+  font-style: italic; font-weight: 900;
+  font-size: 60px; letter-spacing: -0.04em; line-height: 0.9;
+}
+.brand.epicpop .epic { color: #FF2D78; }
+.brand.epicpop .log  { color: #0F0E17; }
+.brand.epicpop .dot  { color: #FFDC1A; }
+
+.brand.companion {
+  font-family: 'Lora', serif;
+  font-style: italic; font-weight: 700;
+  font-size: 56px; letter-spacing: -0.02em; line-height: 0.95;
+}
+.brand.companion .epic { color: #5C7A4D; }
+.brand.companion .log  { color: #C26644; }
+.brand.companion .dot  { color: #D49A2C; }
+
+.brand.prism {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic; font-weight: 400;
+  font-size: 64px; letter-spacing: -0.02em; line-height: 0.95;
+}
+.brand.prism .name { color: #0A0A0A; }
+.brand.prism .dot {
+  width: 12px; height: 12px; border-radius: 50%;
+  background: conic-gradient(from -90deg, #FF4D4F, #FF8A1F, #FFC53D, #2BB673, #06B6D4, #3B82F6, #8B5CF6, #EC4899, #FF4D4F);
+  display: inline-block; align-self: center; margin-left: 6px;
+}
+
+.brand.atelier {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-weight: 600;
+  font-size: 64px; letter-spacing: -0.01em; line-height: 0.95;
+}
+.brand.atelier .epic { color: #9C2D2D; }
+.brand.atelier .log  { color: #3D5A8C; }
+.brand.atelier .dot  { color: #C99114; }
+
+.brand.folio {
+  font-family: 'Newsreader', serif;
+  font-style: italic; font-weight: 600;
+  font-size: 56px; letter-spacing: -0.015em; line-height: 0.95;
+}
+.brand.folio .epic { color: #9C2D2D; }
+.brand.folio .log  { color: #3D5A8C; }
+.brand.folio .dot  { color: #C99114; }
+
+.brand.lagoon {
+  font-family: 'Sora', sans-serif;
+  font-weight: 800;
+  font-size: 56px; letter-spacing: -0.04em; line-height: 0.95;
+}
+.brand.lagoon .epic { color: #13868C; }
+.brand.lagoon .log  { color: #0A2E33; }
+.brand.lagoon .dot {
+  width: 12px; height: 12px; border-radius: 50%;
+  background: linear-gradient(135deg, #2DD4BF, #13868C);
+  display: inline-block; align-self: center; margin-left: 4px;
+  box-shadow: 0 4px 12px -2px rgba(45, 212, 191, 0.6);
+}
+
+.brand.grove {
+  font-family: 'EB Garamond', serif;
+  font-style: italic; font-weight: 500;
+  font-size: 60px; letter-spacing: -0.01em; line-height: 0.95;
+}
+.brand.grove .epic { color: #6F7A5C; }
+.brand.grove .log  { color: #2A2823; }
+.brand.grove .dot  { color: #C46B3D; font-style: normal; }
+
+.brand.relay {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 76px; letter-spacing: 0.005em; line-height: 0.85;
+}
+.brand.relay .epic { color: #E4392B; }
+.brand.relay .log  { color: #1B4DC2; }
+.brand.relay .dot  { color: #F4D023; }
+
+.brand.drift {
+  font-family: 'Sora', sans-serif;
+  font-weight: 700;
+  font-size: 56px; letter-spacing: -0.04em; line-height: 0.95;
+  color: #0F3F44;
+}
+.brand.drift .accent { color: #14A89A; }
+.brand.drift .dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: #14A89A;
+  display: inline-block; align-self: center; margin-left: 4px;
+}
+
+.brand.borgo {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-size: 64px; letter-spacing: -0.01em; line-height: 0.95;
+}
+.brand.borgo .epic { color: #7C2A2C; }
+.brand.borgo .log { color: #768456; }
+.brand.borgo .dot { color: #C8943C; font-style: normal; }
+
+.brand.lapis {
+  font-family: 'Paytone One', sans-serif;
+  font-size: 56px; letter-spacing: -0.02em; line-height: 0.95;
+}
+.brand.lapis .epic { color: #C8002D; }
+.brand.lapis .log { color: #1A1208; }
+.brand.lapis .dot { color: #E8A020; }
+
+/* ─── Footer ─── */
+.foot {
+  margin-top: 72px;
+  padding-top: 32px;
+  border-top: 1px solid var(--line);
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;
+  gap: 16px;
+  font-family: 'Geist Mono', ui-monospace, monospace;
+  font-size: 12px; color: var(--ink-3);
+  letter-spacing: -0.02em;
+}
+.foot .repo { display: inline-flex; align-items: center; gap: 8px; }
+.foot a:hover { color: var(--ink); }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <header class="head">
+    <div class="eyebrow">Eleven directions · one product</div>
+    <h1>Epiclog<br>design <em>explorations</em>.</h1>
+    <p class="lede">Self-contained single-file SPA prototypes — same screens, same data, same interactions. Different visual language for each.</p>
+    <div class="meta">
+      <span><span class="dot"></span> 11 variants</span>
+      <span>· same skeleton</span>
+      <span>· vanilla HTML / CSS / JS</span>
+      <span>· no build step</span>
+    </div>
+  </header>
+
+  <div class="spectrum">
+    <i style="background: #FF4D4F"></i>
+    <i style="background: #FF8A1F"></i>
+    <i style="background: #FFC53D"></i>
+    <i style="background: #2BB673"></i>
+    <i style="background: #06B6D4"></i>
+    <i style="background: #3B82F6"></i>
+    <i style="background: #8B5CF6"></i>
+    <i style="background: #EC4899"></i>
+  </div>
+
+  <div class="grid">
+
+    <!-- 01 · Epic Pop -->
+    <a class="card" href="epiclog-prototype.html">
+      <div class="preview epicpop">
+        <div class="brand epicpop"><span class="epic">Epic</span><span class="log">log</span><span class="dot">.</span></div>
+      </div>
+      <div class="body">
+        <h3><span class="num">01</span>Epic Pop</h3>
+        <p class="desc">Bold magenta and cobalt with citrine sparks. Hard ink offset shadows give every surface sticker confidence.</p>
+        <div class="palette">
+          <i style="background: #FF2D78"></i><i style="background: #1F3DFF"></i><i style="background: #FFDC1A"></i><i style="background: #16D9A6"></i><i style="background: #FF7A3D"></i><i style="background: #5A1E96"></i><i style="background: #0F0E17"></i><i style="background: #FFF6E8"></i>
+        </div>
+        <div class="type-list">
+          <span>Fraunces</span><i>+</i><span>Inter Tight</span><i>+</i><span>Geist Mono</span>
+        </div>
+      </div>
+      <div class="cta">
+        <span class="filename">epiclog-prototype.html</span>
+        <span class="arrow">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </span>
+      </div>
+    </a>
+
+    <!-- 02 · Compass & Cedar -->
+    <a class="card" href="epiclog-prototype-companion.html">
+      <div class="preview companion">
+        <div class="brand companion"><span class="epic">Epic</span><span class="log">log</span><span class="dot">.</span></div>
+      </div>
+      <div class="body">
+        <h3><span class="num">02</span>Compass &amp; Cedar</h3>
+        <p class="desc">Warm earth tones inspired by Mediterranean rooftops and cedar groves. A friendly companion, not a feature.</p>
+        <div class="palette">
+          <i style="background: #5C7A4D"></i><i style="background: #C26644"></i><i style="background: #D49A2C"></i><i style="background: #324A66"></i><i style="background: #A05C42"></i><i style="background: #6B3A57"></i><i style="background: #F4ECD8"></i><i style="background: #2A241D"></i>
+        </div>
+        <div class="type-list">
+          <span>Lora</span><i>+</i><span>Inter</span><i>+</i><span>Caveat</span>
+        </div>
+      </div>
+      <div class="cta">
+        <span class="filename">epiclog-prototype-companion.html</span>
+        <span class="arrow">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </span>
+      </div>
+    </a>
+
+    <!-- 03 · Prism -->
+    <a class="card" href="epiclog-prototype-prism.html">
+      <div class="preview prism">
+        <div class="brand prism"><span class="name">Epiclog</span><span class="dot"></span></div>
+      </div>
+      <div class="body">
+        <h3><span class="num">03</span>Prism</h3>
+        <p class="desc">Pure white with rainbow as category accent. Clean, airy, premium — each category claims one hue.</p>
+        <div class="palette">
+          <i style="background: #FF4D4F"></i><i style="background: #FF8A1F"></i><i style="background: #FFC53D"></i><i style="background: #2BB673"></i><i style="background: #06B6D4"></i><i style="background: #3B82F6"></i><i style="background: #8B5CF6"></i><i style="background: #EC4899"></i>
+        </div>
+        <div class="type-list">
+          <span>Instrument Serif</span><i>+</i><span>Geist</span><i>+</i><span>Geist Mono</span>
+        </div>
+      </div>
+      <div class="cta">
+        <span class="filename">epiclog-prototype-prism.html</span>
+        <span class="arrow">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </span>
+      </div>
+    </a>
+
+    <!-- 04 · Atelier -->
+    <a class="card" href="epiclog-prototype-atelier.html">
+      <div class="preview atelier">
+        <div class="brand atelier"><span class="epic">Epic</span><span class="log">log</span><span class="dot">.</span></div>
+      </div>
+      <div class="body">
+        <h3><span class="num">04</span>Atelier</h3>
+        <p class="desc">Wet pigment, soaked paper, and the small ceremonies of a journal. Real watercolor pigments by name.</p>
+        <div class="palette">
+          <i style="background: #3D5A8C"></i><i style="background: #9C2D2D"></i><i style="background: #C99114"></i><i style="background: #5A6B3A"></i><i style="background: #8B5A3C"></i><i style="background: #454854"></i><i style="background: #F4EDE0"></i><i style="background: #221E1A"></i>
+        </div>
+        <div class="type-list">
+          <span>Cormorant Garamond</span><i>+</i><span>Inter</span><i>+</i><span>Caveat</span>
+        </div>
+      </div>
+      <div class="cta">
+        <span class="filename">epiclog-prototype-atelier.html</span>
+        <span class="arrow">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </span>
+      </div>
+    </a>
+
+    <!-- 05 · Folio -->
+    <a class="card" href="epiclog-prototype-folio.html">
+      <div class="preview folio">
+        <div class="brand folio"><span class="epic">Epic</span><span class="log">log</span><span class="dot">.</span></div>
+      </div>
+      <div class="body">
+        <h3><span class="num">05</span>Folio</h3>
+        <p class="desc">The Atelier wash, with a sturdier hand at the title. Newsreader replaces Cormorant Garamond — same paper, more legibility.</p>
+        <div class="palette">
+          <i style="background: #3D5A8C"></i><i style="background: #9C2D2D"></i><i style="background: #C99114"></i><i style="background: #5A6B3A"></i><i style="background: #8B5A3C"></i><i style="background: #454854"></i><i style="background: #F4EDE0"></i><i style="background: #221E1A"></i>
+        </div>
+        <div class="type-list">
+          <span>Newsreader</span><i>+</i><span>Inter</span><i>+</i><span>Caveat</span>
+        </div>
+      </div>
+      <div class="cta">
+        <span class="filename">epiclog-prototype-folio.html</span>
+        <span class="arrow">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </span>
+      </div>
+    </a>
+
+    <!-- 06 · Lagoon -->
+    <a class="card" href="epiclog-prototype-lagoon.html">
+      <div class="preview lagoon">
+        <div class="brand lagoon"><span class="epic">Epic</span><span class="log">log</span><span class="dot"></span></div>
+      </div>
+      <div class="body">
+        <h3><span class="num">06</span>Lagoon</h3>
+        <p class="desc">Teal glassmorphism, single aquatic family. From abyss to foam — every surface is a different depth of the same water.</p>
+        <div class="palette">
+          <i style="background: #0A2E33"></i><i style="background: #0F4F4F"></i><i style="background: #13868C"></i><i style="background: #2DD4BF"></i><i style="background: #5EEAD4"></i><i style="background: #99F6E4"></i><i style="background: #CCFBF1"></i><i style="background: #F0FDFA"></i>
+        </div>
+        <div class="type-list">
+          <span>Sora</span><i>+</i><span>Manrope</span>
+        </div>
+      </div>
+      <div class="cta">
+        <span class="filename">epiclog-prototype-lagoon.html</span>
+        <span class="arrow">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </span>
+      </div>
+    </a>
+
+    <!-- 07 · Grove -->
+    <a class="card" href="epiclog-prototype-grove.html">
+      <div class="preview grove">
+        <div class="brand grove"><span class="epic">Epic</span><span class="log">log</span><span class="dot">.</span></div>
+      </div>
+      <div class="body">
+        <h3><span class="num">07</span>Grove</h3>
+        <p class="desc">Japandi zen calm. Five neutrals — washi, bone, fog, moss, sumi — and a single persimmon flame. Restraint as design.</p>
+        <div class="palette">
+          <i style="background: #FAF7EE; border-right: 1px solid var(--line)"></i><i style="background: #F0EBDD"></i><i style="background: #D4D6D1"></i><i style="background: #6F7A5C"></i><i style="background: #2A2823"></i><i style="background: #C46B3D"></i>
+        </div>
+        <div class="type-list">
+          <span>EB Garamond</span><i>+</i><span>IBM Plex Sans</span>
+        </div>
+      </div>
+      <div class="cta">
+        <span class="filename">epiclog-prototype-grove.html</span>
+        <span class="arrow">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </span>
+      </div>
+    </a>
+
+    <!-- 08 · Relay -->
+    <a class="card" href="epiclog-prototype-relay.html">
+      <div class="preview relay">
+        <div class="strip"><i></i><i></i><i></i></div>
+        <div class="brand-wrap">
+          <div class="brand relay"><span class="epic">EPIC</span><span class="log">LOG</span><span class="dot">.</span></div>
+        </div>
+      </div>
+      <div class="body">
+        <h3><span class="num">08</span>Relay</h3>
+        <p class="desc">Sporty Bauhaus color blocks. Track-red, kit-blue, lane-yellow, neon-lime. 2px black borders, zero shadows, sharp 0px corners.</p>
+        <div class="palette">
+          <i style="background: #E4392B"></i><i style="background: #1B4DC2"></i><i style="background: #F4D023"></i><i style="background: #C7F03A"></i><i style="background: #0A0A0A"></i><i style="background: #FFFFFF; border-right: 1px solid var(--line)"></i>
+        </div>
+        <div class="type-list">
+          <span>Bebas Neue</span><i>+</i><span>Inter</span>
+        </div>
+      </div>
+      <div class="cta">
+        <span class="filename">epiclog-prototype-relay.html</span>
+        <span class="arrow">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </span>
+      </div>
+    </a>
+
+    <!-- 09 · Drift -->
+    <a class="card" href="epiclog-prototype-drift.html">
+      <div class="preview drift">
+        <div class="brand drift"><span class="accent">Epic</span><span>log</span><span class="dot"></span></div>
+      </div>
+      <div class="body">
+        <h3><span class="num">09</span>Drift</h3>
+        <p class="desc">The Lagoon, distilled. White surfaces, hairline borders, one muted teal accent. Glass reserved for sheets only — calm by subtraction.</p>
+        <div class="palette">
+          <i style="background: #0F3F44"></i><i style="background: #14736D"></i><i style="background: #14A89A"></i><i style="background: #2DD4BF"></i><i style="background: #B8EAE2"></i><i style="background: #DAF3EE"></i><i style="background: #F0FAF7"></i><i style="background: #FFFFFF; border-right: 1px solid var(--line)"></i>
+        </div>
+        <div class="type-list">
+          <span>Sora</span><i>+</i><span>Manrope</span>
+        </div>
+      </div>
+      <div class="cta">
+        <span class="filename">epiclog-prototype-drift.html</span>
+        <span class="arrow">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </span>
+      </div>
+    </a>
+
+    <!-- 10 · Borgo -->
+    <a class="card" href="epiclog-prototype-borgo.html">
+      <div class="preview borgo">
+        <div class="brand borgo"><span class="epic">Epic</span><span class="log">log</span><span class="dot">.</span></div>
+      </div>
+      <div class="body">
+        <h3><span class="num">10</span>Borgo</h3>
+        <p class="desc">Italian countryside stays. Terracotta walls, olive groves, ochre wine labels, sun-bleached canvas. Stamped wax seals, hand-painted villa signage.</p>
+        <div class="palette">
+          <i style="background: #C56841"></i><i style="background: #C8943C"></i><i style="background: #768456"></i><i style="background: #3F5634"></i><i style="background: #7C2A2C"></i><i style="background: #F4EBD8"></i><i style="background: #2F2820"></i>
+        </div>
+        <div class="type-list">
+          <span>DM Serif Display</span><i>+</i><span>Karla</span><i>+</i><span>Caveat</span>
+        </div>
+      </div>
+      <div class="cta">
+        <span class="filename">epiclog-prototype-borgo.html</span>
+        <span class="arrow">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </span>
+      </div>
+    </a>
+
+    <!-- 11 · Lapis -->
+    <a class="card" href="epiclog-prototype-lapis.html">
+      <div class="preview lapis">
+        <div class="brand lapis"><span class="epic">Epic</span><span class="log">log</span><span class="dot">.</span></div>
+      </div>
+      <div class="body">
+        <h3><span class="num">11</span>Lapis</h3>
+        <p class="desc">A return to the original Persian Glass — built around the three things the brand already loves: category icons, the progress ring, and the dot row.</p>
+        <div class="palette">
+          <i style="background: #1B4FCC"></i><i style="background: #C8002D"></i><i style="background: #E8A020"></i><i style="background: #00AABB"></i><i style="background: #8B1A8B"></i><i style="background: #00843D"></i><i style="background: #F5F2EC"></i><i style="background: #1A1208"></i>
+        </div>
+        <div class="type-list">
+          <span>Paytone One</span><i>+</i><span>Manrope</span><i>+</i><span>DM Sans</span>
+        </div>
+      </div>
+      <div class="cta">
+        <span class="filename">epiclog-prototype-lapis.html</span>
+        <span class="arrow">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </span>
+      </div>
+    </a>
+
+  </div>
+
+  <footer class="foot">
+    <div class="repo">
+      <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.111.82-.261.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+      <span>ktmud/epiclog</span>
+      <span style="margin-left: 6px; color: var(--ink-4);">/ claude/spa-prototype-design-ZeuBX</span>
+    </div>
+    <div>Open any prototype to compare swipe, sheet drag, POI panel, celebration.</div>
+  </footer>
+
+</div>
+
+</body>
+</html>
