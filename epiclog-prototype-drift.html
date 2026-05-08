@@ -15,21 +15,21 @@
    ───────────────────────────────────────────────────────────── */
 
 :root {
-  --abyss:        #0F3F44;
-  --deep-teal:    #14736D;
-  --teal:         #14A89A;
-  --bright:       #2DD4BF;
-  --foam:         #B8EAE2;
-  --pale:         #DAF3EE;
-  --mist:         #F0FAF7;
+  --abyss:        #0E3A52;
+  --deep-teal:    #155F8A;
+  --teal:         #1B89C8;
+  --bright:       #38B6E8;
+  --foam:         #BFE0F0;
+  --pale:         #D9ECF4;
+  --mist:         #EEF7FB;
   --bone:         #FFFFFF;
 
-  --ink:          #0F3F44;
-  --ink-2:        #34625F;
-  --ink-3:        #6E8C89;
-  --ink-4:        #A8BCBA;
-  --line:         rgba(15, 63, 68, 0.06);
-  --line-2:       rgba(15, 63, 68, 0.12);
+  --ink:          #0E3A52;
+  --ink-2:        #335977;
+  --ink-3:        #6C8AA0;
+  --ink-4:        #A8BCC9;
+  --line:         rgba(14, 58, 82, 0.06);
+  --line-2:       rgba(14, 58, 82, 0.12);
 
   --font-display: 'Sora', system-ui, sans-serif;
   --font-ui:      'Manrope', system-ui, -apple-system, sans-serif;
@@ -39,10 +39,10 @@
   --r-lg: 18px;
   --r-xl: 26px;
 
-  --soft-1: 0 1px 2px rgba(15, 63, 68, 0.04);
-  --soft-2: 0 1px 2px rgba(15, 63, 68, 0.04), 0 8px 24px -12px rgba(15, 63, 68, 0.10);
-  --soft-3: 0 4px 8px rgba(15, 63, 68, 0.06), 0 24px 48px -16px rgba(15, 63, 68, 0.16);
-  --soft-up: 0 -12px 32px -12px rgba(15, 63, 68, 0.12);
+  --soft-1: 0 1px 2px rgba(14, 58, 82, 0.04);
+  --soft-2: 0 1px 2px rgba(14, 58, 82, 0.04), 0 8px 24px -12px rgba(14, 58, 82, 0.10);
+  --soft-3: 0 4px 8px rgba(14, 58, 82, 0.06), 0 24px 48px -16px rgba(14, 58, 82, 0.16);
+  --soft-up: 0 -12px 32px -12px rgba(14, 58, 82, 0.12);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -137,7 +137,7 @@ a { color: inherit; text-decoration: none; }
   border-radius: 56px;
   background: linear-gradient(180deg, #1A2A2A, #0A1818);
   padding: 13px;
-  box-shadow: 0 6px 14px rgba(15, 63, 68, 0.10), 0 32px 80px -24px rgba(15, 63, 68, 0.30);
+  box-shadow: 0 6px 14px rgba(14, 58, 82, 0.10), 0 32px 80px -24px rgba(14, 58, 82, 0.30);
   position: relative;
   flex: 0 0 auto;
 }
@@ -299,7 +299,7 @@ a { color: inherit; text-decoration: none; }
   font-size: 12px; color: var(--ink-3); margin-top: 12px;
   display: flex; align-items: center; gap: 5px;
 }
-.nearme-card .bar { height: 2px; border-radius: 999px; background: rgba(15, 63, 68, 0.08); margin-top: 14px; overflow: hidden; }
+.nearme-card .bar { height: 2px; border-radius: 999px; background: rgba(14, 58, 82, 0.08); margin-top: 14px; overflow: hidden; }
 .nearme-card .bar > i { display: block; height: 100%; border-radius: 999px; background: var(--teal); }
 
 /* ─── List card ─── */
@@ -434,7 +434,7 @@ a { color: inherit; text-decoration: none; }
 }
 .featured .visual::after {
   content: ""; position: absolute; inset: 0;
-  background: linear-gradient(180deg, transparent 50%, rgba(15, 63, 68, 0.40) 100%);
+  background: linear-gradient(180deg, transparent 50%, rgba(14, 58, 82, 0.55) 100%);
 }
 .featured .visual .stamp {
   position: absolute; bottom: 22px; left: 24px; z-index: 2;
@@ -521,7 +521,7 @@ a { color: inherit; text-decoration: none; }
 .journey-block .label-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; }
 .journey-block .lbl { font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-3); }
 .journey-block .pct { font-family: var(--font-display); font-weight: 700; font-size: 28px; letter-spacing: -0.04em; line-height: 1; color: var(--teal); font-variant-numeric: tabular-nums; }
-.journey-block .bar { height: 4px; border-radius: 999px; background: rgba(15, 63, 68, 0.08); overflow: hidden; }
+.journey-block .bar { height: 4px; border-radius: 999px; background: rgba(14, 58, 82, 0.08); overflow: hidden; }
 .journey-block .bar > i { display: block; height: 100%; border-radius: 999px; background: var(--teal); transition: width 600ms ease; }
 
 .stat-strip { margin: 0 24px 22px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
@@ -551,7 +551,7 @@ a { color: inherit; text-decoration: none; }
 .plist-row:last-child { border-bottom: 0; }
 .plist-row .pip { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; background: var(--teal); }
 .plist-row .ttl { font-weight: 600; font-size: 14px; color: var(--ink); letter-spacing: -0.005em; }
-.plist-row .bar-mini { height: 2px; border-radius: 999px; background: rgba(15, 63, 68, 0.08); margin-top: 8px; overflow: hidden; }
+.plist-row .bar-mini { height: 2px; border-radius: 999px; background: rgba(14, 58, 82, 0.08); margin-top: 8px; overflow: hidden; }
 .plist-row .bar-mini > i { display: block; height: 100%; border-radius: 999px; background: var(--teal); }
 .plist-row .pct { font-family: var(--font-display); font-weight: 700; font-size: 14px; letter-spacing: -0.04em; color: var(--teal); font-variant-numeric: tabular-nums; }
 
@@ -606,7 +606,7 @@ a { color: inherit; text-decoration: none; }
 /* ─── Sheets ─── */
 .scrim {
   position: absolute; inset: 0;
-  background: rgba(15, 63, 68, 0.30);
+  background: rgba(14, 58, 82, 0.30);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   z-index: 30; opacity: 0; pointer-events: none;
@@ -616,7 +616,7 @@ a { color: inherit; text-decoration: none; }
 
 .sheet {
   position: absolute; left: 0; right: 0; bottom: 0;
-  height: 80%;
+  height: 86%;
   background: var(--bone);
   border-top-left-radius: 28px; border-top-right-radius: 28px;
   border-top: 1px solid var(--line);
@@ -627,6 +627,7 @@ a { color: inherit; text-decoration: none; }
   box-shadow: var(--soft-up);
   overflow: hidden;
 }
+.sheet#listSheet { grid-template-rows: auto auto auto 1fr auto; }
 .sheet.open { transform: translateY(0); }
 .sheet.tall { height: 92%; }
 .sheet .grabber { width: 36px; height: 4px; border-radius: 4px; background: var(--ink-4); margin: 12px auto 6px; cursor: grab; opacity: 0.5; }
@@ -790,7 +791,7 @@ a { color: inherit; text-decoration: none; }
   border-radius: 50%;
   background: var(--teal); color: var(--bone);
   display: grid; place-items: center;
-  box-shadow: 0 6px 16px -4px rgba(20, 168, 154, 0.4);
+  box-shadow: 0 6px 16px -4px rgba(27, 137, 200, 0.42);
   z-index: 15;
   transition: transform 200ms ease;
 }
@@ -839,7 +840,7 @@ a { color: inherit; text-decoration: none; }
   border: 2px solid var(--teal);
   display: grid; place-items: center;
   position: relative;
-  box-shadow: 0 8px 32px -8px rgba(20, 168, 154, 0.3);
+  box-shadow: 0 8px 32px -8px rgba(27, 137, 200, 0.3);
 }
 .celebration .ring-pop::before, .celebration .ring-pop::after {
   content: ""; position: absolute; inset: -2px;
@@ -866,6 +867,210 @@ a { color: inherit; text-decoration: none; }
 @keyframes pop { 0%{opacity:0;transform:scale(0.6);} 18%{opacity:1;transform:scale(1.04);} 60%{opacity:1;transform:scale(1);} 100%{opacity:0;transform:scale(1.04);} }
 
 .toast { position: absolute; bottom: 110px; left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--bone); padding: 10px 18px; border-radius: 999px; font-weight: 500; font-size: 13px; z-index: 200; }
+
+/* ─── Imagery ─── */
+img { max-width: 100%; }
+.img-bg { background: linear-gradient(135deg, var(--pale), var(--foam)); }
+
+/* Category-icon fallback (used when an image URL fails to load) */
+.img-fallback { background: linear-gradient(135deg, var(--pale), var(--foam)); }
+.img-fallback[data-cat="Coffee"]    { background: linear-gradient(135deg, #DCEAF7, #BFE0F0); }
+.img-fallback[data-cat="Food"]      { background: linear-gradient(135deg, #E4ECF4, #C7DEEF); }
+.img-fallback[data-cat="Countries"] { background: linear-gradient(135deg, #DAE3EE, #BCD3E5); }
+.img-fallback[data-cat="Landmarks"] { background: linear-gradient(135deg, #D5DCE6, #B8C4D2); }
+.img-fallback[data-cat="Nature"]    { background: linear-gradient(135deg, #DCEFE9, #BCDFD8); }
+.img-fallback[data-cat="Seasonal"]  { background: linear-gradient(135deg, #E0E9F2, #C2D5E5); }
+.cat-fallback-inner {
+  position: absolute; inset: 0;
+  display: grid; place-items: center;
+  color: var(--ink-2);
+  z-index: 0;
+}
+.cat-fallback-inner svg { width: 36%; height: 36%; max-width: 72px; max-height: 72px; min-width: 18px; min-height: 18px; opacity: 0.55; }
+/* The wrapper itself needs to be a positioning context */
+.thumb-wrap, .hero-img-wrap, .sheet-hero, .poi-hero, .featured .visual, .nearme-card .hero-img-wrap, .featured-mini .hero-img-wrap, .explore-card .thumb-wrap, .backlog-row .thumb-wrap { position: relative; }
+/* In hero contexts the fallback icon should sit slightly above center so the title gradient doesn't crowd it */
+.sheet-hero.img-fallback .cat-fallback-inner,
+.poi-hero.img-fallback .cat-fallback-inner { padding-bottom: 60px; }
+
+/* Near-me card hero */
+.nearme-card { padding: 0; }
+.nearme-card .hero-img-wrap {
+  position: relative;
+  height: 112px; overflow: hidden;
+  border-radius: var(--r-lg) var(--r-lg) 0 0;
+  background: var(--mist);
+}
+.nearme-card .hero-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.nearme-card .hero-img-wrap .pct-pill {
+  position: absolute; top: 10px; right: 10px;
+  background: rgba(255, 255, 255, 0.94); backdrop-filter: blur(10px);
+  font-family: var(--font-display); font-weight: 700;
+  font-size: 12px; letter-spacing: -0.03em; color: var(--ink);
+  padding: 5px 9px; border-radius: 999px;
+  font-variant-numeric: tabular-nums;
+}
+.nearme-card .body-inner { padding: 14px 18px 18px; }
+.nearme-card .body-inner .top { margin-bottom: 10px; }
+
+/* List card image thumb */
+.list-card { grid-template-columns: 64px 1fr auto; gap: 16px; }
+.list-card .thumb-wrap {
+  width: 64px; height: 64px;
+  border-radius: 14px; overflow: hidden; position: relative; flex-shrink: 0;
+  background: var(--mist);
+}
+.list-card .thumb-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.list-card .thumb-wrap .ring-badge {
+  position: absolute; bottom: -3px; right: -3px;
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: var(--bone);
+  display: grid; place-items: center;
+  box-shadow: 0 1px 4px rgba(14, 58, 82, 0.18);
+}
+.list-card .thumb-wrap .ring-badge .ring-pct {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  font-family: var(--font-display); font-weight: 700;
+  font-size: 9px; letter-spacing: -0.05em; color: var(--teal);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Sheet hero strip */
+.sheet-hero {
+  width: 100%; height: 168px;
+  position: relative; overflow: hidden;
+  flex-shrink: 0;
+  background: var(--mist);
+}
+.sheet-hero img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.sheet-hero::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 30%, rgba(14, 58, 82, 0.55) 100%);
+}
+.sheet-hero .pillrow {
+  position: absolute; top: 14px; left: 16px; right: 16px; z-index: 1;
+  display: flex; gap: 6px; align-items: center;
+}
+.sheet-hero .pill-cat {
+  background: rgba(255,255,255,0.94); backdrop-filter: blur(10px);
+  font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+  padding: 6px 10px; border-radius: 999px; color: var(--ink);
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.sheet-hero .pill-cat .pip { width: 6px; height: 6px; border-radius: 50%; }
+.sheet-hero .ring-float {
+  margin-left: auto; width: 56px; height: 56px;
+  background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);
+  border-radius: 50%;
+  display: grid; place-items: center;
+  position: relative;
+}
+.sheet-hero .ring-float .ring-pct {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  font-family: var(--font-display); font-weight: 700;
+  font-size: 14px; letter-spacing: -0.04em; color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.sheet-hero .name-stack { position: absolute; left: 24px; right: 24px; bottom: 18px; z-index: 1; color: var(--bone); }
+.sheet-hero .name-stack h2 {
+  font-family: var(--font-display); font-weight: 700;
+  font-size: 26px; line-height: 1.05; letter-spacing: -0.04em;
+  margin: 0; color: var(--bone);
+}
+.sheet-hero .name-stack .desc {
+  font-size: 12.5px; color: rgba(255,255,255,0.85);
+  margin-top: 4px; max-width: 32ch; line-height: 1.45;
+}
+
+/* Compact sheet head — drops the duplicated ring */
+.sheet-head { padding: 14px 24px 16px; }
+.sheet-head .toolrow { padding-top: 0; }
+
+/* POI row thumbnail */
+.poi-row { grid-template-columns: 56px 1fr auto; gap: 14px; padding: 14px 24px; }
+.poi-row .thumb-wrap {
+  width: 56px; height: 56px; border-radius: 12px; overflow: hidden;
+  position: relative; flex-shrink: 0; background: var(--mist);
+}
+.poi-row .thumb-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; transition: filter 200ms ease; }
+.poi-row.done .thumb-wrap img { filter: saturate(0.55) brightness(0.96); }
+.poi-row .thumb-wrap .check-pin {
+  position: absolute; bottom: 4px; right: 4px;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: rgba(255,255,255,0.96); backdrop-filter: blur(6px);
+  display: grid; place-items: center;
+  border: 0; padding: 0;
+  box-shadow: 0 1px 3px rgba(14, 58, 82, 0.22);
+  color: var(--ink-4);
+  cursor: pointer;
+  transition: all 200ms ease;
+}
+.poi-row .thumb-wrap .check-pin:hover { color: var(--ink-2); }
+.poi-row.done .thumb-wrap .check-pin { background: var(--teal); color: var(--bone); box-shadow: 0 2px 6px -1px rgba(27, 137, 200, 0.45); }
+
+/* POI panel hero */
+.poi-hero {
+  width: 100%; height: 260px;
+  position: relative; overflow: hidden;
+  flex-shrink: 0; background: var(--mist);
+}
+.poi-hero img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.poi-hero::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(14,58,82,0.32) 0%, transparent 28%, rgba(14,58,82,0.62) 100%);
+}
+.poi-hero .top-bar {
+  position: absolute; top: 56px; left: 16px; right: 16px;
+  display: flex; gap: 8px; align-items: center; z-index: 2;
+}
+.poi-hero .top-bar .right { margin-left: auto; }
+.poi-hero .top-bar .icon-btn {
+  background: rgba(255,255,255,0.96); backdrop-filter: blur(10px);
+  border: 0; color: var(--ink);
+}
+.poi-hero .head-stack {
+  position: absolute; left: 24px; right: 24px; bottom: 22px; z-index: 2;
+  color: var(--bone);
+}
+.poi-hero .head-stack .cat-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+  color: rgba(255,255,255,0.92);
+}
+.poi-hero .head-stack .cat-tag .pip { width: 6px; height: 6px; border-radius: 50%; }
+.poi-hero .head-stack h2 {
+  font-family: var(--font-display); font-weight: 700;
+  font-size: 30px; line-height: 1; letter-spacing: -0.04em;
+  margin: 6px 0 4px; color: var(--bone);
+}
+.poi-hero .head-stack .addr {
+  font-size: 13px; color: rgba(255,255,255,0.86);
+  display: flex; align-items: center; gap: 5px;
+}
+
+/* Explore card image */
+.explore-card { padding: 0; overflow: hidden; }
+.explore-card .thumb-wrap { width: 100%; height: 104px; overflow: hidden; background: var(--mist); }
+.explore-card .thumb-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.explore-card .body { padding: 12px 14px 14px; }
+
+/* Featured uses image */
+.featured .visual { background: var(--mist); }
+.featured .visual img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+.featured .visual::after { z-index: 1; }
+.featured .visual .stamp { z-index: 2; }
+
+/* Featured-mini hero */
+.featured-mini { padding: 0; overflow: hidden; gap: 0; }
+.featured-mini .hero-img-wrap { width: 100%; height: 116px; overflow: hidden; background: var(--mist); position: relative; }
+.featured-mini .hero-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.featured-mini .body { padding: 16px 20px 18px; display: grid; gap: 10px; }
+
+/* Backlog thumb */
+.backlog-row { grid-template-columns: 56px 1fr auto; align-items: center; gap: 14px; }
+.backlog-row .thumb-wrap { width: 56px; height: 56px; border-radius: 10px; overflow: hidden; background: var(--mist); flex-shrink: 0; }
+.backlog-row .thumb-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
 </style>
 </head>
 <body>
@@ -879,17 +1084,17 @@ a { color: inherit; text-decoration: none; }
     <div class="spec-card">
       <h4>Single Family · Drift</h4>
       <div class="swatch-row">
-        <div class="swatch dark" style="background: #0F3F44">0F3F44</div>
-        <div class="swatch dark" style="background: #14736D">14736D</div>
-        <div class="swatch dark" style="background: #14A89A">14A89A</div>
-        <div class="swatch dark" style="background: #2DD4BF">2DD4BF</div>
-        <div class="swatch lite" style="background: #B8EAE2">B8EAE2</div>
-        <div class="swatch lite" style="background: #DAF3EE">DAF3EE</div>
-        <div class="swatch lite" style="background: #F0FAF7">F0FAF7</div>
+        <div class="swatch dark" style="background: #0E3A52">0E3A52</div>
+        <div class="swatch dark" style="background: #155F8A">155F8A</div>
+        <div class="swatch dark" style="background: #1B89C8">1B89C8</div>
+        <div class="swatch dark" style="background: #38B6E8">38B6E8</div>
+        <div class="swatch lite" style="background: #BFE0F0">BFE0F0</div>
+        <div class="swatch lite" style="background: #D9ECF4">D9ECF4</div>
+        <div class="swatch lite" style="background: #EEF7FB">EEF7FB</div>
         <div class="swatch lite" style="background: #FFFFFF; border: 1px solid var(--line-2)">FFFFFF</div>
       </div>
       <p style="font-size: 13px; color: var(--ink-2); margin: 14px 0 0; line-height: 1.6;">
-        White surfaces, hairline borders, one muted teal. The Lagoon's discipline without its weight — glass reserved for sheets only.
+        White surfaces, hairline borders, one cerulean blue. The Lagoon's discipline without its weight — now with images that carry their own colour.
       </p>
     </div>
 
@@ -932,13 +1137,16 @@ a { color: inherit; text-decoration: none; }
               <div>
                 <div class="eyebrow" style="margin: 0 0 10px;">This week</div>
                 <div class="featured-mini">
-                  <div class="head"><span class="pip"></span><span class="cat">Coffee · Seattle</span></div>
-                  <div><div class="name">Seattle Coffee Circuit</div><div class="by">by @rooster · 12 places · 2,148 followers</div></div>
-                  <div>
-                    <div class="preview-row"><span class="dot done"><svg width="9" height="9" fill="none" stroke="currentColor" stroke-width="2.6" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span><span class="ttl-pl strike">Victrola Coffee Roasters</span></div>
-                    <div class="preview-row"><span class="dot done"><svg width="9" height="9" fill="none" stroke="currentColor" stroke-width="2.6" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span><span class="ttl-pl strike">Espresso Vivace</span></div>
-                    <div class="preview-row"><span class="dot"></span><span class="ttl-pl">Analog Coffee</span></div>
-                    <div class="preview-row"><span class="dot"></span><span class="ttl-pl">Slate Coffee Roasters</span></div>
+                  <div class="hero-img-wrap"><img src="https://picsum.photos/seed/seattle-coffee-circuit-landing/800/480" alt="" loading="lazy" onerror="imgFallback(this,'Coffee')" /></div>
+                  <div class="body">
+                    <div class="head"><span class="pip"></span><span class="cat">Coffee · Seattle</span></div>
+                    <div><div class="name">Seattle Coffee Circuit</div><div class="by">by @rooster · 12 places · 2,148 followers</div></div>
+                    <div>
+                      <div class="preview-row"><span class="dot done"><svg width="9" height="9" fill="none" stroke="currentColor" stroke-width="2.6" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span><span class="ttl-pl strike">Victrola Coffee Roasters</span></div>
+                      <div class="preview-row"><span class="dot done"><svg width="9" height="9" fill="none" stroke="currentColor" stroke-width="2.6" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span><span class="ttl-pl strike">Espresso Vivace</span></div>
+                      <div class="preview-row"><span class="dot"></span><span class="ttl-pl">Analog Coffee</span></div>
+                      <div class="preview-row"><span class="dot"></span><span class="ttl-pl">Slate Coffee Roasters</span></div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -988,6 +1196,7 @@ a { color: inherit; text-decoration: none; }
             <div class="eyebrow">Featured this week</div>
             <div class="featured">
               <div class="visual">
+                <img src="https://picsum.photos/seed/tokyo-ramen-trail-feature/900/480" alt="" loading="lazy" onerror="imgFallback(this,'Food')" />
                 <div class="stamp">
                   <div class="meta">Tokyo · Japan · Food</div>
                   <h2>Hidden Tokyo Ramen Trail</h2>
@@ -1090,21 +1299,18 @@ a { color: inherit; text-decoration: none; }
 
         <div class="sheet" id="listSheet">
           <div class="grabber" id="grabber"></div>
-          <div class="sheet-head">
-            <div class="top">
-              <div class="ttl-block">
-                <div class="cat-row" id="sheetCatRow"><span class="pip"></span><span id="sheetCatLabel">Coffee · Seattle</span></div>
-                <h2 id="sheetTitle">Seattle Coffee Circuit</h2>
-                <p id="sheetDesc">Twelve great roasters across the Emerald City.</p>
-              </div>
-              <div class="ring-wrap">
-                <svg class="ring-svg" width="72" height="72" viewBox="0 0 72 72">
-                  <circle cx="36" cy="36" r="32" fill="none" stroke="rgba(15,63,68,0.10)" stroke-width="3"/>
-                  <circle id="sheetMeter" class="meter" cx="36" cy="36" r="32" fill="none" stroke="var(--teal)" stroke-width="3" stroke-dasharray="201" stroke-dashoffset="60" transform="rotate(-90 36 36)"/>
-                </svg>
-                <div class="ring-pct" id="sheetPct">70%</div>
-              </div>
+          <div class="sheet-hero" id="sheetHero">
+            <img id="sheetHeroImg" src="" alt="" />
+            <div class="pillrow">
+              <div class="pill-cat"><span class="pip" id="sheetHeroCatPip"></span><span id="sheetHeroCatLabel">Coffee · Seattle</span></div>
+              <div class="ring-float"><div class="ring-pct" id="sheetHeroPct">70%</div></div>
             </div>
+            <div class="name-stack">
+              <h2 id="sheetHeroTitle">Seattle Coffee Circuit</h2>
+              <div class="desc" id="sheetHeroDesc">Twelve great roasters across the Emerald City.</div>
+            </div>
+          </div>
+          <div class="sheet-head">
             <div class="toolrow">
               <button class="pillbtn solid"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Map view</button>
               <button class="pillbtn"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg> Sort</button>
@@ -1119,14 +1325,17 @@ a { color: inherit; text-decoration: none; }
         </div>
 
         <div class="poi-panel" id="poiPanel">
-          <div class="poi-head">
-            <div class="top">
+          <div class="poi-hero" id="poiHero">
+            <img id="poiHeroImg" src="" alt="" />
+            <div class="top-bar">
               <button class="icon-btn" id="poiClose"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
               <button class="icon-btn right"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
             </div>
-            <div class="cat-tag" id="poiCat"><span class="pip"></span><span id="poiCatLabel">Coffee · Capitol Hill</span></div>
-            <h2 id="poiName">Analog Coffee</h2>
-            <div class="addr"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg><span id="poiSub">12-min walk · 235 Summit Ave E</span></div>
+            <div class="head-stack">
+              <div class="cat-tag" id="poiCat"><span class="pip"></span><span id="poiCatLabel">Coffee · Capitol Hill</span></div>
+              <h2 id="poiName">Analog Coffee</h2>
+              <div class="addr"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg><span id="poiSub">12-min walk · 235 Summit Ave E</span></div>
+            </div>
           </div>
           <div class="poi-tabs"><button class="active" data-poitab="notes">Notes</button><button data-poitab="details">Details</button></div>
           <div class="poi-body">
@@ -1195,8 +1404,8 @@ a { color: inherit; text-decoration: none; }
       <h4>The Lagoon, distilled</h4>
       <div class="principles">
         <div class="principle"><span class="pip"></span><span>White surfaces with hairline borders. Glass reserved for sheet sliders only — and even there, restrained.</span></div>
-        <div class="principle"><span class="pip"></span><span>Single muted teal. No gradient buttons, no rainbow rings, no shifting hues. One accent, used sparingly.</span></div>
-        <div class="principle"><span class="pip"></span><span>Bubble ambient is gone. The screen is pale mist; nothing bobs. Calm by subtraction.</span></div>
+        <div class="principle"><span class="pip"></span><span>Single cerulean blue, slightly bluer than the Lagoon's teal. One accent, used sparingly — lets the place photos lead.</span></div>
+        <div class="principle"><span class="pip"></span><span>Each list and POI carries an image. The blue is structure; the photos are mood.</span></div>
         <div class="principle"><span class="pip"></span><span>Same Sora + Manrope, same Lagoon discipline — twice the breathing room.</span></div>
       </div>
     </div>
@@ -1225,62 +1434,119 @@ const CAT = {
   Seasonal:  'var(--bright)',
 };
 
+// Picsum is used as a reliable placeholder source. Each item passes a stable seed
+// so the same place keeps the same photo across reloads. The seed value is the
+// original (memorable) id we picked; what photo picsum returns is unrelated to
+// the category — that's intentional, and the onerror fallback below catches any
+// rare load failure with a clean category-icon placeholder.
+const I = (seed, w=600, h=400) => `https://picsum.photos/seed/${encodeURIComponent(seed)}/${w}/${h}`;
+
+const CAT_ICON_SVG = {
+  Coffee:    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 010 8h-1"/><path d="M3 8h14v9a4 4 0 01-4 4H7a4 4 0 01-4-4V8z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>',
+  Food:      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M11 2v9a3 3 0 01-6 0V2M8 2v9M16 11h2.5a2.5 2.5 0 010 5H16M16 2v20M16 11V6"/></svg>',
+  Countries: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15 15 0 010 20"/><path d="M12 2a15 15 0 000 20"/></svg>',
+  Landmarks: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>',
+  Nature:    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8C8 10 5.9 16 4 22"/><path d="M2 22c5-3 13-6 20-3"/><path d="M14 6c-1.5 1.5-2.5 4-2 6 1.5 1 4 .5 5.5-1.5"/></svg>',
+  Seasonal:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.5"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/><line x1="5.6" y1="5.6" x2="7.7" y2="7.7"/><line x1="16.3" y1="16.3" x2="18.4" y2="18.4"/><line x1="5.6" y1="18.4" x2="7.7" y2="16.3"/><line x1="16.3" y1="7.7" x2="18.4" y2="5.6"/></svg>',
+};
+function imgFallback(img, cat){
+  const wrap = img.parentNode;
+  if (!wrap) return;
+  wrap.classList.add('img-fallback');
+  wrap.setAttribute('data-cat', cat || 'Landmarks');
+  const ico = document.createElement('div');
+  ico.className = 'cat-fallback-inner';
+  ico.innerHTML = CAT_ICON_SVG[cat] || CAT_ICON_SVG.Landmarks;
+  img.replaceWith(ico);
+}
+function resetHero(wrapSelector, src, cat){
+  const wrap = document.querySelector(wrapSelector);
+  if (!wrap) return;
+  wrap.classList.remove('img-fallback');
+  wrap.removeAttribute('data-cat');
+  const existing = wrap.querySelector('.cat-fallback-inner');
+  if (existing) existing.remove();
+  let img = wrap.querySelector('img');
+  if (!img) {
+    img = document.createElement('img');
+    img.alt = '';
+    img.loading = 'lazy';
+    wrap.insertBefore(img, wrap.firstChild);
+  }
+  img.onerror = function(){ imgFallback(img, cat); };
+  img.src = src;
+}
+
 const LISTS = [
-  { id:'l1', name:'Seattle Coffee Circuit', cat:'Coffee', region:'Seattle', pinned:true, desc:'Twelve great roasters across the Emerald City.', places:[
-    { id:'p1', name:'Victrola Coffee Roasters', addr:'310 E Pike St', sub:'Capitol Hill', visited:true,  rating:4, notes:'Charming, busy mornings.' },
-    { id:'p2', name:'Espresso Vivace',          addr:'532 Broadway E', sub:'Capitol Hill', visited:true,  rating:5, notes:'Schomer himself.' },
-    { id:'p3', name:'Analog Coffee',            addr:'235 Summit Ave E', sub:'Capitol Hill', visited:true,  rating:5, notes:'Pour-over was unreal.' },
-    { id:'p4', name:'Slate Coffee Roasters',    addr:'5413 6th Ave NW',  sub:'Ballard',      visited:false, rating:0, notes:'' },
-    { id:'p5', name:'Caffè Vita',               addr:'1005 E Pike St',   sub:'Capitol Hill', visited:true,  rating:4, notes:'' },
-    { id:'p6', name:'Milstead & Co.',           addr:'770 N 34th St',    sub:'Fremont',      visited:true,  rating:5, notes:'Fremont go-to.' },
-    { id:'p7', name:'Onda Origins',             addr:'1601 N 45th St',   sub:'Wallingford',  visited:false, rating:0, notes:'' },
-    { id:'p8', name:'Storyville',               addr:'1001 1st Ave',     sub:'Pike Place',   visited:true,  rating:4, notes:'' },
-    { id:'p9', name:'Lighthouse Roasters',      addr:'400 N 43rd St',    sub:'Fremont',      visited:false, rating:0, notes:'' },
-    { id:'p10', name:'Bird & Beckett',          addr:'600 N 36th St',    sub:'Fremont',      visited:false, rating:0, notes:'' },
-  ]},
-  { id:'l2', name:'Hidden Tokyo Ramen Trail', cat:'Food', region:'Tokyo', pinned:false, desc:'18 hand-picked counter shops, mapped by a real local.', places:[
-    { id:'r1', name:'Ichiran Shibuya', addr:'Udagawacho 13-7', sub:'Shibuya', visited:true, rating:4, notes:'Solo seats.' },
-    { id:'r2', name:'Afuri Ebisu', addr:'Ebisu 1-1-7', sub:'Ebisu', visited:true, rating:5, notes:'Yuzu shio essential.' },
-    { id:'r3', name:'Tsuta', addr:'Sugamo 1-14-1', sub:'Sugamo', visited:false, rating:0, notes:'' },
-    { id:'r4', name:'Menya Saimi', addr:'Sapporo', sub:'Sapporo', visited:false, rating:0, notes:'' },
-    { id:'r5', name:'Fuunji', addr:'Yoyogi 2-14-3', sub:'Yoyogi', visited:true, rating:4, notes:'Tsukemen.' },
-    { id:'r6', name:'Rokurinsha', addr:'Tokyo Station', sub:'Marunouchi', visited:false, rating:0, notes:'' },
-  ]},
-  { id:'l3', name:'Soviet States Quest', cat:'Countries', region:'Eurasia', pinned:false, desc:'A slow geopolitical crawl.', places:[
-    { id:'c1', name:'Estonia',  addr:'Tallinn', sub:'Baltic',   visited:true, rating:5, notes:'Old town.' },
-    { id:'c2', name:'Latvia',   addr:'Riga',    sub:'Baltic',   visited:true, rating:4, notes:'' },
-    { id:'c3', name:'Georgia',  addr:'Tbilisi', sub:'Caucasus', visited:true, rating:5, notes:'Khachapuri.' },
-    { id:'c4', name:'Armenia',  addr:'Yerevan', sub:'Caucasus', visited:false, rating:0, notes:'' },
-    { id:'c5', name:'Uzbekistan', addr:'Tashkent', sub:'Central Asia', visited:false, rating:0, notes:'' },
-  ]},
-  { id:'l4', name:'NYC Bagel Showdown', cat:'Food', region:'NYC', pinned:false, desc:'Top 10 bagel shops.', places:[
-    { id:'b1', name:'Absolute Bagels', addr:'Broadway & 108', sub:'UWS', visited:true, rating:5, notes:'' },
-    { id:'b2', name:'Russ & Daughters', addr:'Houston St', sub:'LES', visited:true, rating:5, notes:'' },
-    { id:'b3', name:'Tompkins Square', addr:'East Village', sub:'East Village', visited:false, rating:0, notes:'' },
-    { id:'b4', name:"Murray's Bagels", addr:'6th Ave', sub:'West Village', visited:false, rating:0, notes:'' },
-  ]},
-  { id:'l5', name:'Wonders of Iceland', cat:'Nature', region:'Iceland', pinned:false, desc:'Glaciers, geysers, Ring Road.', places:[
-    { id:'i1', name:'Þingvellir', addr:'Iceland', sub:'UNESCO', visited:false, rating:0, notes:'' },
-    { id:'i2', name:'Geysir', addr:'Iceland', sub:'Haukadalur', visited:false, rating:0, notes:'' },
-    { id:'i3', name:'Gullfoss', addr:'Iceland', sub:'Hvítá', visited:false, rating:0, notes:'' },
-  ]},
+  { id:'l1', name:'Seattle Coffee Circuit', cat:'Coffee', region:'Seattle', pinned:true, desc:'Twelve great roasters across the Emerald City.',
+    img: I('1509042239860-f550ce710b93', 800, 480),
+    places:[
+      { id:'p1', name:'Victrola Coffee Roasters', addr:'310 E Pike St', sub:'Capitol Hill', visited:true,  rating:4, notes:'Charming, busy mornings.', img: I('1442512595331-e89e73853f31') },
+      { id:'p2', name:'Espresso Vivace',          addr:'532 Broadway E', sub:'Capitol Hill', visited:true,  rating:5, notes:'Schomer himself.',          img: I('1559925393-8be0ec4767c8') },
+      { id:'p3', name:'Analog Coffee',            addr:'235 Summit Ave E', sub:'Capitol Hill', visited:true,  rating:5, notes:'Pour-over was unreal.',  img: I('1495474472287-4d71bcdd2085') },
+      { id:'p4', name:'Slate Coffee Roasters',    addr:'5413 6th Ave NW',  sub:'Ballard',      visited:false, rating:0, notes:'',                         img: I('1497935586351-b67a49e012bf') },
+      { id:'p5', name:'Caffè Vita',               addr:'1005 E Pike St',   sub:'Capitol Hill', visited:true,  rating:4, notes:'',                         img: I('1453614512568-c4024d13c247') },
+      { id:'p6', name:'Milstead & Co.',           addr:'770 N 34th St',    sub:'Fremont',      visited:true,  rating:5, notes:'Fremont go-to.',           img: I('1442975631115-c4f7b05b8a2c') },
+      { id:'p7', name:'Onda Origins',             addr:'1601 N 45th St',   sub:'Wallingford',  visited:false, rating:0, notes:'',                         img: I('1501339847302-ac426a4a7cbb') },
+      { id:'p8', name:'Storyville',               addr:'1001 1st Ave',     sub:'Pike Place',   visited:true,  rating:4, notes:'',                         img: I('1521017432531-fbd92d768814') },
+      { id:'p9', name:'Lighthouse Roasters',      addr:'400 N 43rd St',    sub:'Fremont',      visited:false, rating:0, notes:'',                         img: I('1494314671902-399b18174975') },
+      { id:'p10', name:'Bird & Beckett',          addr:'600 N 36th St',    sub:'Fremont',      visited:false, rating:0, notes:'',                         img: I('1519082274554-1ca37fb8abb7') },
+    ]},
+  { id:'l2', name:'Hidden Tokyo Ramen Trail', cat:'Food', region:'Tokyo', pinned:false, desc:'18 hand-picked counter shops, mapped by a real local.',
+    img: I('1623341214825-9f4f963727da', 800, 480),
+    places:[
+      { id:'r1', name:'Ichiran Shibuya', addr:'Udagawacho 13-7', sub:'Shibuya',   visited:true,  rating:4, notes:'Solo seats.',        img: I('1569718212165-3a8278d5f624') },
+      { id:'r2', name:'Afuri Ebisu',     addr:'Ebisu 1-1-7',     sub:'Ebisu',     visited:true,  rating:5, notes:'Yuzu shio essential.', img: I('1591814468924-caf88d1232e1') },
+      { id:'r3', name:'Tsuta',           addr:'Sugamo 1-14-1',   sub:'Sugamo',    visited:false, rating:0, notes:'',                    img: I('1614563637806-1d0e645e0940') },
+      { id:'r4', name:'Menya Saimi',     addr:'Sapporo',         sub:'Sapporo',   visited:false, rating:0, notes:'',                    img: I('1557872943-16a5ac26437e') },
+      { id:'r5', name:'Fuunji',          addr:'Yoyogi 2-14-3',   sub:'Yoyogi',    visited:true,  rating:4, notes:'Tsukemen.',           img: I('1618841557871-b4664fbf0cb3') },
+      { id:'r6', name:'Rokurinsha',      addr:'Tokyo Station',   sub:'Marunouchi',visited:false, rating:0, notes:'',                    img: I('1623341214825-9f4f963727da') },
+    ]},
+  { id:'l3', name:'Soviet States Quest', cat:'Countries', region:'Eurasia', pinned:false, desc:'A slow geopolitical crawl.',
+    img: I('1565028000234-6608d6c66e8c', 800, 480),
+    places:[
+      { id:'c1', name:'Estonia',    addr:'Tallinn',  sub:'Baltic',       visited:true,  rating:5, notes:'Old town.',  img: I('1565028000234-6608d6c66e8c') },
+      { id:'c2', name:'Latvia',     addr:'Riga',     sub:'Baltic',       visited:true,  rating:4, notes:'',           img: I('1567440793875-0936bbb31968') },
+      { id:'c3', name:'Georgia',    addr:'Tbilisi',  sub:'Caucasus',     visited:true,  rating:5, notes:'Khachapuri.', img: I('1581974944026-5d6ed762f617') },
+      { id:'c4', name:'Armenia',    addr:'Yerevan',  sub:'Caucasus',     visited:false, rating:0, notes:'',           img: I('1551983994-86c1ecaa5a2a') },
+      { id:'c5', name:'Uzbekistan', addr:'Tashkent', sub:'Central Asia', visited:false, rating:0, notes:'',           img: I('1548013146-72479768bada') },
+    ]},
+  { id:'l4', name:'NYC Bagel Showdown', cat:'Food', region:'NYC', pinned:false, desc:'Top 10 bagel shops.',
+    img: I('1592151450109-90a3548f4d5c', 800, 480),
+    places:[
+      { id:'b1', name:'Absolute Bagels',   addr:'Broadway & 108', sub:'UWS',           visited:true,  rating:5, notes:'', img: I('1592151450109-90a3548f4d5c') },
+      { id:'b2', name:'Russ & Daughters',  addr:'Houston St',     sub:'LES',           visited:true,  rating:5, notes:'', img: I('1571115764595-644a1f56a55c') },
+      { id:'b3', name:'Tompkins Square',   addr:'East Village',   sub:'East Village',  visited:false, rating:0, notes:'', img: I('1612886432298-0aa2ce0a2d7c') },
+      { id:'b4', name:"Murray's Bagels",   addr:'6th Ave',        sub:'West Village',  visited:false, rating:0, notes:'', img: I('1554998171-89445e31c52b') },
+    ]},
+  { id:'l5', name:'Wonders of Iceland', cat:'Nature', region:'Iceland', pinned:false, desc:'Glaciers, geysers, Ring Road.',
+    img: I('1500120498910-a16e3a2b76ec', 800, 480),
+    places:[
+      { id:'i1', name:'Þingvellir', addr:'Iceland', sub:'UNESCO',     visited:false, rating:0, notes:'', img: I('1500120498910-a16e3a2b76ec') },
+      { id:'i2', name:'Geysir',     addr:'Iceland', sub:'Haukadalur', visited:false, rating:0, notes:'', img: I('1500057383306-fe85bd6c7373') },
+      { id:'i3', name:'Gullfoss',   addr:'Iceland', sub:'Hvítá',      visited:false, rating:0, notes:'', img: I('1504457047772-27faf1c00561') },
+    ]},
 ];
-const NEAR_ME = [{listId:'l1',dist:'0.3 mi',next:'Slate Coffee'},{listId:'l4',dist:'1.2 mi',next:'Tompkins Square'},{listId:'l1',dist:'0.7 mi',next:'Storyville'}];
+const NEAR_ME = [
+  {listId:'l1', dist:'0.3 mi', next:'Slate Coffee'},
+  {listId:'l4', dist:'1.2 mi', next:'Tompkins Square'},
+  {listId:'l1', dist:'0.7 mi', next:'Storyville'},
+];
 const BACKLOG = [
-  {id:'b1',src:'Instagram',ttl:'Onibus Coffee — Nakameguro',sub:'Shaded laneway, single-origin.'},
-  {id:'b2',src:'TikTok',ttl:'Tsujihan unagi don',sub:'90-min wait, worth it.'},
-  {id:'b3',src:'Rednote',ttl:'Kyoto Saryo',sub:'Matcha tasting in a 100-year-old machiya.'},
-  {id:'b4',src:'Link',ttl:'Kissaten "Eight"',sub:'Showa-era cafe, fluffy hotcake.'},
-  {id:'b5',src:'Instagram',ttl:'Camelback (Nishi-Azabu)',sub:'Sweet-shrimp katsu sando.'},
-  {id:'b6',src:'TikTok',ttl:'Bear Pond Espresso',sub:'Angel-stain. No talking allowed.'},
+  {id:'b1', src:'Instagram', ttl:'Onibus Coffee — Nakameguro', sub:'Shaded laneway, single-origin.',     img: I('1453614512568-c4024d13c247', 200, 200)},
+  {id:'b2', src:'TikTok',    ttl:'Tsujihan unagi don',         sub:'90-min wait, worth it.',             img: I('1591814468924-caf88d1232e1', 200, 200)},
+  {id:'b3', src:'Rednote',   ttl:'Kyoto Saryo',                sub:'Matcha tasting in a 100-year-old machiya.', img: I('1545048702-79362596cdc9', 200, 200)},
+  {id:'b4', src:'Link',      ttl:'Kissaten "Eight"',           sub:'Showa-era cafe, fluffy hotcake.',    img: I('1521017432531-fbd92d768814', 200, 200)},
+  {id:'b5', src:'Instagram', ttl:'Camelback (Nishi-Azabu)',    sub:'Sweet-shrimp katsu sando.',          img: I('1614563637806-1d0e645e0940', 200, 200)},
+  {id:'b6', src:'TikTok',    ttl:'Bear Pond Espresso',         sub:'Angel-stain. No talking allowed.',   img: I('1497935586351-b67a49e012bf', 200, 200)},
 ];
 const EXPLORE = [
-  {ttl:'Hidden Tokyo Ramen Trail',by:'@noodlepilgrim',cat:'Food',region:'Tokyo',count:18,follows:'2.1k'},
-  {ttl:'Soviet States Quest',by:'@borderwalker',cat:'Countries',region:'Eurasia',count:15,follows:'892'},
-  {ttl:'NYC Bagel Showdown',by:'@bagelhead',cat:'Food',region:'NYC',count:10,follows:'1.4k'},
-  {ttl:'Wonders of Iceland',by:'@northbound',cat:'Nature',region:'Iceland',count:12,follows:'3.2k'},
-  {ttl:'Mexico Mezcal Tour',by:'@espadinjules',cat:'Food',region:'Oaxaca',count:9,follows:'644'},
-  {ttl:'Romanesque Spain',by:'@archnerd',cat:'Landmarks',region:'Spain',count:14,follows:'1.1k'},
+  {ttl:'Hidden Tokyo Ramen Trail', by:'@noodlepilgrim', cat:'Food',      region:'Tokyo',   count:18, follows:'2.1k', img: I('1623341214825-9f4f963727da', 600, 380)},
+  {ttl:'Soviet States Quest',      by:'@borderwalker',  cat:'Countries', region:'Eurasia', count:15, follows:'892',  img: I('1565028000234-6608d6c66e8c', 600, 380)},
+  {ttl:'NYC Bagel Showdown',       by:'@bagelhead',     cat:'Food',      region:'NYC',     count:10, follows:'1.4k', img: I('1592151450109-90a3548f4d5c', 600, 380)},
+  {ttl:'Wonders of Iceland',       by:'@northbound',    cat:'Nature',    region:'Iceland', count:12, follows:'3.2k', img: I('1500120498910-a16e3a2b76ec', 600, 380)},
+  {ttl:'Mexico Mezcal Tour',       by:'@espadinjules',  cat:'Food',      region:'Oaxaca',  count:9,  follows:'644',  img: I('1514362545857-3bc16c4c7d1b', 600, 380)},
+  {ttl:'Romanesque Spain',         by:'@archnerd',      cat:'Landmarks', region:'Spain',   count:14, follows:'1.1k', img: I('1543783207-ec64e4d95325', 600, 380)},
 ];
 
 let state = { tab:'lists', sheetTall:false, pinned:{l1:true}, currentListId:null, currentPlaceId:null };
@@ -1289,20 +1555,25 @@ const $$ = (s,r=document)=>Array.from(r.querySelectorAll(s));
 const progress = l => { const t=l.places.length, d=l.places.filter(p=>p.visited).length; return {total:t,done:d,pct:t?Math.round(d/t*100):0}; };
 function ringSVG(pct,size=44){
   const r=size/2-3,c=2*Math.PI*r,off=c-(pct/100)*c;
-  return `<svg class="ring-svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="rgba(15,63,68,0.10)" stroke-width="2"/><circle class="meter" cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="var(--teal)" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="${c.toFixed(2)}" stroke-dashoffset="${off.toFixed(2)}" transform="rotate(-90 ${size/2} ${size/2})"/></svg>`;
+  return `<svg class="ring-svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="rgba(14,58,82,0.10)" stroke-width="2"/><circle class="meter" cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="var(--teal)" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="${c.toFixed(2)}" stroke-dashoffset="${off.toFixed(2)}" transform="rotate(-90 ${size/2} ${size/2})"/></svg>`;
 }
 
 function renderNearMe(){
   $('#nearMeRow').innerHTML = NEAR_ME.map(n=>{
     const list=LISTS.find(l=>l.id===n.listId), p=progress(list), c=CAT[list.cat];
     return `<div class="nearme-card" data-listid="${list.id}">
-      <div class="top">
-        <div class="cat"><span class="dot" style="background:${c}"></span> ${list.cat} · ${list.region}</div>
-        <div class="pct">${p.pct}%</div>
+      <div class="hero-img-wrap">
+        <img src="${list.img}" alt="" loading="lazy" onerror="imgFallback(this,'${list.cat}')" />
+        <div class="pct-pill">${p.pct}%</div>
       </div>
-      <div class="ttl">${list.name}</div>
-      <div class="next"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> ${n.dist} · ${n.next}</div>
-      <div class="bar"><i style="width:${p.pct}%"></i></div>
+      <div class="body-inner">
+        <div class="top">
+          <div class="cat"><span class="dot" style="background:${c}"></span> ${list.cat} · ${list.region}</div>
+        </div>
+        <div class="ttl">${list.name}</div>
+        <div class="next"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> ${n.dist} · ${n.next}</div>
+        <div class="bar"><i style="width:${p.pct}%"></i></div>
+      </div>
     </div>`;
   }).join('');
 }
@@ -1320,7 +1591,10 @@ function renderLists(){
         <button class="del"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6"/></svg>Delete</button>
       </div>
       <div class="list-card" data-listid="${list.id}">
-        <div class="ring-wrap">${ringSVG(p.pct,44)}<div class="ring-num">${p.pct}</div></div>
+        <div class="thumb-wrap">
+          <img src="${list.img}" alt="" loading="lazy" onerror="imgFallback(this,'${list.cat}')" />
+          <div class="ring-badge">${ringSVG(p.pct,30)}<div class="ring-pct">${p.pct}</div></div>
+        </div>
         <div class="body">
           <div class="cat-row"><span style="color:${c}">${list.cat} · ${list.region}</span>${state.pinned[list.id]?`<span class="pin-tag">· Pinned</span>`:''}</div>
           <div class="name">${list.name}</div>
@@ -1334,6 +1608,7 @@ function renderLists(){
 function renderBacklog(){
   $('#backlogList').innerHTML = BACKLOG.map(b=>`
     <div class="backlog-row" data-id="${b.id}">
+      <div class="thumb-wrap"><img src="${b.img}" alt="" loading="lazy" onerror="imgFallback(this,'Coffee')" /></div>
       <div>
         <div class="source"><span class="pip"></span> ${b.src}</div>
         <div class="ttl">${b.ttl}</div>
@@ -1346,10 +1621,13 @@ function renderExplore(){
   $('#exploreGrid').innerHTML = EXPLORE.map(e=>{
     const c=CAT[e.cat];
     return `<div class="explore-card" data-explore>
-      <div class="cat-row"><span class="pip" style="background:${c}"></span><span>${e.cat} · ${e.region}</span></div>
-      <div class="ttl">${e.ttl}</div>
-      <div class="by">${e.by}</div>
-      <div class="stats"><span>${e.count} places</span><span>${e.follows}</span></div>
+      <div class="thumb-wrap"><img src="${e.img}" alt="" loading="lazy" onerror="imgFallback(this,'${e.cat}')" /></div>
+      <div class="body">
+        <div class="cat-row"><span class="pip" style="background:${c}"></span><span>${e.cat} · ${e.region}</span></div>
+        <div class="ttl">${e.ttl}</div>
+        <div class="by">${e.by}</div>
+        <div class="stats"><span>${e.count} places</span><span>${e.follows}</span></div>
+      </div>
     </div>`;
   }).join('');
 }
@@ -1367,18 +1645,19 @@ function renderProfile(){
 function openListSheet(id){
   const list=LISTS.find(l=>l.id===id); if(!list)return;
   state.currentListId=id; const p=progress(list), c=CAT[list.cat];
-  $('#sheetTitle').textContent=list.name;
-  $('#sheetDesc').textContent=list.desc;
-  $('#sheetCatLabel').textContent=`${list.cat} · ${list.region}`;
-  $('#sheetCatRow').querySelector('.pip').style.background=c;
+  resetHero('#sheetHero', list.img, list.cat);
+  $('#sheetHeroTitle').textContent=list.name;
+  $('#sheetHeroDesc').textContent=list.desc;
+  $('#sheetHeroCatLabel').textContent=`${list.cat} · ${list.region}`;
+  $('#sheetHeroCatPip').style.background=c;
+  $('#sheetHeroPct').textContent=p.pct+'%';
   $('#sheetMeta').textContent=`${p.total-p.done} LEFT`;
-  $('#sheetPct').textContent=p.pct+'%';
-  const r=32,circ=2*Math.PI*r;
-  $('#sheetMeter').setAttribute('stroke-dasharray',circ.toFixed(2));
-  $('#sheetMeter').setAttribute('stroke-dashoffset',(circ-p.pct/100*circ).toFixed(2));
   $('#sheetList').innerHTML = list.places.map(place=>`
     <div class="poi-row ${place.visited?'done':''}" data-place="${place.id}">
-      <div class="check" data-toggle="${place.id}">${place.visited?`<svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.6" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>`:''}</div>
+      <div class="thumb-wrap">
+        <img src="${place.img}" alt="" loading="lazy" onerror="imgFallback(this,'${list.cat}')" />
+        <button class="check-pin" data-toggle="${place.id}" aria-label="Toggle visited"><svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.8" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></button>
+      </div>
       <div>
         <div class="name">${place.name}</div>
         <div class="meta-row">${place.rating?`<span class="star">${'★'.repeat(place.rating)}</span>`:''}<span>${place.sub}</span>${place.notes?`<span>· note</span>`:''}</div>
@@ -1394,6 +1673,7 @@ function openPOI(pid){
   const list=LISTS.find(l=>l.id===state.currentListId); if(!list)return;
   const place=list.places.find(p=>p.id===pid); if(!place)return;
   state.currentPlaceId=pid; const c=CAT[list.cat];
+  resetHero('#poiHero', place.img, list.cat);
   $('#poiName').textContent=place.name;
   $('#poiCatLabel').textContent=`${list.cat} · ${place.sub}`;
   $('#poiCat').querySelector('.pip').style.background=c;
