@@ -887,11 +887,40 @@ img { max-width: 100%; }
   z-index: 0;
 }
 .cat-fallback-inner svg { width: 36%; height: 36%; max-width: 72px; max-height: 72px; min-width: 18px; min-height: 18px; opacity: 0.55; }
-/* The wrapper itself needs to be a positioning context */
 .thumb-wrap, .hero-img-wrap, .sheet-hero, .poi-hero, .featured .visual, .nearme-card .hero-img-wrap, .featured-mini .hero-img-wrap, .explore-card .thumb-wrap, .backlog-row .thumb-wrap { position: relative; }
-/* In hero contexts the fallback icon should sit slightly above center so the title gradient doesn't crowd it */
 .sheet-hero.img-fallback .cat-fallback-inner,
 .poi-hero.img-fallback .cat-fallback-inner { padding-bottom: 60px; }
+
+/* Tiny category icons (paired with category names) */
+.cat-ico {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 13px; height: 13px;
+  flex-shrink: 0; vertical-align: -1px;
+}
+.cat-ico svg { width: 100%; height: 100%; display: block; }
+.list-card .cat-ico { width: 13px; height: 13px; }
+.pill-cat .cat-ico, .poi-hero .cat-tag .cat-ico, .sheet-hero .pill-cat .cat-ico { width: 12px; height: 12px; }
+.featured-mini .head .cat-ico { width: 12px; height: 12px; color: var(--teal); }
+
+/* Abstract art placeholder (when no image is uploaded) */
+.art-fill {
+  position: absolute; inset: 0;
+  overflow: hidden;
+  z-index: 0;
+}
+.art-fill svg { width: 100%; height: 100%; display: block; }
+
+/* Place-progress dot row (one dot per place, filled = visited) */
+.list-card .dot-row {
+  display: flex; gap: 3px; margin-top: 7px; flex-wrap: wrap;
+}
+.list-card .dot-row i {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: transparent;
+  border: 1px solid rgba(14, 58, 82, 0.22);
+  display: block;
+}
+.list-card .dot-row i.on { background: var(--teal); border-color: var(--teal); }
 
 /* Near-me card hero */
 .nearme-card { padding: 0; }
@@ -1139,7 +1168,7 @@ img { max-width: 100%; }
                 <div class="featured-mini">
                   <div class="hero-img-wrap"><img src="https://picsum.photos/seed/seattle-coffee-circuit-landing/800/480" alt="" loading="lazy" onerror="imgFallback(this,'Coffee')" /></div>
                   <div class="body">
-                    <div class="head"><span class="pip"></span><span class="cat">Coffee · Seattle</span></div>
+                    <div class="head"><span class="cat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 010 8h-1"/><path d="M3 8h14v9a4 4 0 01-4 4H7a4 4 0 01-4-4V8z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg></span><span class="cat">Coffee · Seattle</span></div>
                     <div><div class="name">Seattle Coffee Circuit</div><div class="by">by @rooster · 12 places · 2,148 followers</div></div>
                     <div>
                       <div class="preview-row"><span class="dot done"><svg width="9" height="9" fill="none" stroke="currentColor" stroke-width="2.6" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span><span class="ttl-pl strike">Victrola Coffee Roasters</span></div>
@@ -1302,7 +1331,7 @@ img { max-width: 100%; }
           <div class="sheet-hero" id="sheetHero">
             <img id="sheetHeroImg" src="" alt="" />
             <div class="pillrow">
-              <div class="pill-cat"><span class="pip" id="sheetHeroCatPip"></span><span id="sheetHeroCatLabel">Coffee · Seattle</span></div>
+              <div class="pill-cat"><span class="cat-ico" id="sheetHeroCatIco"></span><span id="sheetHeroCatLabel">Coffee · Seattle</span></div>
               <div class="ring-float"><div class="ring-pct" id="sheetHeroPct">70%</div></div>
             </div>
             <div class="name-stack">
@@ -1332,7 +1361,7 @@ img { max-width: 100%; }
               <button class="icon-btn right"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
             </div>
             <div class="head-stack">
-              <div class="cat-tag" id="poiCat"><span class="pip"></span><span id="poiCatLabel">Coffee · Capitol Hill</span></div>
+              <div class="cat-tag" id="poiCat"><span class="cat-ico" id="poiCatIco"></span><span id="poiCatLabel">Coffee · Capitol Hill</span></div>
               <h2 id="poiName">Analog Coffee</h2>
               <div class="addr"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg><span id="poiSub">12-min walk · 235 Summit Ave E</span></div>
             </div>
@@ -1459,22 +1488,47 @@ function imgFallback(img, cat){
   ico.innerHTML = CAT_ICON_SVG[cat] || CAT_ICON_SVG.Landmarks;
   img.replaceWith(ico);
 }
-function resetHero(wrapSelector, src, cat){
+
+/* Abstract-art placeholders shown when a list/place has no uploaded image. */
+const ABSTRACT_ART = {
+  waves: `<svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="dwg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#D9ECF4"/><stop offset="100%" stop-color="#1B89C8"/></linearGradient></defs><rect width="400" height="240" fill="url(#dwg1)"/><path d="M0 110 Q100 70 200 120 T400 100 V240 H0 Z" fill="#FFFFFF" fill-opacity="0.20"/><path d="M0 150 Q100 120 200 160 T400 140 V240 H0 Z" fill="#0E3A52" fill-opacity="0.14"/><path d="M0 195 Q100 170 200 200 T400 185 V240 H0 Z" fill="#0E3A52" fill-opacity="0.22"/><circle cx="320" cy="58" r="34" fill="#FFFFFF" fill-opacity="0.34"/></svg>`,
+  blobs: `<svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"><rect width="400" height="240" fill="#EEF7FB"/><circle cx="80" cy="80" r="100" fill="#1B89C8" fill-opacity="0.40"/><circle cx="280" cy="160" r="120" fill="#38B6E8" fill-opacity="0.34"/><circle cx="340" cy="50" r="70" fill="#155F8A" fill-opacity="0.42"/><circle cx="180" cy="80" r="44" fill="#BFE0F0" fill-opacity="0.85"/><circle cx="120" cy="180" r="32" fill="#0E3A52" fill-opacity="0.18"/></svg>`,
+  arches: `<svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"><rect width="400" height="240" fill="#D9ECF4"/><path d="M0 240 V120 a80 80 0 0 1 160 0 V240 Z" fill="#1B89C8" fill-opacity="0.40"/><path d="M120 240 V100 a80 80 0 0 1 160 0 V240 Z" fill="#38B6E8" fill-opacity="0.50"/><path d="M240 240 V140 a80 80 0 0 1 160 0 V240 Z" fill="#155F8A" fill-opacity="0.46"/><circle cx="80" cy="50" r="22" fill="#FFFFFF" fill-opacity="0.55"/><circle cx="320" cy="40" r="14" fill="#FFFFFF" fill-opacity="0.45"/></svg>`,
+};
+function catIco(cat, color){
+  const c = color ? ` style="color:${color}"` : '';
+  return `<span class="cat-ico"${c}>${CAT_ICON_SVG[cat] || CAT_ICON_SVG.Landmarks}</span>`;
+}
+function heroFill(item, cat){
+  if (item && item.art) return `<div class="art-fill">${ABSTRACT_ART[item.art] || ABSTRACT_ART.waves}</div>`;
+  return `<img src="${item.img}" alt="" loading="lazy" onerror="imgFallback(this,'${cat}')" />`;
+}
+function dotsHTML(places){
+  return places.map(p => `<i class="${p.visited?'on':''}"></i>`).join('');
+}
+function resetHero(wrapSelector, item, cat){
   const wrap = document.querySelector(wrapSelector);
   if (!wrap) return;
   wrap.classList.remove('img-fallback');
   wrap.removeAttribute('data-cat');
-  const existing = wrap.querySelector('.cat-fallback-inner');
-  if (existing) existing.remove();
+  wrap.querySelectorAll('.cat-fallback-inner, .art-fill').forEach(n => n.remove());
   let img = wrap.querySelector('img');
-  if (!img) {
-    img = document.createElement('img');
-    img.alt = '';
-    img.loading = 'lazy';
-    wrap.insertBefore(img, wrap.firstChild);
+  if (item && item.art) {
+    if (img) img.remove();
+    const art = document.createElement('div');
+    art.className = 'art-fill';
+    art.innerHTML = ABSTRACT_ART[item.art] || ABSTRACT_ART.waves;
+    wrap.insertBefore(art, wrap.firstChild);
+  } else {
+    if (!img) {
+      img = document.createElement('img');
+      img.alt = '';
+      img.loading = 'lazy';
+      wrap.insertBefore(img, wrap.firstChild);
+    }
+    img.onerror = function(){ imgFallback(img, cat); };
+    img.src = item.img;
   }
-  img.onerror = function(){ imgFallback(img, cat); };
-  img.src = src;
 }
 
 const LISTS = [
@@ -1484,7 +1538,7 @@ const LISTS = [
       { id:'p1', name:'Victrola Coffee Roasters', addr:'310 E Pike St', sub:'Capitol Hill', visited:true,  rating:4, notes:'Charming, busy mornings.', img: I('1442512595331-e89e73853f31') },
       { id:'p2', name:'Espresso Vivace',          addr:'532 Broadway E', sub:'Capitol Hill', visited:true,  rating:5, notes:'Schomer himself.',          img: I('1559925393-8be0ec4767c8') },
       { id:'p3', name:'Analog Coffee',            addr:'235 Summit Ave E', sub:'Capitol Hill', visited:true,  rating:5, notes:'Pour-over was unreal.',  img: I('1495474472287-4d71bcdd2085') },
-      { id:'p4', name:'Slate Coffee Roasters',    addr:'5413 6th Ave NW',  sub:'Ballard',      visited:false, rating:0, notes:'',                         img: I('1497935586351-b67a49e012bf') },
+      { id:'p4', name:'Slate Coffee Roasters',    addr:'5413 6th Ave NW',  sub:'Ballard',      visited:false, rating:0, notes:'',                         art: 'waves' },
       { id:'p5', name:'Caffè Vita',               addr:'1005 E Pike St',   sub:'Capitol Hill', visited:true,  rating:4, notes:'',                         img: I('1453614512568-c4024d13c247') },
       { id:'p6', name:'Milstead & Co.',           addr:'770 N 34th St',    sub:'Fremont',      visited:true,  rating:5, notes:'Fremont go-to.',           img: I('1442975631115-c4f7b05b8a2c') },
       { id:'p7', name:'Onda Origins',             addr:'1601 N 45th St',   sub:'Wallingford',  visited:false, rating:0, notes:'',                         img: I('1501339847302-ac426a4a7cbb') },
@@ -1498,12 +1552,12 @@ const LISTS = [
       { id:'r1', name:'Ichiran Shibuya', addr:'Udagawacho 13-7', sub:'Shibuya',   visited:true,  rating:4, notes:'Solo seats.',        img: I('1569718212165-3a8278d5f624') },
       { id:'r2', name:'Afuri Ebisu',     addr:'Ebisu 1-1-7',     sub:'Ebisu',     visited:true,  rating:5, notes:'Yuzu shio essential.', img: I('1591814468924-caf88d1232e1') },
       { id:'r3', name:'Tsuta',           addr:'Sugamo 1-14-1',   sub:'Sugamo',    visited:false, rating:0, notes:'',                    img: I('1614563637806-1d0e645e0940') },
-      { id:'r4', name:'Menya Saimi',     addr:'Sapporo',         sub:'Sapporo',   visited:false, rating:0, notes:'',                    img: I('1557872943-16a5ac26437e') },
+      { id:'r4', name:'Menya Saimi',     addr:'Sapporo',         sub:'Sapporo',   visited:false, rating:0, notes:'',                    art: 'blobs' },
       { id:'r5', name:'Fuunji',          addr:'Yoyogi 2-14-3',   sub:'Yoyogi',    visited:true,  rating:4, notes:'Tsukemen.',           img: I('1618841557871-b4664fbf0cb3') },
       { id:'r6', name:'Rokurinsha',      addr:'Tokyo Station',   sub:'Marunouchi',visited:false, rating:0, notes:'',                    img: I('1623341214825-9f4f963727da') },
     ]},
   { id:'l3', name:'Soviet States Quest', cat:'Countries', region:'Eurasia', pinned:false, desc:'A slow geopolitical crawl.',
-    img: I('1565028000234-6608d6c66e8c', 800, 480),
+    art: 'arches',
     places:[
       { id:'c1', name:'Estonia',    addr:'Tallinn',  sub:'Baltic',       visited:true,  rating:5, notes:'Old town.',  img: I('1565028000234-6608d6c66e8c') },
       { id:'c2', name:'Latvia',     addr:'Riga',     sub:'Baltic',       visited:true,  rating:4, notes:'',           img: I('1567440793875-0936bbb31968') },
@@ -1512,7 +1566,7 @@ const LISTS = [
       { id:'c5', name:'Uzbekistan', addr:'Tashkent', sub:'Central Asia', visited:false, rating:0, notes:'',           img: I('1548013146-72479768bada') },
     ]},
   { id:'l4', name:'NYC Bagel Showdown', cat:'Food', region:'NYC', pinned:false, desc:'Top 10 bagel shops.',
-    img: I('1592151450109-90a3548f4d5c', 800, 480),
+    art: 'blobs',
     places:[
       { id:'b1', name:'Absolute Bagels',   addr:'Broadway & 108', sub:'UWS',           visited:true,  rating:5, notes:'', img: I('1592151450109-90a3548f4d5c') },
       { id:'b2', name:'Russ & Daughters',  addr:'Houston St',     sub:'LES',           visited:true,  rating:5, notes:'', img: I('1571115764595-644a1f56a55c') },
@@ -1563,12 +1617,12 @@ function renderNearMe(){
     const list=LISTS.find(l=>l.id===n.listId), p=progress(list), c=CAT[list.cat];
     return `<div class="nearme-card" data-listid="${list.id}">
       <div class="hero-img-wrap">
-        <img src="${list.img}" alt="" loading="lazy" onerror="imgFallback(this,'${list.cat}')" />
+        ${heroFill(list, list.cat)}
         <div class="pct-pill">${p.pct}%</div>
       </div>
       <div class="body-inner">
         <div class="top">
-          <div class="cat"><span class="dot" style="background:${c}"></span> ${list.cat} · ${list.region}</div>
+          <div class="cat">${catIco(list.cat, c)} ${list.cat} · ${list.region}</div>
         </div>
         <div class="ttl">${list.name}</div>
         <div class="next"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> ${n.dist} · ${n.next}</div>
@@ -1592,13 +1646,14 @@ function renderLists(){
       </div>
       <div class="list-card" data-listid="${list.id}">
         <div class="thumb-wrap">
-          <img src="${list.img}" alt="" loading="lazy" onerror="imgFallback(this,'${list.cat}')" />
+          ${heroFill(list, list.cat)}
           <div class="ring-badge">${ringSVG(p.pct,30)}<div class="ring-pct">${p.pct}</div></div>
         </div>
         <div class="body">
-          <div class="cat-row"><span style="color:${c}">${list.cat} · ${list.region}</span>${state.pinned[list.id]?`<span class="pin-tag">· Pinned</span>`:''}</div>
+          <div class="cat-row">${catIco(list.cat, c)}<span style="color:${c}">${list.cat} · ${list.region}</span>${state.pinned[list.id]?`<span class="pin-tag">· Pinned</span>`:''}</div>
           <div class="name">${list.name}</div>
           <div class="progress-line">${p.done} / ${p.total} · ${p.total-p.done} to visit</div>
+          <div class="dot-row">${dotsHTML(list.places)}</div>
         </div>
         <div class="arrow"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></div>
       </div>`;
@@ -1621,9 +1676,9 @@ function renderExplore(){
   $('#exploreGrid').innerHTML = EXPLORE.map(e=>{
     const c=CAT[e.cat];
     return `<div class="explore-card" data-explore>
-      <div class="thumb-wrap"><img src="${e.img}" alt="" loading="lazy" onerror="imgFallback(this,'${e.cat}')" /></div>
+      <div class="thumb-wrap">${heroFill(e, e.cat)}</div>
       <div class="body">
-        <div class="cat-row"><span class="pip" style="background:${c}"></span><span>${e.cat} · ${e.region}</span></div>
+        <div class="cat-row">${catIco(e.cat, c)}<span>${e.cat} · ${e.region}</span></div>
         <div class="ttl">${e.ttl}</div>
         <div class="by">${e.by}</div>
         <div class="stats"><span>${e.count} places</span><span>${e.follows}</span></div>
@@ -1645,17 +1700,17 @@ function renderProfile(){
 function openListSheet(id){
   const list=LISTS.find(l=>l.id===id); if(!list)return;
   state.currentListId=id; const p=progress(list), c=CAT[list.cat];
-  resetHero('#sheetHero', list.img, list.cat);
+  resetHero('#sheetHero', list, list.cat);
   $('#sheetHeroTitle').textContent=list.name;
   $('#sheetHeroDesc').textContent=list.desc;
   $('#sheetHeroCatLabel').textContent=`${list.cat} · ${list.region}`;
-  $('#sheetHeroCatPip').style.background=c;
+  const sIco=$('#sheetHeroCatIco'); sIco.innerHTML=CAT_ICON_SVG[list.cat]||''; sIco.style.color=c;
   $('#sheetHeroPct').textContent=p.pct+'%';
   $('#sheetMeta').textContent=`${p.total-p.done} LEFT`;
   $('#sheetList').innerHTML = list.places.map(place=>`
     <div class="poi-row ${place.visited?'done':''}" data-place="${place.id}">
       <div class="thumb-wrap">
-        <img src="${place.img}" alt="" loading="lazy" onerror="imgFallback(this,'${list.cat}')" />
+        ${heroFill(place, list.cat)}
         <button class="check-pin" data-toggle="${place.id}" aria-label="Toggle visited"><svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.8" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></button>
       </div>
       <div>
@@ -1673,10 +1728,10 @@ function openPOI(pid){
   const list=LISTS.find(l=>l.id===state.currentListId); if(!list)return;
   const place=list.places.find(p=>p.id===pid); if(!place)return;
   state.currentPlaceId=pid; const c=CAT[list.cat];
-  resetHero('#poiHero', place.img, list.cat);
+  resetHero('#poiHero', place, list.cat);
   $('#poiName').textContent=place.name;
   $('#poiCatLabel').textContent=`${list.cat} · ${place.sub}`;
-  $('#poiCat').querySelector('.pip').style.background=c;
+  const pIco=$('#poiCatIco'); pIco.innerHTML=CAT_ICON_SVG[list.cat]||''; pIco.style.color=c;
   $('#poiSub').textContent=place.addr;
   $('#poiMarkLabel').textContent=place.visited?'Mark unvisited':'Mark visited';
   $('#poiMark').classList.toggle('unmark',place.visited);
